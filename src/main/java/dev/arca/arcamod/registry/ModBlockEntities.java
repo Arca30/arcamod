@@ -3,6 +3,7 @@ package dev.arca.arcamod.registry;
 import java.util.Set;
 
 import dev.arca.arcamod.ArcaMod;
+import dev.arca.arcamod.block.entity.DisenchanterBlockEntity;
 import dev.arca.arcamod.block.entity.PotionCauldronBlockEntity;
 import dev.arca.arcamod.block.entity.XpBottlerBlockEntity;
 
@@ -24,6 +25,11 @@ public final class ModBlockEntities {
 			BuiltInRegistries.BLOCK_ENTITY_TYPE,
 			ArcaMod.id("potion_cauldron"),
 			new BlockEntityType<>(PotionCauldronBlockEntity::new, Set.of(ModBlocks.POTION_CAULDRON)));
+
+	public static final BlockEntityType<DisenchanterBlockEntity> DISENCHANTER = Registry.register(
+			BuiltInRegistries.BLOCK_ENTITY_TYPE,
+			ArcaMod.id("disenchanter"),
+			new BlockEntityType<>(DisenchanterBlockEntity::new, Set.of(ModBlocks.DISENCHANTER)));
 
 	public static void init() {
 	}
