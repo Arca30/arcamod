@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "equipment",
+	"key": {
+		"F": "minecraft:flint",
+		"C": "arcamod:plant_cord",
+		"S": "minecraft:stick"
+	},
+	"pattern": [
+		"FC",
+		"SF"
+	],
+	"result": {
+		"id": "arcamod:flint_tool"
+	}
+}

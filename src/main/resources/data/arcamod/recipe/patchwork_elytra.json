@@ -1,0 +1,14 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "equipment",
+	"key": {
+		"M": "minecraft:phantom_membrane"
+	},
+	"pattern": [
+		"M M",
+		"MMM"
+	],
+	"result": {
+		"id": "arcamod:patchwork_elytra"
+	}
+}

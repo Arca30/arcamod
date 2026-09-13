@@ -1,0 +1,984 @@
+{
+	"variants": {
+		"facing=north,pebbles=1,natural=true": [
+			{
+				"model": "arcamod:block/pebbles_1_0"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_1"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_2"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_3"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_4"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_5"
+			}
+		],
+		"facing=north,pebbles=1,natural=false": [
+			{
+				"model": "arcamod:block/pebbles_1_0"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_1"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_2"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_3"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_4"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_5"
+			}
+		],
+		"facing=north,pebbles=2,natural=true": [
+			{
+				"model": "arcamod:block/pebbles_2_0"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_1"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_2"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_3"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_4"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_5"
+			}
+		],
+		"facing=north,pebbles=2,natural=false": [
+			{
+				"model": "arcamod:block/pebbles_2_0"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_1"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_2"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_3"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_4"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_5"
+			}
+		],
+		"facing=north,pebbles=3,natural=true": [
+			{
+				"model": "arcamod:block/pebbles_3_0"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_1"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_2"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_3"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_4"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_5"
+			}
+		],
+		"facing=north,pebbles=3,natural=false": [
+			{
+				"model": "arcamod:block/pebbles_3_0"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_1"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_2"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_3"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_4"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_5"
+			}
+		],
+		"facing=north,pebbles=4,natural=true": [
+			{
+				"model": "arcamod:block/pebbles_4_0"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_1"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_2"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_3"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_4"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_5"
+			}
+		],
+		"facing=north,pebbles=4,natural=false": [
+			{
+				"model": "arcamod:block/pebbles_4_0"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_1"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_2"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_3"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_4"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_5"
+			}
+		],
+		"facing=north,pebbles=5,natural=true": [
+			{
+				"model": "arcamod:block/pebbles_5_0"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_1"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_2"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_3"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_4"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_5"
+			}
+		],
+		"facing=north,pebbles=5,natural=false": [
+			{
+				"model": "arcamod:block/pebbles_5_0"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_1"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_2"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_3"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_4"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_5"
+			}
+		],
+		"facing=east,pebbles=1,natural=true": [
+			{
+				"model": "arcamod:block/pebbles_1_0",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_1",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_2",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_3",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_4",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_5",
+				"y": 90
+			}
+		],
+		"facing=east,pebbles=1,natural=false": [
+			{
+				"model": "arcamod:block/pebbles_1_0",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_1",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_2",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_3",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_4",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_5",
+				"y": 90
+			}
+		],
+		"facing=east,pebbles=2,natural=true": [
+			{
+				"model": "arcamod:block/pebbles_2_0",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_1",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_2",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_3",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_4",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_5",
+				"y": 90
+			}
+		],
+		"facing=east,pebbles=2,natural=false": [
+			{
+				"model": "arcamod:block/pebbles_2_0",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_1",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_2",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_3",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_4",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_5",
+				"y": 90
+			}
+		],
+		"facing=east,pebbles=3,natural=true": [
+			{
+				"model": "arcamod:block/pebbles_3_0",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_1",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_2",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_3",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_4",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_5",
+				"y": 90
+			}
+		],
+		"facing=east,pebbles=3,natural=false": [
+			{
+				"model": "arcamod:block/pebbles_3_0",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_1",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_2",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_3",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_4",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_5",
+				"y": 90
+			}
+		],
+		"facing=east,pebbles=4,natural=true": [
+			{
+				"model": "arcamod:block/pebbles_4_0",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_1",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_2",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_3",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_4",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_5",
+				"y": 90
+			}
+		],
+		"facing=east,pebbles=4,natural=false": [
+			{
+				"model": "arcamod:block/pebbles_4_0",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_1",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_2",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_3",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_4",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_5",
+				"y": 90
+			}
+		],
+		"facing=east,pebbles=5,natural=true": [
+			{
+				"model": "arcamod:block/pebbles_5_0",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_1",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_2",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_3",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_4",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_5",
+				"y": 90
+			}
+		],
+		"facing=east,pebbles=5,natural=false": [
+			{
+				"model": "arcamod:block/pebbles_5_0",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_1",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_2",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_3",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_4",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_5",
+				"y": 90
+			}
+		],
+		"facing=south,pebbles=1,natural=true": [
+			{
+				"model": "arcamod:block/pebbles_1_0",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_1",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_2",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_3",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_4",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_5",
+				"y": 180
+			}
+		],
+		"facing=south,pebbles=1,natural=false": [
+			{
+				"model": "arcamod:block/pebbles_1_0",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_1",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_2",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_3",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_4",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_5",
+				"y": 180
+			}
+		],
+		"facing=south,pebbles=2,natural=true": [
+			{
+				"model": "arcamod:block/pebbles_2_0",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_1",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_2",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_3",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_4",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_5",
+				"y": 180
+			}
+		],
+		"facing=south,pebbles=2,natural=false": [
+			{
+				"model": "arcamod:block/pebbles_2_0",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_1",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_2",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_3",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_4",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_5",
+				"y": 180
+			}
+		],
+		"facing=south,pebbles=3,natural=true": [
+			{
+				"model": "arcamod:block/pebbles_3_0",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_1",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_2",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_3",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_4",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_5",
+				"y": 180
+			}
+		],
+		"facing=south,pebbles=3,natural=false": [
+			{
+				"model": "arcamod:block/pebbles_3_0",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_1",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_2",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_3",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_4",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_5",
+				"y": 180
+			}
+		],
+		"facing=south,pebbles=4,natural=true": [
+			{
+				"model": "arcamod:block/pebbles_4_0",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_1",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_2",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_3",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_4",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_5",
+				"y": 180
+			}
+		],
+		"facing=south,pebbles=4,natural=false": [
+			{
+				"model": "arcamod:block/pebbles_4_0",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_1",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_2",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_3",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_4",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_5",
+				"y": 180
+			}
+		],
+		"facing=south,pebbles=5,natural=true": [
+			{
+				"model": "arcamod:block/pebbles_5_0",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_1",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_2",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_3",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_4",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_5",
+				"y": 180
+			}
+		],
+		"facing=south,pebbles=5,natural=false": [
+			{
+				"model": "arcamod:block/pebbles_5_0",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_1",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_2",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_3",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_4",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_5",
+				"y": 180
+			}
+		],
+		"facing=west,pebbles=1,natural=true": [
+			{
+				"model": "arcamod:block/pebbles_1_0",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_1",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_2",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_3",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_4",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_5",
+				"y": 270
+			}
+		],
+		"facing=west,pebbles=1,natural=false": [
+			{
+				"model": "arcamod:block/pebbles_1_0",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_1",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_2",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_3",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_4",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_5",
+				"y": 270
+			}
+		],
+		"facing=west,pebbles=2,natural=true": [
+			{
+				"model": "arcamod:block/pebbles_2_0",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_1",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_2",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_3",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_4",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_5",
+				"y": 270
+			}
+		],
+		"facing=west,pebbles=2,natural=false": [
+			{
+				"model": "arcamod:block/pebbles_2_0",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_1",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_2",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_3",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_4",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_5",
+				"y": 270
+			}
+		],
+		"facing=west,pebbles=3,natural=true": [
+			{
+				"model": "arcamod:block/pebbles_3_0",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_1",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_2",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_3",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_4",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_5",
+				"y": 270
+			}
+		],
+		"facing=west,pebbles=3,natural=false": [
+			{
+				"model": "arcamod:block/pebbles_3_0",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_1",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_2",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_3",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_4",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_5",
+				"y": 270
+			}
+		],
+		"facing=west,pebbles=4,natural=true": [
+			{
+				"model": "arcamod:block/pebbles_4_0",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_1",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_2",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_3",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_4",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_5",
+				"y": 270
+			}
+		],
+		"facing=west,pebbles=4,natural=false": [
+			{
+				"model": "arcamod:block/pebbles_4_0",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_1",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_2",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_3",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_4",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_5",
+				"y": 270
+			}
+		],
+		"facing=west,pebbles=5,natural=true": [
+			{
+				"model": "arcamod:block/pebbles_5_0",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_1",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_2",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_3",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_4",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_5",
+				"y": 270
+			}
+		],
+		"facing=west,pebbles=5,natural=false": [
+			{
+				"model": "arcamod:block/pebbles_5_0",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_1",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_2",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_3",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_4",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_5",
+				"y": 270
+			}
+		]
+	}
+}

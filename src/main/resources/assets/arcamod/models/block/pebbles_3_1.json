@@ -1,0 +1,115 @@
+{
+	"ambientocclusion": false,
+	"textures": {
+		"tuff": "minecraft:block/tuff",
+		"andesite": "minecraft:block/andesite",
+		"particle": "minecraft:block/tuff"
+	},
+	"elements": [
+		{
+			"from": [2, 0.0, 1],
+			"to": [7, 1.0, 4],
+			"faces": {
+				"up": {
+					"uv": [4, 3, 9, 6],
+					"texture": "#tuff"
+				},
+				"down": {
+					"uv": [4, 6, 9, 3],
+					"texture": "#tuff"
+				},
+				"north": {
+					"uv": [4, 3, 9, 4],
+					"texture": "#tuff"
+				},
+				"south": {
+					"uv": [4, 3, 9, 4],
+					"texture": "#tuff"
+				},
+				"east": {
+					"uv": [3, 4, 6, 5],
+					"texture": "#tuff"
+				},
+				"west": {
+					"uv": [3, 4, 6, 5],
+					"texture": "#tuff"
+				}
+			},
+			"rotation": {
+				"origin": [4.5, 0.0, 2.5],
+				"axis": "y",
+				"angle": -22.5
+			}
+		},
+		{
+			"from": [2, 0.01, 7],
+			"to": [6, 2.01, 11],
+			"faces": {
+				"up": {
+					"uv": [9, 5, 13, 9],
+					"texture": "#andesite"
+				},
+				"down": {
+					"uv": [9, 9, 13, 5],
+					"texture": "#andesite"
+				},
+				"north": {
+					"uv": [9, 5, 13, 7],
+					"texture": "#andesite"
+				},
+				"south": {
+					"uv": [9, 5, 13, 7],
+					"texture": "#andesite"
+				},
+				"east": {
+					"uv": [5, 9, 9, 11],
+					"texture": "#andesite"
+				},
+				"west": {
+					"uv": [5, 9, 9, 11],
+					"texture": "#andesite"
+				}
+			},
+			"rotation": {
+				"origin": [4.0, 0.01, 9.0],
+				"axis": "y",
+				"angle": 45
+			}
+		},
+		{
+			"from": [11, 0.02, 10],
+			"to": [15, 1.02, 14],
+			"faces": {
+				"up": {
+					"uv": [0, 8, 4, 12],
+					"texture": "#tuff"
+				},
+				"down": {
+					"uv": [0, 12, 4, 8],
+					"texture": "#tuff"
+				},
+				"north": {
+					"uv": [0, 8, 4, 9],
+					"texture": "#tuff"
+				},
+				"south": {
+					"uv": [0, 8, 4, 9],
+					"texture": "#tuff"
+				},
+				"east": {
+					"uv": [8, 0, 12, 1],
+					"texture": "#tuff"
+				},
+				"west": {
+					"uv": [8, 0, 12, 1],
+					"texture": "#tuff"
+				}
+			},
+			"rotation": {
+				"origin": [13.0, 0.02, 12.0],
+				"axis": "y",
+				"angle": 22.5
+			}
+		}
+	]
+}

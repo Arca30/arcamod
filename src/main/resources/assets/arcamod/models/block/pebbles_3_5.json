@@ -1,0 +1,115 @@
+{
+	"ambientocclusion": false,
+	"textures": {
+		"granite": "minecraft:block/granite",
+		"mossy_cobblestone": "minecraft:block/mossy_cobblestone",
+		"particle": "minecraft:block/granite"
+	},
+	"elements": [
+		{
+			"from": [3, 0.0, 1],
+			"to": [7, 2.0, 5],
+			"faces": {
+				"up": {
+					"uv": [7, 11, 11, 15],
+					"texture": "#granite"
+				},
+				"down": {
+					"uv": [7, 15, 11, 11],
+					"texture": "#granite"
+				},
+				"north": {
+					"uv": [7, 11, 11, 13],
+					"texture": "#granite"
+				},
+				"south": {
+					"uv": [7, 11, 11, 13],
+					"texture": "#granite"
+				},
+				"east": {
+					"uv": [11, 7, 15, 9],
+					"texture": "#granite"
+				},
+				"west": {
+					"uv": [11, 7, 15, 9],
+					"texture": "#granite"
+				}
+			},
+			"rotation": {
+				"origin": [5.0, 0.0, 3.0],
+				"axis": "y",
+				"angle": 45
+			}
+		},
+		{
+			"from": [10, 0.01, 10],
+			"to": [13, 1.01, 14],
+			"faces": {
+				"up": {
+					"uv": [9, 3, 12, 7],
+					"texture": "#granite"
+				},
+				"down": {
+					"uv": [9, 7, 12, 3],
+					"texture": "#granite"
+				},
+				"north": {
+					"uv": [9, 3, 12, 4],
+					"texture": "#granite"
+				},
+				"south": {
+					"uv": [9, 3, 12, 4],
+					"texture": "#granite"
+				},
+				"east": {
+					"uv": [3, 9, 7, 10],
+					"texture": "#granite"
+				},
+				"west": {
+					"uv": [3, 9, 7, 10],
+					"texture": "#granite"
+				}
+			},
+			"rotation": {
+				"origin": [11.5, 0.01, 12.0],
+				"axis": "y",
+				"angle": -22.5
+			}
+		},
+		{
+			"from": [7, 0.02, 8],
+			"to": [9, 2.02, 12],
+			"faces": {
+				"up": {
+					"uv": [4, 9, 6, 13],
+					"texture": "#mossy_cobblestone"
+				},
+				"down": {
+					"uv": [4, 13, 6, 9],
+					"texture": "#mossy_cobblestone"
+				},
+				"north": {
+					"uv": [4, 9, 6, 11],
+					"texture": "#mossy_cobblestone"
+				},
+				"south": {
+					"uv": [4, 9, 6, 11],
+					"texture": "#mossy_cobblestone"
+				},
+				"east": {
+					"uv": [9, 4, 13, 6],
+					"texture": "#mossy_cobblestone"
+				},
+				"west": {
+					"uv": [9, 4, 13, 6],
+					"texture": "#mossy_cobblestone"
+				}
+			},
+			"rotation": {
+				"origin": [8.0, 0.02, 10.0],
+				"axis": "y",
+				"angle": 45
+			}
+		}
+	]
+}

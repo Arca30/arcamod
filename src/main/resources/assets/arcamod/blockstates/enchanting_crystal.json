@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"charged=false": {
+			"model": "arcamod:block/enchanting_crystal"
+		},
+		"charged=true": {
+			"model": "arcamod:block/enchanting_crystal_charged"
+		}
+	}
+}

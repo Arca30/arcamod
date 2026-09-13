@@ -1,0 +1,14 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "building",
+	"key": {
+		"#": "minecraft:hay_block"
+	},
+	"pattern": [
+		"###"
+	],
+	"result": {
+		"id": "arcamod:hay_block_slab",
+		"count": 6
+	}
+}

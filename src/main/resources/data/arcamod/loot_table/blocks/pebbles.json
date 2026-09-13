@@ -1,0 +1,155 @@
+{
+	"type": "minecraft:block",
+	"pools": [
+		{
+			"rolls": 1.0,
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"name": "arcamod:pebble",
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": 1.0,
+							"conditions": [
+								{
+									"condition": "minecraft:block_state_property",
+									"block": "arcamod:pebbles",
+									"properties": {
+										"pebbles": "1"
+									}
+								}
+							]
+						},
+						{
+							"function": "minecraft:set_count",
+							"count": 2.0,
+							"conditions": [
+								{
+									"condition": "minecraft:block_state_property",
+									"block": "arcamod:pebbles",
+									"properties": {
+										"pebbles": "2"
+									}
+								}
+							]
+						},
+						{
+							"function": "minecraft:set_count",
+							"count": 3.0,
+							"conditions": [
+								{
+									"condition": "minecraft:block_state_property",
+									"block": "arcamod:pebbles",
+									"properties": {
+										"pebbles": "3"
+									}
+								}
+							]
+						},
+						{
+							"function": "minecraft:set_count",
+							"count": 4.0,
+							"conditions": [
+								{
+									"condition": "minecraft:block_state_property",
+									"block": "arcamod:pebbles",
+									"properties": {
+										"pebbles": "4"
+									}
+								}
+							]
+						},
+						{
+							"function": "minecraft:set_count",
+							"count": 5.0,
+							"conditions": [
+								{
+									"condition": "minecraft:block_state_property",
+									"block": "arcamod:pebbles",
+									"properties": {
+										"pebbles": "5"
+									}
+								}
+							]
+						},
+						{
+							"function": "minecraft:explosion_decay"
+						}
+					]
+				}
+			]
+		},
+		{
+			"rolls": 1.0,
+			"conditions": [
+				{
+					"condition": "minecraft:block_state_property",
+					"block": "arcamod:pebbles",
+					"properties": {
+						"natural": "true"
+					}
+				},
+				{
+					"condition": "minecraft:random_chance",
+					"chance": 0.2
+				}
+			],
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:flint"
+				}
+			],
+			"functions": [
+				{
+					"function": "minecraft:explosion_decay"
+				}
+			]
+		},
+		{
+			"rolls": 1.0,
+			"conditions": [
+				{
+					"condition": "minecraft:block_state_property",
+					"block": "arcamod:pebbles",
+					"properties": {
+						"natural": "true"
+					}
+				},
+				{
+					"condition": "minecraft:random_chance",
+					"chance": 0.06
+				}
+			],
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:coal",
+					"weight": 5
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:clay_ball",
+					"weight": 4
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:raw_copper",
+					"weight": 3
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:raw_iron",
+					"weight": 1
+				}
+			],
+			"functions": [
+				{
+					"function": "minecraft:explosion_decay"
+				}
+			]
+		}
+	],
+	"random_sequence": "arcamod:blocks/pebbles"
+}

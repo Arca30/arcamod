@@ -1,0 +1,79 @@
+{
+	"variants": {
+		"facing=north,pebbles=1": {
+			"model": "arcamod:block/pebbles_1"
+		},
+		"facing=north,pebbles=2": {
+			"model": "arcamod:block/pebbles_2"
+		},
+		"facing=north,pebbles=3": {
+			"model": "arcamod:block/pebbles_3"
+		},
+		"facing=north,pebbles=4": {
+			"model": "arcamod:block/pebbles_4"
+		},
+		"facing=north,pebbles=5": {
+			"model": "arcamod:block/pebbles_5"
+		},
+		"facing=east,pebbles=1": {
+			"model": "arcamod:block/pebbles_1",
+			"y": 90
+		},
+		"facing=east,pebbles=2": {
+			"model": "arcamod:block/pebbles_2",
+			"y": 90
+		},
+		"facing=east,pebbles=3": {
+			"model": "arcamod:block/pebbles_3",
+			"y": 90
+		},
+		"facing=east,pebbles=4": {
+			"model": "arcamod:block/pebbles_4",
+			"y": 90
+		},
+		"facing=east,pebbles=5": {
+			"model": "arcamod:block/pebbles_5",
+			"y": 90
+		},
+		"facing=south,pebbles=1": {
+			"model": "arcamod:block/pebbles_1",
+			"y": 180
+		},
+		"facing=south,pebbles=2": {
+			"model": "arcamod:block/pebbles_2",
+			"y": 180
+		},
+		"facing=south,pebbles=3": {
+			"model": "arcamod:block/pebbles_3",
+			"y": 180
+		},
+		"facing=south,pebbles=4": {
+			"model": "arcamod:block/pebbles_4",
+			"y": 180
+		},
+		"facing=south,pebbles=5": {
+			"model": "arcamod:block/pebbles_5",
+			"y": 180
+		},
+		"facing=west,pebbles=1": {
+			"model": "arcamod:block/pebbles_1",
+			"y": 270
+		},
+		"facing=west,pebbles=2": {
+			"model": "arcamod:block/pebbles_2",
+			"y": 270
+		},
+		"facing=west,pebbles=3": {
+			"model": "arcamod:block/pebbles_3",
+			"y": 270
+		},
+		"facing=west,pebbles=4": {
+			"model": "arcamod:block/pebbles_4",
+			"y": 270
+		},
+		"facing=west,pebbles=5": {
+			"model": "arcamod:block/pebbles_5",
+			"y": 270
+		}
+	}
+}

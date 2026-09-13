@@ -1,0 +1,39 @@
+{
+	"ambientocclusion": false,
+	"textures": {
+		"spruce_log": "minecraft:block/spruce_log",
+		"particle": "minecraft:block/spruce_log"
+	},
+	"elements": [
+		{
+			"from": [2, 0.0, 3],
+			"to": [14, 1.0, 4],
+			"faces": {
+				"up": {
+					"uv": [4, 2, 16, 3],
+					"texture": "#spruce_log"
+				},
+				"down": {
+					"uv": [4, 3, 16, 2],
+					"texture": "#spruce_log"
+				},
+				"north": {
+					"uv": [4, 2, 16, 3],
+					"texture": "#spruce_log"
+				},
+				"south": {
+					"uv": [4, 2, 16, 3],
+					"texture": "#spruce_log"
+				},
+				"east": {
+					"uv": [2, 4, 3, 5],
+					"texture": "#spruce_log"
+				},
+				"west": {
+					"uv": [2, 4, 3, 5],
+					"texture": "#spruce_log"
+				}
+			}
+		}
+	]
+}

@@ -1,0 +1,8 @@
+{
+	"parent": "minecraft:block/slab",
+	"textures": {
+		"bottom": "arcamod:block/thatch_block_top",
+		"top": "arcamod:block/thatch_block_top",
+		"side": "arcamod:block/thatch_block_side"
+	}
+}

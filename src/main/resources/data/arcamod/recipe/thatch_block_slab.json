@@ -1,0 +1,14 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "building",
+	"key": {
+		"#": "arcamod:thatch_block"
+	},
+	"pattern": [
+		"###"
+	],
+	"result": {
+		"id": "arcamod:thatch_block_slab",
+		"count": 6
+	}
+}

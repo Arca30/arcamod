@@ -1,0 +1,28 @@
+{
+	"variants": {
+		"axis=x,waxed=false": {
+			"model": "arcamod:block/gray_thatch_block_horizontal",
+			"x": 90,
+			"y": 90
+		},
+		"axis=x,waxed=true": {
+			"model": "arcamod:block/gray_thatch_block_horizontal",
+			"x": 90,
+			"y": 90
+		},
+		"axis=y,waxed=false": {
+			"model": "arcamod:block/gray_thatch_block"
+		},
+		"axis=y,waxed=true": {
+			"model": "arcamod:block/gray_thatch_block"
+		},
+		"axis=z,waxed=false": {
+			"model": "arcamod:block/gray_thatch_block_horizontal",
+			"x": 90
+		},
+		"axis=z,waxed=true": {
+			"model": "arcamod:block/gray_thatch_block_horizontal",
+			"x": 90
+		}
+	}
+}

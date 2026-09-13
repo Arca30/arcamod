@@ -1,0 +1,115 @@
+{
+	"ambientocclusion": false,
+	"textures": {
+		"gravel": "minecraft:block/gravel",
+		"stone": "minecraft:block/stone",
+		"particle": "minecraft:block/gravel"
+	},
+	"elements": [
+		{
+			"from": [5, 0.0, 3],
+			"to": [8, 1.0, 6],
+			"faces": {
+				"up": {
+					"uv": [13, 13, 16, 16],
+					"texture": "#gravel"
+				},
+				"down": {
+					"uv": [13, 16, 16, 13],
+					"texture": "#gravel"
+				},
+				"north": {
+					"uv": [13, 13, 16, 14],
+					"texture": "#gravel"
+				},
+				"south": {
+					"uv": [13, 13, 16, 14],
+					"texture": "#gravel"
+				},
+				"east": {
+					"uv": [13, 13, 16, 14],
+					"texture": "#gravel"
+				},
+				"west": {
+					"uv": [13, 13, 16, 14],
+					"texture": "#gravel"
+				}
+			},
+			"rotation": {
+				"origin": [6.5, 0.0, 4.5],
+				"axis": "y",
+				"angle": 45
+			}
+		},
+		{
+			"from": [1, 0.01, 7],
+			"to": [6, 1.01, 11],
+			"faces": {
+				"up": {
+					"uv": [4, 12, 9, 16],
+					"texture": "#gravel"
+				},
+				"down": {
+					"uv": [4, 16, 9, 12],
+					"texture": "#gravel"
+				},
+				"north": {
+					"uv": [4, 12, 9, 13],
+					"texture": "#gravel"
+				},
+				"south": {
+					"uv": [4, 12, 9, 13],
+					"texture": "#gravel"
+				},
+				"east": {
+					"uv": [12, 4, 16, 5],
+					"texture": "#gravel"
+				},
+				"west": {
+					"uv": [12, 4, 16, 5],
+					"texture": "#gravel"
+				}
+			},
+			"rotation": {
+				"origin": [3.5, 0.01, 9.0],
+				"axis": "y",
+				"angle": -22.5
+			}
+		},
+		{
+			"from": [9, 0.02, 3],
+			"to": [13, 2.02, 5],
+			"faces": {
+				"up": {
+					"uv": [11, 14, 15, 16],
+					"texture": "#stone"
+				},
+				"down": {
+					"uv": [11, 16, 15, 14],
+					"texture": "#stone"
+				},
+				"north": {
+					"uv": [11, 14, 15, 16],
+					"texture": "#stone"
+				},
+				"south": {
+					"uv": [11, 14, 15, 16],
+					"texture": "#stone"
+				},
+				"east": {
+					"uv": [14, 11, 16, 13],
+					"texture": "#stone"
+				},
+				"west": {
+					"uv": [14, 11, 16, 13],
+					"texture": "#stone"
+				}
+			},
+			"rotation": {
+				"origin": [11.0, 0.02, 4.0],
+				"axis": "y",
+				"angle": 22.5
+			}
+		}
+	]
+}

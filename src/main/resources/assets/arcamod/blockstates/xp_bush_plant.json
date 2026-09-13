@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"berries=false": {
+			"model": "arcamod:block/xp_bush_plant"
+		},
+		"berries=true": {
+			"model": "arcamod:block/xp_bush_plant_lit"
+		}
+	}
+}

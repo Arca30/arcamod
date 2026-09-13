@@ -1,0 +1,116 @@
+{
+	"ambientocclusion": false,
+	"textures": {
+		"jungle_log": "minecraft:block/jungle_log",
+		"birch_log": "minecraft:block/birch_log",
+		"stripped_oak_log": "minecraft:block/stripped_oak_log",
+		"particle": "minecraft:block/jungle_log"
+	},
+	"elements": [
+		{
+			"from": [8, 0.0, 1],
+			"to": [9, 1.0, 12],
+			"faces": {
+				"up": {
+					"uv": [7, 2, 8, 13],
+					"texture": "#jungle_log"
+				},
+				"down": {
+					"uv": [7, 13, 8, 2],
+					"texture": "#jungle_log"
+				},
+				"north": {
+					"uv": [7, 2, 8, 3],
+					"texture": "#jungle_log"
+				},
+				"south": {
+					"uv": [7, 2, 8, 3],
+					"texture": "#jungle_log"
+				},
+				"east": {
+					"uv": [2, 7, 13, 8],
+					"texture": "#jungle_log"
+				},
+				"west": {
+					"uv": [2, 7, 13, 8],
+					"texture": "#jungle_log"
+				}
+			},
+			"rotation": {
+				"origin": [8.5, 0.0, 6.5],
+				"axis": "y",
+				"angle": 45
+			}
+		},
+		{
+			"from": [5, 0.01, 9],
+			"to": [14, 1.01, 10],
+			"faces": {
+				"up": {
+					"uv": [7, 7, 16, 8],
+					"texture": "#birch_log"
+				},
+				"down": {
+					"uv": [7, 8, 16, 7],
+					"texture": "#birch_log"
+				},
+				"north": {
+					"uv": [7, 7, 16, 8],
+					"texture": "#birch_log"
+				},
+				"south": {
+					"uv": [7, 7, 16, 8],
+					"texture": "#birch_log"
+				},
+				"east": {
+					"uv": [7, 7, 8, 8],
+					"texture": "#birch_log"
+				},
+				"west": {
+					"uv": [7, 7, 8, 8],
+					"texture": "#birch_log"
+				}
+			},
+			"rotation": {
+				"origin": [9.5, 0.01, 9.5],
+				"axis": "y",
+				"angle": 22.5
+			}
+		},
+		{
+			"from": [3, 0.02, 2],
+			"to": [4, 1.02, 10],
+			"faces": {
+				"up": {
+					"uv": [14, 5, 15, 13],
+					"texture": "#stripped_oak_log"
+				},
+				"down": {
+					"uv": [14, 13, 15, 5],
+					"texture": "#stripped_oak_log"
+				},
+				"north": {
+					"uv": [14, 5, 15, 6],
+					"texture": "#stripped_oak_log"
+				},
+				"south": {
+					"uv": [14, 5, 15, 6],
+					"texture": "#stripped_oak_log"
+				},
+				"east": {
+					"uv": [5, 14, 13, 15],
+					"texture": "#stripped_oak_log"
+				},
+				"west": {
+					"uv": [5, 14, 13, 15],
+					"texture": "#stripped_oak_log"
+				}
+			},
+			"rotation": {
+				"origin": [3.5, 0.02, 6.0],
+				"axis": "y",
+				"angle": -45
+			}
+		}
+	]
+}

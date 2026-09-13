@@ -1,0 +1,32 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_ingredient": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"items": "minecraft:gold_block"
+					}
+				]
+			}
+		},
+		"has_the_recipe": {
+			"trigger": "minecraft:recipe_unlocked",
+			"conditions": {
+				"recipe": "arcamod:enchanted_golden_beetroot"
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_the_recipe",
+			"has_ingredient"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"arcamod:enchanted_golden_beetroot"
+		]
+	}
+}

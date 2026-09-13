@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "misc",
+	"key": {
+		"B": "minecraft:echo_shard",
+		"O": "minecraft:obsidian",
+		"D": "minecraft:resin_clump"
+	},
+	"pattern": [
+		" B ",
+		"DOD",
+		"OOO"
+	],
+	"result": {
+		"id": "arcamod:disenchanter"
+	}
+}

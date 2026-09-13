@@ -1,0 +1,7 @@
+{
+	"parent": "minecraft:block/cube_column",
+	"textures": {
+		"end": "arcamod:block/thatch_block_top",
+		"side": "arcamod:block/thatch_block_side"
+	}
+}

@@ -1,0 +1,79 @@
+{
+	"ambientocclusion": false,
+	"textures": {
+		"gravel": "minecraft:block/gravel",
+		"particle": "minecraft:block/gravel"
+	},
+	"elements": [
+		{
+			"from": [5, 0.0, 3],
+			"to": [8, 1.0, 6],
+			"faces": {
+				"up": {
+					"uv": [13, 13, 16, 16],
+					"texture": "#gravel"
+				},
+				"down": {
+					"uv": [13, 16, 16, 13],
+					"texture": "#gravel"
+				},
+				"north": {
+					"uv": [13, 13, 16, 14],
+					"texture": "#gravel"
+				},
+				"south": {
+					"uv": [13, 13, 16, 14],
+					"texture": "#gravel"
+				},
+				"east": {
+					"uv": [13, 13, 16, 14],
+					"texture": "#gravel"
+				},
+				"west": {
+					"uv": [13, 13, 16, 14],
+					"texture": "#gravel"
+				}
+			},
+			"rotation": {
+				"origin": [6.5, 0.0, 4.5],
+				"axis": "y",
+				"angle": 45
+			}
+		},
+		{
+			"from": [1, 0.01, 7],
+			"to": [6, 1.01, 11],
+			"faces": {
+				"up": {
+					"uv": [4, 12, 9, 16],
+					"texture": "#gravel"
+				},
+				"down": {
+					"uv": [4, 16, 9, 12],
+					"texture": "#gravel"
+				},
+				"north": {
+					"uv": [4, 12, 9, 13],
+					"texture": "#gravel"
+				},
+				"south": {
+					"uv": [4, 12, 9, 13],
+					"texture": "#gravel"
+				},
+				"east": {
+					"uv": [12, 4, 16, 5],
+					"texture": "#gravel"
+				},
+				"west": {
+					"uv": [12, 4, 16, 5],
+					"texture": "#gravel"
+				}
+			},
+			"rotation": {
+				"origin": [3.5, 0.01, 9.0],
+				"axis": "y",
+				"angle": -22.5
+			}
+		}
+	]
+}

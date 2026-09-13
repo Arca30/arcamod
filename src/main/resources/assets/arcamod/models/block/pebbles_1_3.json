@@ -1,0 +1,44 @@
+{
+	"ambientocclusion": false,
+	"textures": {
+		"gravel": "minecraft:block/gravel",
+		"particle": "minecraft:block/gravel"
+	},
+	"elements": [
+		{
+			"from": [5, 0.0, 7],
+			"to": [9, 2.0, 12],
+			"faces": {
+				"up": {
+					"uv": [12, 10, 16, 15],
+					"texture": "#gravel"
+				},
+				"down": {
+					"uv": [12, 15, 16, 10],
+					"texture": "#gravel"
+				},
+				"north": {
+					"uv": [12, 10, 16, 12],
+					"texture": "#gravel"
+				},
+				"south": {
+					"uv": [12, 10, 16, 12],
+					"texture": "#gravel"
+				},
+				"east": {
+					"uv": [10, 12, 15, 14],
+					"texture": "#gravel"
+				},
+				"west": {
+					"uv": [10, 12, 15, 14],
+					"texture": "#gravel"
+				}
+			},
+			"rotation": {
+				"origin": [7.0, 0.0, 9.5],
+				"axis": "y",
+				"angle": -45
+			}
+		}
+	]
+}

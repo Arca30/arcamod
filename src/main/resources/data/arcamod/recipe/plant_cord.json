@@ -1,0 +1,11 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"category": "misc",
+	"ingredients": [
+		"arcamod:plant_fiber",
+		"arcamod:plant_fiber"
+	],
+	"result": {
+		"id": "arcamod:plant_cord"
+	}
+}

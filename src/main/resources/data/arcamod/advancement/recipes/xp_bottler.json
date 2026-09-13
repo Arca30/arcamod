@@ -1,0 +1,32 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_xp_berry": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"items": "arcamod:xp_berry"
+					}
+				]
+			}
+		},
+		"has_the_recipe": {
+			"trigger": "minecraft:recipe_unlocked",
+			"conditions": {
+				"recipe": "arcamod:xp_bottler"
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_the_recipe",
+			"has_xp_berry"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"arcamod:xp_bottler"
+		]
+	}
+}

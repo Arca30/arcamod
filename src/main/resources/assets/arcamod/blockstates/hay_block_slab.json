@@ -1,0 +1,13 @@
+{
+	"variants": {
+		"type=bottom": {
+			"model": "arcamod:block/hay_block_slab"
+		},
+		"type=double": {
+			"model": "minecraft:block/hay_block"
+		},
+		"type=top": {
+			"model": "arcamod:block/hay_block_slab_top"
+		}
+	}
+}

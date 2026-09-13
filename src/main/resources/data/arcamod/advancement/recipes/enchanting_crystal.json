@@ -1,0 +1,26 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_ingredient": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": { "items": [ 	{ 		"items": "minecraft:ender_eye" 	} ]
+			}
+		},
+		"has_the_recipe": {
+			"trigger": "minecraft:recipe_unlocked",
+			"conditions": { "recipe": "arcamod:enchanting_crystal"
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_the_recipe",
+			"has_ingredient"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"arcamod:enchanting_crystal"
+		]
+	}
+}

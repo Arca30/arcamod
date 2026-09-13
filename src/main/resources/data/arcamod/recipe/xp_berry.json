@@ -1,0 +1,11 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"category": "misc",
+	"ingredients": [
+		"minecraft:experience_bottle",
+		"minecraft:glow_berries"
+	],
+	"result": {
+		"id": "arcamod:xp_berry"
+	}
+}

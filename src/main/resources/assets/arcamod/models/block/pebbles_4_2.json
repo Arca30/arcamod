@@ -1,0 +1,142 @@
+{
+	"ambientocclusion": false,
+	"textures": {
+		"mossy_cobblestone": "minecraft:block/mossy_cobblestone",
+		"andesite": "minecraft:block/andesite",
+		"granite": "minecraft:block/granite",
+		"gravel": "minecraft:block/gravel",
+		"particle": "minecraft:block/mossy_cobblestone"
+	},
+	"elements": [
+		{
+			"from": [2, 0.0, 11],
+			"to": [7, 2.0, 13],
+			"faces": {
+				"up": {
+					"uv": [0, 6, 5, 8],
+					"texture": "#mossy_cobblestone"
+				},
+				"down": {
+					"uv": [0, 8, 5, 6],
+					"texture": "#mossy_cobblestone"
+				},
+				"north": {
+					"uv": [0, 6, 5, 8],
+					"texture": "#mossy_cobblestone"
+				},
+				"south": {
+					"uv": [0, 6, 5, 8],
+					"texture": "#mossy_cobblestone"
+				},
+				"east": {
+					"uv": [6, 0, 8, 2],
+					"texture": "#mossy_cobblestone"
+				},
+				"west": {
+					"uv": [6, 0, 8, 2],
+					"texture": "#mossy_cobblestone"
+				}
+			}
+		},
+		{
+			"from": [1, 0.01, 7],
+			"to": [4, 1.01, 10],
+			"faces": {
+				"up": {
+					"uv": [1, 11, 4, 14],
+					"texture": "#andesite"
+				},
+				"down": {
+					"uv": [1, 14, 4, 11],
+					"texture": "#andesite"
+				},
+				"north": {
+					"uv": [1, 11, 4, 12],
+					"texture": "#andesite"
+				},
+				"south": {
+					"uv": [1, 11, 4, 12],
+					"texture": "#andesite"
+				},
+				"east": {
+					"uv": [11, 1, 14, 2],
+					"texture": "#andesite"
+				},
+				"west": {
+					"uv": [11, 1, 14, 2],
+					"texture": "#andesite"
+				}
+			},
+			"rotation": {
+				"origin": [2.5, 0.01, 8.5],
+				"axis": "y",
+				"angle": 45
+			}
+		},
+		{
+			"from": [2, 0.02, 3],
+			"to": [6, 2.02, 7],
+			"faces": {
+				"up": {
+					"uv": [6, 12, 10, 16],
+					"texture": "#granite"
+				},
+				"down": {
+					"uv": [6, 16, 10, 12],
+					"texture": "#granite"
+				},
+				"north": {
+					"uv": [6, 12, 10, 14],
+					"texture": "#granite"
+				},
+				"south": {
+					"uv": [6, 12, 10, 14],
+					"texture": "#granite"
+				},
+				"east": {
+					"uv": [12, 6, 16, 8],
+					"texture": "#granite"
+				},
+				"west": {
+					"uv": [12, 6, 16, 8],
+					"texture": "#granite"
+				}
+			},
+			"rotation": {
+				"origin": [4.0, 0.02, 5.0],
+				"axis": "y",
+				"angle": -45
+			}
+		},
+		{
+			"from": [11, 0.03, 7],
+			"to": [14, 2.03, 12],
+			"faces": {
+				"up": {
+					"uv": [2, 11, 5, 16],
+					"texture": "#gravel"
+				},
+				"down": {
+					"uv": [2, 16, 5, 11],
+					"texture": "#gravel"
+				},
+				"north": {
+					"uv": [2, 11, 5, 13],
+					"texture": "#gravel"
+				},
+				"south": {
+					"uv": [2, 11, 5, 13],
+					"texture": "#gravel"
+				},
+				"east": {
+					"uv": [11, 2, 16, 4],
+					"texture": "#gravel"
+				},
+				"west": {
+					"uv": [11, 2, 16, 4],
+					"texture": "#gravel"
+				}
+			}
+		}
+	]
+}

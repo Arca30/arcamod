@@ -1,0 +1,111 @@
+{
+	"ambientocclusion": false,
+	"textures": {
+		"birch_log": "minecraft:block/birch_log",
+		"spruce_log": "minecraft:block/spruce_log",
+		"jungle_log": "minecraft:block/jungle_log",
+		"particle": "minecraft:block/birch_log"
+	},
+	"elements": [
+		{
+			"from": [7, 0.0, 4],
+			"to": [8, 1.0, 14],
+			"faces": {
+				"up": {
+					"uv": [14, 5, 15, 15],
+					"texture": "#birch_log"
+				},
+				"down": {
+					"uv": [14, 15, 15, 5],
+					"texture": "#birch_log"
+				},
+				"north": {
+					"uv": [14, 5, 15, 6],
+					"texture": "#birch_log"
+				},
+				"south": {
+					"uv": [14, 5, 15, 6],
+					"texture": "#birch_log"
+				},
+				"east": {
+					"uv": [5, 14, 15, 15],
+					"texture": "#birch_log"
+				},
+				"west": {
+					"uv": [5, 14, 15, 15],
+					"texture": "#birch_log"
+				}
+			}
+		},
+		{
+			"from": [13, 0.01, 4],
+			"to": [14, 1.01, 15],
+			"faces": {
+				"up": {
+					"uv": [15, 3, 16, 14],
+					"texture": "#spruce_log"
+				},
+				"down": {
+					"uv": [15, 14, 16, 3],
+					"texture": "#spruce_log"
+				},
+				"north": {
+					"uv": [15, 3, 16, 4],
+					"texture": "#spruce_log"
+				},
+				"south": {
+					"uv": [15, 3, 16, 4],
+					"texture": "#spruce_log"
+				},
+				"east": {
+					"uv": [3, 15, 14, 16],
+					"texture": "#spruce_log"
+				},
+				"west": {
+					"uv": [3, 15, 14, 16],
+					"texture": "#spruce_log"
+				}
+			},
+			"rotation": {
+				"origin": [13.5, 0.01, 9.5],
+				"axis": "y",
+				"angle": -45
+			}
+		},
+		{
+			"from": [3, 0.02, 2],
+			"to": [13, 1.02, 3],
+			"faces": {
+				"up": {
+					"uv": [1, 0, 11, 1],
+					"texture": "#jungle_log"
+				},
+				"down": {
+					"uv": [1, 1, 11, 0],
+					"texture": "#jungle_log"
+				},
+				"north": {
+					"uv": [1, 0, 11, 1],
+					"texture": "#jungle_log"
+				},
+				"south": {
+					"uv": [1, 0, 11, 1],
+					"texture": "#jungle_log"
+				},
+				"east": {
+					"uv": [0, 1, 1, 2],
+					"texture": "#jungle_log"
+				},
+				"west": {
+					"uv": [0, 1, 1, 2],
+					"texture": "#jungle_log"
+				}
+			},
+			"rotation": {
+				"origin": [8.0, 0.02, 2.5],
+				"axis": "y",
+				"angle": -45
+			}
+		}
+	]
+}

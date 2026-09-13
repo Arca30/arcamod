@@ -1,0 +1,20 @@
+{
+	"values": [
+		"arcamod:aged_thatch_block",
+		"arcamod:aged_thatch_block_slab",
+		"arcamod:aged_thatch_block_stairs",
+		"arcamod:gray_thatch_block",
+		"arcamod:gray_thatch_block_slab",
+		"arcamod:gray_thatch_block_stairs",
+		"arcamod:hay_block_slab",
+		"arcamod:hay_block_stairs",
+		"arcamod:moss_block_slab",
+		"arcamod:moss_block_stairs",
+		"arcamod:thatch_block",
+		"arcamod:thatch_block_slab",
+		"arcamod:thatch_block_stairs",
+		"arcamod:weathered_thatch_block",
+		"arcamod:weathered_thatch_block_slab",
+		"arcamod:weathered_thatch_block_stairs"
+	]
+}

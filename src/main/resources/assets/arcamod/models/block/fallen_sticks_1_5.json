@@ -1,0 +1,39 @@
+{
+	"ambientocclusion": false,
+	"textures": {
+		"birch_log": "minecraft:block/birch_log",
+		"particle": "minecraft:block/birch_log"
+	},
+	"elements": [
+		{
+			"from": [7, 0.0, 4],
+			"to": [8, 1.0, 14],
+			"faces": {
+				"up": {
+					"uv": [14, 5, 15, 15],
+					"texture": "#birch_log"
+				},
+				"down": {
+					"uv": [14, 15, 15, 5],
+					"texture": "#birch_log"
+				},
+				"north": {
+					"uv": [14, 5, 15, 6],
+					"texture": "#birch_log"
+				},
+				"south": {
+					"uv": [14, 5, 15, 6],
+					"texture": "#birch_log"
+				},
+				"east": {
+					"uv": [5, 14, 15, 15],
+					"texture": "#birch_log"
+				},
+				"west": {
+					"uv": [5, 14, 15, 15],
+					"texture": "#birch_log"
+				}
+			}
+		}
+	]
+}

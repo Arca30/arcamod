@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "misc",
+	"key": {
+		"G": "minecraft:gold_ingot",
+		"B": "minecraft:beetroot"
+	},
+	"pattern": [
+		" G ",
+		"GBG",
+		" G "
+	],
+	"result": {
+		"id": "arcamod:golden_beetroot"
+	}
+}

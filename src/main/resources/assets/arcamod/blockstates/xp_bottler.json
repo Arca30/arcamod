@@ -1,0 +1,28 @@
+{
+	"variants": {
+		"frame=0": {
+			"model": "arcamod:block/xp_bottler_frame0"
+		},
+		"frame=1": {
+			"model": "arcamod:block/xp_bottler_frame1"
+		},
+		"frame=2": {
+			"model": "arcamod:block/xp_bottler_frame2"
+		},
+		"frame=3": {
+			"model": "arcamod:block/xp_bottler_frame3"
+		},
+		"frame=4": {
+			"model": "arcamod:block/xp_bottler_frame4"
+		},
+		"frame=5": {
+			"model": "arcamod:block/xp_bottler_frame5"
+		},
+		"frame=6": {
+			"model": "arcamod:block/xp_bottler_frame6"
+		},
+		"frame=7": {
+			"model": "arcamod:block/xp_bottler_frame7"
+		}
+	}
+}

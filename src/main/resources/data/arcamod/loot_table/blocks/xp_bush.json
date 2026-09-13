@@ -1,0 +1,24 @@
+{
+	"type": "minecraft:block",
+	"pools": [
+		{
+			"rolls": 1.0,
+			"conditions": [
+				{
+					"condition": "minecraft:block_state_property",
+					"block": "arcamod:xp_bush",
+					"properties": {
+						"berries": "true"
+					}
+				}
+			],
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"name": "arcamod:xp_berry"
+				}
+			]
+		}
+	],
+	"random_sequence": "arcamod:blocks/xp_bush"
+}

@@ -1,0 +1,85 @@
+{
+	"type": "minecraft:block",
+	"pools": [
+		{
+			"rolls": 1.0,
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:stick",
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": 1.0,
+							"conditions": [
+								{
+									"condition": "minecraft:block_state_property",
+									"block": "arcamod:fallen_sticks",
+									"properties": {
+										"sticks": "1"
+									}
+								}
+							]
+						},
+						{
+							"function": "minecraft:set_count",
+							"count": 2.0,
+							"conditions": [
+								{
+									"condition": "minecraft:block_state_property",
+									"block": "arcamod:fallen_sticks",
+									"properties": {
+										"sticks": "2"
+									}
+								}
+							]
+						},
+						{
+							"function": "minecraft:set_count",
+							"count": 3.0,
+							"conditions": [
+								{
+									"condition": "minecraft:block_state_property",
+									"block": "arcamod:fallen_sticks",
+									"properties": {
+										"sticks": "3"
+									}
+								}
+							]
+						},
+						{
+							"function": "minecraft:set_count",
+							"count": 4.0,
+							"conditions": [
+								{
+									"condition": "minecraft:block_state_property",
+									"block": "arcamod:fallen_sticks",
+									"properties": {
+										"sticks": "4"
+									}
+								}
+							]
+						},
+						{
+							"function": "minecraft:set_count",
+							"count": 5.0,
+							"conditions": [
+								{
+									"condition": "minecraft:block_state_property",
+									"block": "arcamod:fallen_sticks",
+									"properties": {
+										"sticks": "5"
+									}
+								}
+							]
+						},
+						{
+							"function": "minecraft:explosion_decay"
+						}
+					]
+				}
+			]
+		}
+	],
+	"random_sequence": "arcamod:blocks/fallen_sticks"
+}

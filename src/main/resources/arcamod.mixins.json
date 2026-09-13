@@ -1,0 +1,25 @@
+{
+	"required": true,
+	"package": "dev.arca.arcamod.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"mixins": [
+		"ExampleMixin",
+		"AnvilMenuMixin",
+		"BeaconBlockEntityMixin",
+		"ItemInstanceMixin",
+		"ItemStackMixin",
+		"PotionBrewingMixin",
+		"ToolMaterialMixin",
+		"BlockStateBaseMixin",
+		"ItemFrameMixin",
+		"PlayerAccessor",
+		"AbstractArrowMixin",
+		"BedBlockMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}

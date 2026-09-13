@@ -1,0 +1,43 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_experience_bottle": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"items": "minecraft:experience_bottle"
+					}
+				]
+			}
+		},
+		"has_glow_berries": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"items": "minecraft:glow_berries"
+					}
+				]
+			}
+		},
+		"has_the_recipe": {
+			"trigger": "minecraft:recipe_unlocked",
+			"conditions": {
+				"recipe": "arcamod:xp_berry"
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_the_recipe",
+			"has_experience_bottle",
+			"has_glow_berries"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"arcamod:xp_berry"
+		]
+	}
+}

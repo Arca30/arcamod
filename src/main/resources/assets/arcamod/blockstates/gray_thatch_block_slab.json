@@ -1,0 +1,22 @@
+{
+	"variants": {
+		"type=bottom,waxed=false": {
+			"model": "arcamod:block/gray_thatch_block_slab"
+		},
+		"type=bottom,waxed=true": {
+			"model": "arcamod:block/gray_thatch_block_slab"
+		},
+		"type=double,waxed=false": {
+			"model": "arcamod:block/gray_thatch_block"
+		},
+		"type=double,waxed=true": {
+			"model": "arcamod:block/gray_thatch_block"
+		},
+		"type=top,waxed=false": {
+			"model": "arcamod:block/gray_thatch_block_slab_top"
+		},
+		"type=top,waxed=true": {
+			"model": "arcamod:block/gray_thatch_block_slab_top"
+		}
+	}
+}

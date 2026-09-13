@@ -1,0 +1,14 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "building",
+	"key": {
+		"#": "minecraft:yellow_terracotta"
+	},
+	"pattern": [
+		"###"
+	],
+	"result": {
+		"id": "arcamod:yellow_terracotta_slab",
+		"count": 6
+	}
+}

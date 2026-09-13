@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "misc",
+	"key": {
+		"B": "minecraft:chiseled_tuff_bricks",
+		"C": "minecraft:chiseled_tuff",
+		"R": "minecraft:redstone",
+		"X": "minecraft:sculk_catalyst"
+	},
+	"pattern": [
+		"BCB",
+		"CXC",
+		"BRB"
+	],
+	"result": {
+		"id": "arcamod:xp_bottler"
+	}
+}

@@ -1,0 +1,20 @@
+{
+	"type": "minecraft:block",
+	"pools": [
+		{
+			"rolls": 1.0,
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"name": "arcamod:weathered_thatch_block",
+					"functions": [
+						{
+							"function": "minecraft:explosion_decay"
+						}
+					]
+				}
+			]
+		}
+	],
+	"random_sequence": "arcamod:blocks/weathered_thatch_block"
+}

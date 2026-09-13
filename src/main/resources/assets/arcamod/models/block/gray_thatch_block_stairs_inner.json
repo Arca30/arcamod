@@ -1,0 +1,8 @@
+{
+	"parent": "minecraft:block/inner_stairs",
+	"textures": {
+		"bottom": "arcamod:block/gray_thatch_block_top",
+		"top": "arcamod:block/gray_thatch_block_top",
+		"side": "arcamod:block/gray_thatch_block_side"
+	}
+}

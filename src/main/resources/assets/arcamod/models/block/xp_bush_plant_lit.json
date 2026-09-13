@@ -1,0 +1,6 @@
+{
+	"parent": "minecraft:block/cross",
+	"textures": {
+		"cross": "arcamod:block/xp_bush_plant_lit"
+	}
+}

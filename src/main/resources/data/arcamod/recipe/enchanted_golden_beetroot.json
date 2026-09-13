@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "misc",
+	"key": {
+		"G": "minecraft:gold_block",
+		"B": "minecraft:beetroot"
+	},
+	"pattern": [
+		" G ",
+		"GBG",
+		" G "
+	],
+	"result": {
+		"id": "arcamod:enchanted_golden_beetroot"
+	}
+}
