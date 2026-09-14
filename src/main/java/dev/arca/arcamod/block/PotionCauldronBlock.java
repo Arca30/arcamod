@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 
 import dev.arca.arcamod.ArcaBalance;
 import dev.arca.arcamod.block.entity.PotionCauldronBlockEntity;
+import dev.arca.arcamod.config.ArcaFeature;
 import dev.arca.arcamod.registry.ModBlockEntities;
 
 import net.minecraft.core.BlockPos;
@@ -94,7 +95,8 @@ public class PotionCauldronBlock extends Block implements net.minecraft.world.le
 	public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(Level level, BlockState state,
 			BlockEntityType<T> type) {
 		if (level.isClientSide()) {
-			return null;
+			// Cote client : surveille que la couleur affichee est a jour.
+			return createTickerHelper(type, ModBlockEntities.POTION_CAULDRON, PotionCauldronBlockEntity::clientTick);
 		}
 
 		return createTickerHelper(type, ModBlockEntities.POTION_CAULDRON, PotionCauldronBlockEntity::serverTick);
@@ -113,7 +115,8 @@ public class PotionCauldronBlock extends Block implements net.minecraft.world.le
 	@Override
 	protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity,
 			InsideBlockEffectApplier applier, boolean movedByPiston) {
-		if (level.isClientSide() || !(entity instanceof LivingEntity living)) {
+		if (level.isClientSide() || !ArcaFeature.POTION_CAULDRON.isEnabled()
+				|| !(entity instanceof LivingEntity living)) {
 			return;
 		}
 

@@ -15,20 +15,26 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public class PotionCauldronTint implements BlockTintSource {
 
-	/** Couleur de repli (l'eau vanilla) quand le bloc n'est pas encore lu. */
-	private static final int DEFAULT_COLOUR = 0x3F76E4;
-
 	@Override
 	public int color(BlockState state) {
-		return DEFAULT_COLOUR;
+		return PotionCauldronBlockEntity.DEFAULT_COLOUR;
 	}
 
+	/**
+	 * Attention a la couleur : en 26.x la teinte est un ARGB qui multiplie
+	 * aussi l'alpha du liquide. Une couleur sans alpha (0x3F76E4) rend le
+	 * liquide invisible ; tintColour() renvoie donc toujours une couleur
+	 * opaque.
+	 */
 	@Override
 	public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
 		if (level.getBlockEntity(pos) instanceof PotionCauldronBlockEntity cauldron) {
-			return cauldron.contents().getColorOr(DEFAULT_COLOUR);
+			int colour = cauldron.tintColour();
+			cauldron.markRendered(colour);
+			return colour;
 		}
 
-		return DEFAULT_COLOUR;
+		PotionCauldronBlockEntity.debug("tint at {} found no block entity", pos);
+		return PotionCauldronBlockEntity.DEFAULT_COLOUR;
 	}
 }

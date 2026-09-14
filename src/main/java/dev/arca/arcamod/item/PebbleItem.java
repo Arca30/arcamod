@@ -1,6 +1,7 @@
 package dev.arca.arcamod.item;
 
 import dev.arca.arcamod.ArcaBalance;
+import dev.arca.arcamod.config.ArcaFeature;
 import dev.arca.arcamod.entity.ThrownPebble;
 
 import net.minecraft.core.Direction;
@@ -52,6 +53,10 @@ public class PebbleItem extends BlockItem implements ProjectileItem {
 	@Override
 	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
+
+		if (!ArcaFeature.PEBBLE_THROWING.isEnabled()) {
+			return InteractionResult.PASS;
+		}
 
 		level.playSound(null, player.getX(), player.getY(), player.getZ(),
 				SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL,

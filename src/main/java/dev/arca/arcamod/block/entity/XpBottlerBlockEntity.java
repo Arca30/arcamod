@@ -1,6 +1,8 @@
 package dev.arca.arcamod.block.entity;
 
+import dev.arca.arcamod.ArcaBalance;
 import dev.arca.arcamod.block.XpBottlerBlock;
+import dev.arca.arcamod.config.ArcaFeature;
 import dev.arca.arcamod.menu.XpBottlerMenu;
 import dev.arca.arcamod.registry.ModBlockEntities;
 import dev.arca.arcamod.util.PlayerXp;
@@ -42,36 +44,15 @@ import org.jspecify.annotations.Nullable;
  */
 public class XpBottlerBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer {
 
-	// =====================================================================
-	// REGLAGES
-	// =====================================================================
+	// Reglages : ArcaBalance.XP_BOTTLER_*. Interrupteur : ArcaFeature.XP_BOTTLER.
 
-	/** Rayon d'aspiration autour du bloc, en blocs. */
-	public static final double SIPHON_RADIUS = 3.0;
-
-	/** XP a prelever pour fabriquer une fiole (une fiole vanilla en rend ~7). */
-	public static final int XP_PER_BOTTLE = 8;
-
-	/** Vitesse, moitie 1 : delai entre deux prelevements, en ticks (20 = 1 s). */
-	public static final int SIPHON_INTERVAL_TICKS = 2;
-
-	/** Vitesse, moitie 2 : XP prelevee a chaque prelevement. */
-	public static final int XP_PER_SIPHON = 3;
-
-	/**
-	 * Fatigue infligee au joueur par fiole produite. Dans Minecraft, 4.0
-	 * d'exhaustion = 1 point de saturation = un demi gigot. On l'applique au
-	 * fur et a mesure du siphonnage, proportionnellement a l'XP prise.
-	 */
-	public static final float EXHAUSTION_PER_BOTTLE = 4.0F;
+	/** XP a prelever pour fabriquer une fiole. */
+	public static final int XP_PER_BOTTLE = Math.max(1, ArcaBalance.XP_BOTTLER_XP_PER_BOTTLE);
 
 	/** Derniere image de l'animation du dessus (les textures vont de 0 a 7). */
 	public static final int MAX_FRAME = 7;
 
-	/** Duree d'affichage d'une image, en ticks. Plus petit = animation rapide. */
-	public static final int TICKS_PER_FRAME = 2;
-
-	/** Un souffle de particules tous les N ticks (plus grand = plus discret). */
+	/** Un souffle de particules tous les N ticks. */
 	private static final int PARTICLE_INTERVAL_TICKS = 4;
 
 	/** Nombre de points visibles en meme temps sur le trajet joueur -> bloc. */
@@ -79,8 +60,6 @@ public class XpBottlerBlockEntity extends BaseContainerBlockEntity implements Wo
 
 	/** Duree d'un aller du joueur vers le bloc, en ticks. */
 	private static final int PARTICLE_CYCLE_TICKS = 60;
-
-	// =====================================================================
 
 	public static final int SLOT_INPUT = 0;
 	public static final int SLOT_OUTPUT = 1;
@@ -131,7 +110,7 @@ public class XpBottlerBlockEntity extends BaseContainerBlockEntity implements Wo
 	// =====================================================================
 
 	public static void serverTick(Level level, BlockPos pos, BlockState state, XpBottlerBlockEntity bottler) {
-		boolean ready = bottler.canWork(level, pos);
+		boolean ready = ArcaFeature.XP_BOTTLER.isEnabled() && bottler.canWork(level, pos);
 
 		// La machine n'est vraiment "active" que si elle a quelqu'un a siphonner :
 		// l'animation doit donc repartir en arriere des que le joueur s'eloigne,
@@ -155,12 +134,12 @@ public class XpBottlerBlockEntity extends BaseContainerBlockEntity implements Wo
 		if (!active) {
 			bottler.siphonTimer = 0;
 		} else {
-			if (level instanceof ServerLevel serverLevel
+			if (ArcaBalance.XP_BOTTLER_PARTICLES && level instanceof ServerLevel serverLevel
 					&& level.getGameTime() % PARTICLE_INTERVAL_TICKS == 0) {
 				bottler.emitSiphonTrail(serverLevel, pos, target);
 			}
 
-			if (++bottler.siphonTimer >= SIPHON_INTERVAL_TICKS) {
+			if (++bottler.siphonTimer >= ArcaBalance.XP_BOTTLER_SIPHON_INTERVAL_TICKS) {
 				bottler.siphonTimer = 0;
 				if (bottler.siphonFrom(target)) {
 					changed = true;
@@ -190,7 +169,7 @@ public class XpBottlerBlockEntity extends BaseContainerBlockEntity implements Wo
 			return;
 		}
 
-		if (++this.frameTimer < TICKS_PER_FRAME) {
+		if (++this.frameTimer < ArcaBalance.XP_BOTTLER_TICKS_PER_FRAME) {
 			return;
 		}
 		this.frameTimer = 0;
@@ -216,7 +195,7 @@ public class XpBottlerBlockEntity extends BaseContainerBlockEntity implements Wo
 	/** Joueur le plus proche, dans le rayon, non spectateur et avec de l'XP. */
 	private @Nullable Player findTargetPlayer(Level level, BlockPos pos) {
 		Vec3 center = Vec3.atCenterOf(pos);
-		return level.getNearestPlayer(center.x, center.y, center.z, SIPHON_RADIUS,
+		return level.getNearestPlayer(center.x, center.y, center.z, ArcaBalance.XP_BOTTLER_RADIUS,
 				entity -> entity instanceof Player candidate
 						&& !candidate.isSpectator()
 						&& PlayerXp.getTotal(candidate) > 0);
@@ -226,7 +205,7 @@ public class XpBottlerBlockEntity extends BaseContainerBlockEntity implements Wo
 	private boolean siphonFrom(Player player) {
 		// On ne prend jamais plus que ce qu'il reste a remplir, ni plus que ce
 		// que le joueur possede.
-		int amount = Math.min(XP_PER_SIPHON,
+		int amount = Math.min(ArcaBalance.XP_BOTTLER_XP_PER_SIPHON,
 				Math.min(PlayerXp.getTotal(player), XP_PER_BOTTLE - this.bufferedXp));
 		if (amount <= 0) {
 			return false;
@@ -236,8 +215,8 @@ public class XpBottlerBlockEntity extends BaseContainerBlockEntity implements Wo
 		this.bufferedXp += amount;
 
 		// La fatigue est proportionnelle : sur une fiole entiere, le joueur aura
-		// bien paye EXHAUSTION_PER_BOTTLE au total.
-		player.causeFoodExhaustion(EXHAUSTION_PER_BOTTLE * amount / XP_PER_BOTTLE);
+		// bien paye XP_BOTTLER_EXHAUSTION_PER_BOTTLE au total.
+		player.causeFoodExhaustion(ArcaBalance.XP_BOTTLER_EXHAUSTION_PER_BOTTLE * amount / XP_PER_BOTTLE);
 		return true;
 	}
 
@@ -253,11 +232,11 @@ public class XpBottlerBlockEntity extends BaseContainerBlockEntity implements Wo
 		Vec3 source = new Vec3(player.getX(), player.getY() + player.getBbHeight() * 0.5, player.getZ());
 		float phase = level.getGameTime() % PARTICLE_CYCLE_TICKS / (float) PARTICLE_CYCLE_TICKS;
 
-		/*for (int i = 0; i < PARTICLE_TRAIL_COUNT; i++) {
+		for (int i = 0; i < PARTICLE_TRAIL_COUNT; i++) {
 			float progress = (phase + i / (float) PARTICLE_TRAIL_COUNT) % 1.0F;
 			Vec3 at = source.lerp(target, progress);
 			level.sendParticles(ParticleTypes.ENCHANT, at.x, at.y, at.z, 1, 0.02, 0.02, 0.02, 0.0);
-		}*/
+		}
 	}
 
 	/** @return true si une fiole vient d'etre fabriquee. */

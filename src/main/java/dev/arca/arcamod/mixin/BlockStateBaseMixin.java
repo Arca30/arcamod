@@ -1,5 +1,6 @@
 package dev.arca.arcamod.mixin;
 
+import dev.arca.arcamod.config.ArcaFeature;
 import dev.arca.arcamod.registry.ModTags;
 
 import net.minecraft.core.Holder;
@@ -31,7 +32,7 @@ public abstract class BlockStateBaseMixin {
 
 	@Inject(method = "requiresCorrectToolForDrops", at = @At("HEAD"), cancellable = true)
 	private void arcamod$requireToolForDrops(CallbackInfoReturnable<Boolean> cir) {
-		if (this.typeHolder().is(ModTags.REQUIRES_TOOL_FOR_DROPS)) {
+		if (ArcaFeature.LOGS_REQUIRE_TOOL.isEnabled() && this.typeHolder().is(ModTags.REQUIRES_TOOL_FOR_DROPS)) {
 			cir.setReturnValue(true);
 		}
 	}

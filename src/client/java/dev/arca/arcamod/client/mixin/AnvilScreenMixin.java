@@ -1,5 +1,7 @@
 package dev.arca.arcamod.client.mixin;
 
+import dev.arca.arcamod.config.ArcaFeature;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -26,6 +28,6 @@ public class AnvilScreenMixin {
 					value = "INVOKE",
 					target = "Lnet/minecraft/client/player/LocalPlayer;hasInfiniteMaterials()Z"))
 	private boolean arcamod$hideTooExpensiveLabel(LocalPlayer player) {
-		return true;
+		return ArcaFeature.ANVIL_NO_COST_LIMIT.isEnabled() || player.hasInfiniteMaterials();
 	}
 }

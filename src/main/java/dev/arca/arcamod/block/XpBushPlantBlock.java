@@ -2,6 +2,7 @@ package dev.arca.arcamod.block;
 
 import com.mojang.serialization.MapCodec;
 
+import dev.arca.arcamod.ArcaBalance;
 import dev.arca.arcamod.registry.ModBlocks;
 import dev.arca.arcamod.registry.ModItems;
 
@@ -27,7 +28,7 @@ import net.minecraft.world.phys.BlockHitResult;
 /**
  * Corps du buisson d'XP : tous les segments sous la tete.
  *
- * Il ne pousse pas (pas de randomTicks dans ses Properties) mais il peut
+ * Il ne pousse pas (seule la tete monte) mais il peut
  * porter des baies, eclairer et etre recolte. Si la tete au-dessus disparait,
  * le segment le plus haut se transforme automatiquement en tete
  * (GrowingPlantBodyBlock.updateShape s'en charge).
@@ -99,7 +100,7 @@ public class XpBushPlantBlock extends GrowingPlantBodyBlock implements XpVines {
 
 	@Override
 	public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
-		if (XpVines.BONEMEAL_SPAWNS_BERRIES && !state.getValue(BERRIES)) {
+		if (ArcaBalance.XP_BUSH_BONEMEAL_SPAWNS_BERRIES && !state.getValue(BERRIES)) {
 			return true;
 		}
 
@@ -117,7 +118,7 @@ public class XpBushPlantBlock extends GrowingPlantBodyBlock implements XpVines {
 
 	@Override
 	public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-		if (XpVines.BONEMEAL_SPAWNS_BERRIES && !state.getValue(BERRIES)) {
+		if (ArcaBalance.XP_BUSH_BONEMEAL_SPAWNS_BERRIES && !state.getValue(BERRIES)) {
 			XpVines.growBerries(level, pos, state);
 			return;
 		}

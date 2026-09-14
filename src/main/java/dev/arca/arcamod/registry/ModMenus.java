@@ -2,6 +2,8 @@ package dev.arca.arcamod.registry;
 
 import dev.arca.arcamod.ArcaMod;
 import dev.arca.arcamod.menu.DisenchanterMenu;
+import dev.arca.arcamod.menu.FletchingMenu;
+import dev.arca.arcamod.menu.QuiverMenu;
 import dev.arca.arcamod.menu.XpBottlerMenu;
 
 import net.minecraft.core.Registry;
@@ -28,6 +30,17 @@ public final class ModMenus {
 			BuiltInRegistries.MENU,
 			ArcaMod.id("disenchanter"),
 			new MenuType<>(DisenchanterMenu::new, FeatureFlags.VANILLA_SET));
+
+	public static final MenuType<QuiverMenu> QUIVER = Registry.register(
+			BuiltInRegistries.MENU,
+			ArcaMod.id("quiver"),
+			new MenuType<>(QuiverMenu::new, FeatureFlags.VANILLA_SET));
+
+	/** Table d'archerie vanilla : pas de BlockEntity, les objets sont rendus a la fermeture. */
+	public static final MenuType<FletchingMenu> FLETCHING_TABLE = Registry.register(
+			BuiltInRegistries.MENU,
+			ArcaMod.id("fletching_table"),
+			new MenuType<>(FletchingMenu::new, FeatureFlags.VANILLA_SET));
 
 	public static void init() {
 	}

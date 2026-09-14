@@ -58,6 +58,9 @@ public final class ModDecorBlocks {
 	private static List<String> buildVanillaBases() {
 		List<String> bases = new ArrayList<>();
 
+		// La terre cuite "classique", sans couleur, avant les seize teintes.
+		bases.add("terracotta");
+
 		for (String colour : DYE_COLORS) {
 			bases.add(colour + "_terracotta");
 			bases.add(colour + "_concrete_powder");

@@ -1,5 +1,8 @@
 package dev.arca.arcamod.registry;
 
+import dev.arca.arcamod.ArcaBalance;
+import dev.arca.arcamod.config.ArcaFeature;
+
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 
 import net.minecraft.advancements.predicates.ItemPredicate;
@@ -47,32 +50,13 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
  *    function  une retouche de l'objet obtenu : quantite, enchantement,
  *              nom personnalise...
  *
- * Chaque exemple ci-dessous a son interrupteur : passe-le a false pour le
- * desactiver sans supprimer le code.
+ * Chaque exemple ci-dessous a son interrupteur dans ArcaFeature (menu
+ * Options > ArcaMod). Effet au prochain chargement du monde.
  */
 public final class ModExampleLoot {
 
-	// =====================================================================
-	// INTERRUPTEURS
-	// =====================================================================
-
-	public static final boolean ENABLE_MOB_DROP_EXAMPLE = true;
-	public static final boolean ENABLE_BLOCK_DROP_EXAMPLE = true;
-	public static final boolean ENABLE_CHEST_LOOT_EXAMPLE = true;
-
-	// =====================================================================
-	// REGLAGES DES EXEMPLES
-	// =====================================================================
-
-	/** Chance qu'un zombie tue par un joueur lache une petite pierre. */
-	public static final float ZOMBIE_PEBBLE_CHANCE = 0.25F;
-
-	/** Chance qu'un bloc de gravier casse a la pelle lache une fibre. */
-	public static final float GRAVEL_FIBER_CHANCE = 0.10F;
-
-	/** Nombre de cailloux ajoutes dans les coffres de village. */
-	public static final float CHEST_PEBBLES_MIN = 2.0F;
-	public static final float CHEST_PEBBLES_MAX = 5.0F;
+	// Interrupteurs : ArcaFeature.ZOMBIE_PEBBLE_DROPS, GRAVEL_FIBER_DROPS et
+	// VILLAGE_CHEST_PEBBLES. Chances et quantites : ArcaBalance, section 20.
 
 	// =====================================================================
 	// LES TABLES VISEES
@@ -108,11 +92,11 @@ public final class ModExampleLoot {
 			// -----------------------------------------------------------
 			// EXEMPLE 1 : ajouter un butin a un MOB
 			// -----------------------------------------------------------
-			if (ENABLE_MOB_DROP_EXAMPLE && key.equals(ZOMBIE)) {
+			if (ArcaFeature.ZOMBIE_PEBBLE_DROPS.isEnabled() && key.equals(ZOMBIE)) {
 				builder.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1.0F))
 						// une chance sur quatre...
-						.when(LootItemRandomChanceCondition.randomChance(ZOMBIE_PEBBLE_CHANCE))
+						.when(LootItemRandomChanceCondition.randomChance(ArcaBalance.ZOMBIE_PEBBLE_CHANCE))
 						// ...et seulement si c'est un joueur qui a tue : sans
 						// ca, les zombies qui brulent au soleil deviennent une
 						// ferme a ressources.
@@ -127,10 +111,10 @@ public final class ModExampleLoot {
 			// -----------------------------------------------------------
 			// EXEMPLE 2 : ajouter un butin a un BLOC vanilla
 			// -----------------------------------------------------------
-			if (ENABLE_BLOCK_DROP_EXAMPLE && key.equals(GRAVEL)) {
+			if (ArcaFeature.GRAVEL_FIBER_DROPS.isEnabled() && key.equals(GRAVEL)) {
 				builder.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1.0F))
-						.when(LootItemRandomChanceCondition.randomChance(GRAVEL_FIBER_CHANCE))
+						.when(LootItemRandomChanceCondition.randomChance(ArcaBalance.GRAVEL_FIBER_CHANCE))
 						// Filtre sur l'outil employe. Variante utile :
 						// ItemPredicate.Builder.item().of(lookup, ItemTags.SHOVELS)
 						// pour accepter toute une famille d'outils.
@@ -142,12 +126,12 @@ public final class ModExampleLoot {
 			// -----------------------------------------------------------
 			// EXEMPLE 3 : garnir un COFFRE genere
 			// -----------------------------------------------------------
-			if (ENABLE_CHEST_LOOT_EXAMPLE && key.equals(VILLAGE_HOUSE)) {
+			if (ArcaFeature.VILLAGE_CHEST_PEBBLES.isEnabled() && key.equals(VILLAGE_HOUSE)) {
 				builder.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1.0F))
 						.add(LootItem.lootTableItem(ModItems.PEBBLE)
 								.apply(SetItemCountFunction.setCount(
-										UniformGenerator.between(CHEST_PEBBLES_MIN, CHEST_PEBBLES_MAX)))));
+										UniformGenerator.between(ArcaBalance.VILLAGE_CHEST_PEBBLES_MIN, ArcaBalance.VILLAGE_CHEST_PEBBLES_MAX)))));
 			}
 		});
 

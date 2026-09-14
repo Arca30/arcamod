@@ -3,7 +3,9 @@ package dev.arca.arcamod.block;
 import com.mojang.serialization.MapCodec;
 
 import dev.arca.arcamod.ArcaBalance;
+import dev.arca.arcamod.config.ArcaFeature;
 import dev.arca.arcamod.mixin.PlayerAccessor;
+import dev.arca.arcamod.registry.ModItems;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -15,6 +17,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -84,6 +87,12 @@ public class EnchantingCrystalBlock extends Block {
 				: super.updateShape(state, level, ticks, pos, direction, neighbourPos, neighbourState, random);
 	}
 
+	/** Clic molette en creatif : on recupere la version qui correspond a l'etat. */
+	@Override
+	protected ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
+		return new ItemStack(state.getValue(CHARGED) ? ModItems.CHARGED_ENCHANTING_CRYSTAL : ModItems.ENCHANTING_CRYSTAL);
+	}
+
 	/** Charge le cristal s'il ne l'est pas deja. Renvoie false sinon. */
 	public static boolean charge(LevelAccessor level, BlockPos pos) {
 		BlockState state = level.getBlockState(pos);
@@ -100,6 +109,10 @@ public class EnchantingCrystalBlock extends Block {
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player,
 			BlockHitResult hit) {
+		if (!ArcaFeature.ENCHANTING_CRYSTAL.isEnabled()) {
+			return InteractionResult.PASS;
+		}
+
 		if (!state.getValue(CHARGED)) {
 			if (!level.isClientSide()) {
 				player.sendSystemMessage(Component.translatable("message.arcamod.crystal_not_charged")

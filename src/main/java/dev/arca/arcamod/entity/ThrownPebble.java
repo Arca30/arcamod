@@ -35,9 +35,6 @@ import net.minecraft.world.phys.HitResult;
  */
 public class ThrownPebble extends ThrowableItemProjectile {
 
-	/** Nombre d'essais de repositionnement autour d'un mob touche. */
-	private static final int SCATTER_ATTEMPTS = 24;
-
 	public ThrownPebble(EntityType<? extends ThrownPebble> type, Level level) {
 		super(type, level);
 	}
@@ -140,7 +137,7 @@ public class ThrownPebble extends ThrowableItemProjectile {
 
 		PebblesBlock pebbles = ModBlocks.PEBBLES;
 
-		for (int attempt = 0; attempt < SCATTER_ATTEMPTS; attempt++) {
+		for (int attempt = 0; attempt < ArcaBalance.PEBBLE_MOB_SCATTER_ATTEMPTS; attempt++) {
 			BlockPos candidate = center.offset(
 					this.random.nextInt(radius * 2 + 1) - radius,
 					this.random.nextInt(radius + 1) - radius / 2,

@@ -2,6 +2,7 @@ package dev.arca.arcamod.block;
 
 import com.mojang.serialization.MapCodec;
 
+import dev.arca.arcamod.ArcaBalance;
 import dev.arca.arcamod.registry.ModBlocks;
 import dev.arca.arcamod.registry.ModItems;
 
@@ -34,24 +35,10 @@ import net.minecraft.world.phys.BlockHitResult;
  */
 public class XpBushBlock extends GrowingPlantHeadBlock implements XpVines {
 
-	// ---------------------------------------------------------------------
-	// Reglages
-	// ---------------------------------------------------------------------
+	// Tous les reglages de la plante : ArcaBalance.XP_BUSH_*.
 
-	/** Taille finale de la plante, tiree au hasard entre ces deux valeurs. */
-	public static final int MIN_HEIGHT = 4;
-	public static final int MAX_HEIGHT = 7;
-
-	/** Probabilite de pousser d'un bloc a chaque random tick (0.1 = vanilla). */
-	private static final double GROW_PER_TICK_PROBABILITY = 0.1;
-
-	/** Probabilite qu'un nouveau segment naisse avec des baies (0.11 = vanilla). */
-	private static final float CHANCE_OF_BERRIES_ON_GROWTH = 0.05F;
-
-	// Les reglages communs a la tete et au corps (repousse des baies, effets de
-	// la poudre d'os) sont dans XpVines : un seul endroit a modifier.
-
-	// ---------------------------------------------------------------------
+	private static final int MIN_HEIGHT = ArcaBalance.XP_BUSH_MIN_HEIGHT;
+	private static final int MAX_HEIGHT = Math.max(ArcaBalance.XP_BUSH_MIN_HEIGHT + 1, ArcaBalance.XP_BUSH_MAX_HEIGHT);
 
 	/**
 	 * Taille max tiree a la plantation et conservee dans l'etat du bloc : c'est
@@ -64,7 +51,7 @@ public class XpBushBlock extends GrowingPlantHeadBlock implements XpVines {
 
 	public XpBushBlock(BlockBehaviour.Properties properties) {
 		// Direction.UP = sens de croissance. false = pas de tick de fluide.
-		super(properties, Direction.UP, SHAPE, false, GROW_PER_TICK_PROBABILITY);
+		super(properties, Direction.UP, SHAPE, false, ArcaBalance.XP_BUSH_GROW_CHANCE);
 		registerDefaultState(stateDefinition.any()
 				.setValue(AGE, 0)
 				.setValue(BERRIES, false)
@@ -153,7 +140,7 @@ public class XpBushBlock extends GrowingPlantHeadBlock implements XpVines {
 	@Override
 	protected BlockState getGrowIntoState(BlockState growFromState, RandomSource random) {
 		return super.getGrowIntoState(growFromState, random)
-				.setValue(BERRIES, random.nextFloat() < CHANCE_OF_BERRIES_ON_GROWTH);
+				.setValue(BERRIES, random.nextFloat() < ArcaBalance.XP_BUSH_BERRIES_ON_GROWTH_CHANCE);
 	}
 
 	/** Etat du segment laisse derriere quand la tete monte d'un bloc. */
@@ -193,13 +180,13 @@ public class XpBushBlock extends GrowingPlantHeadBlock implements XpVines {
 	}
 
 	// ---------------------------------------------------------------------
-	// Poudre d'os : pilotee par les deux interrupteurs de XpVines.
+	// Poudre d'os : pilotee par ArcaBalance.XP_BUSH_BONEMEAL_*.
 	// ---------------------------------------------------------------------
 
 	@Override
 	public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
-		boolean canSpawnBerry = XpVines.BONEMEAL_SPAWNS_BERRIES && !state.getValue(BERRIES);
-		boolean canGrow = XpVines.BONEMEAL_GROWS_PLANT && hasRoomToGrow(level, pos, state.getValue(HEIGHT_LIMIT));
+		boolean canSpawnBerry = ArcaBalance.XP_BUSH_BONEMEAL_SPAWNS_BERRIES && !state.getValue(BERRIES);
+		boolean canGrow = ArcaBalance.XP_BUSH_BONEMEAL_GROWS_PLANT && hasRoomToGrow(level, pos, state.getValue(HEIGHT_LIMIT));
 		return canSpawnBerry || canGrow;
 	}
 
@@ -211,12 +198,12 @@ public class XpBushBlock extends GrowingPlantHeadBlock implements XpVines {
 	@Override
 	public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
 		// Priorite a la baie : si le segment est vide et que c'est autorise, on pose une baie.
-		if (XpVines.BONEMEAL_SPAWNS_BERRIES && !state.getValue(BERRIES)) {
+		if (ArcaBalance.XP_BUSH_BONEMEAL_SPAWNS_BERRIES && !state.getValue(BERRIES)) {
 			XpVines.growBerries(level, pos, state);
 			return;
 		}
 
-		if (!XpVines.BONEMEAL_GROWS_PLANT || !hasRoomToGrow(level, pos, state.getValue(HEIGHT_LIMIT))) {
+		if (!ArcaBalance.XP_BUSH_BONEMEAL_GROWS_PLANT || !hasRoomToGrow(level, pos, state.getValue(HEIGHT_LIMIT))) {
 			return;
 		}
 

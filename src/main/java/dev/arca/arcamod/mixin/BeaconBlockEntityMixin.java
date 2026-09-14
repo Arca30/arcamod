@@ -2,8 +2,10 @@ package dev.arca.arcamod.mixin;
 
 import java.util.Objects;
 
+import dev.arca.arcamod.ArcaBalance;
+import dev.arca.arcamod.config.ArcaFeature;
+
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -21,16 +23,13 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * Un bloc de netherite pose directement sous une balise etend sa portee de
- * 1000 blocs.
+ * ArcaBalance.BEACON_NETHERITE_BONUS_RANGE blocs (1000 par defaut).
  *
  * La netherite fait deja partie des blocs de base acceptes par une balise :
  * poser ce bloc juste sous elle est donc un enchainement naturel.
  */
 @Mixin(BeaconBlockEntity.class)
 public class BeaconBlockEntityMixin {
-
-	@Unique
-	private static final double ARCAMOD_BONUS_RANGE = 1000.0;
 
 	/**
 	 * On remplace entierement applyEffects() quand la netherite est presente.
@@ -46,14 +45,14 @@ public class BeaconBlockEntityMixin {
 	private static void arcamod$netheriteRange(Level level, BlockPos worldPosition, int levels,
 			@Nullable Holder<MobEffect> primaryPower, @Nullable Holder<MobEffect> secondaryPower, CallbackInfo ci) {
 
-		if (level.isClientSide() || primaryPower == null) {
+		if (level.isClientSide() || primaryPower == null || !ArcaFeature.BEACON_NETHERITE_RANGE.isEnabled()) {
 			return;
 		}
 		if (!level.getBlockState(worldPosition.below()).is(Blocks.NETHERITE_BLOCK)) {
 			return; // pas de netherite : comportement vanilla
 		}
 
-		double range = levels * 10 + 10 + ARCAMOD_BONUS_RANGE;
+		double range = levels * 10 + 10 + ArcaBalance.BEACON_NETHERITE_BONUS_RANGE;
 		double rangeSq = range * range;
 		int amplifier = levels >= 4 && Objects.equals(primaryPower, secondaryPower) ? 1 : 0;
 		int durationTicks = (9 + levels * 2) * 20;

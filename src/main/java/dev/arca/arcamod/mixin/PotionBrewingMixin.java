@@ -5,6 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import dev.arca.arcamod.config.ArcaFeature;
 import dev.arca.arcamod.registry.ModItems;
 
 import net.minecraft.core.component.DataComponents;
@@ -32,7 +33,7 @@ public class PotionBrewingMixin {
 	/** Accepte la baie dans le slot du haut (l'ingredient). */
 	@Inject(method = "isIngredient", at = @At("HEAD"), cancellable = true)
 	private void arcamod$acceptXpBerryAsIngredient(ItemStack ingredient, CallbackInfoReturnable<Boolean> cir) {
-		if (ingredient.is(ModItems.XP_BERRY)) {
+		if (ArcaFeature.XP_BERRY_BREWING.isEnabled() && ingredient.is(ModItems.XP_BERRY)) {
 			cir.setReturnValue(true);
 		}
 	}
@@ -40,7 +41,7 @@ public class PotionBrewingMixin {
 	/** Declare que "bouteille d'eau + baie" est une combinaison brassable. */
 	@Inject(method = "hasMix", at = @At("HEAD"), cancellable = true)
 	private void arcamod$allowWaterBottleMix(ItemStack source, ItemStack ingredient, CallbackInfoReturnable<Boolean> cir) {
-		if (ingredient.is(ModItems.XP_BERRY) && isWaterBottle(source)) {
+		if (ArcaFeature.XP_BERRY_BREWING.isEnabled() && ingredient.is(ModItems.XP_BERRY) && isWaterBottle(source)) {
 			cir.setReturnValue(true);
 		}
 	}
@@ -48,7 +49,7 @@ public class PotionBrewingMixin {
 	/** Produit le resultat : une fiole d'XP vanilla, sans aucun component. */
 	@Inject(method = "mix", at = @At("HEAD"), cancellable = true)
 	private void arcamod$mixIntoExperienceBottle(ItemStack ingredient, ItemStack source, CallbackInfoReturnable<ItemStack> cir) {
-		if (ingredient.is(ModItems.XP_BERRY) && isWaterBottle(source)) {
+		if (ArcaFeature.XP_BERRY_BREWING.isEnabled() && ingredient.is(ModItems.XP_BERRY) && isWaterBottle(source)) {
 			cir.setReturnValue(new ItemStack(Items.EXPERIENCE_BOTTLE));
 		}
 	}

@@ -1,5 +1,7 @@
 package dev.arca.arcamod.mixin;
 
+import dev.arca.arcamod.config.ArcaFeature;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -38,6 +40,10 @@ public class AnvilMenuMixin {
 					target = "Lnet/minecraft/world/entity/player/Player;hasInfiniteMaterials()Z",
 					ordinal = 1))
 	private boolean arcamod$removeCostLimit(Player player) {
+		if (!ArcaFeature.ANVIL_NO_COST_LIMIT.isEnabled()) {
+			return player.hasInfiniteMaterials();
+		}
+
 		AnvilMenu self = (AnvilMenu) (Object) this;
 
 		// Garde-fou : le mod rend les outils neufs empilables. Sans ce test, on

@@ -25,7 +25,8 @@ DYE_COLORS = ["white", "orange", "magenta", "light_blue", "yellow", "lime", "pin
               "light_gray", "cyan", "purple", "blue", "brown", "green", "red", "black"]
 
 # Les blocs vanilla qui recoivent escaliers et dalles.
-VANILLA_BASES = ([c + "_terracotta" for c in DYE_COLORS]
+VANILLA_BASES = (["terracotta"]
+                 + [c + "_terracotta" for c in DYE_COLORS]
                  + [c + "_concrete_powder" for c in DYE_COLORS]
                  + ["moss_block", "hay_block"])
 
@@ -192,7 +193,7 @@ FRENCH_COLOURS = {
     "brown": "brune", "green": "verte", "red": "rouge", "black": "noire",
 }
 
-FRENCH = {}
+FRENCH = {"terracotta": "terre cuite"}
 for colour, french in FRENCH_COLOURS.items():
     FRENCH[colour + "_terracotta"] = f"terre cuite {french}"
     FRENCH[colour + "_concrete_powder"] = f"poudre de beton {french}"

@@ -41,6 +41,22 @@ public final class ModTags {
 	public static final TagKey<Item> FLINT_TOOL_MATERIALS =
 			TagKey.create(Registries.ITEM, ArcaMod.id("flint_tool_materials"));
 
+	/**
+	 * Les blocs sur lesquels on peut s'asseoir pres d'un feu de camp (main
+	 * vide, clic droit sur le dessus). Uniquement des blocs sans interaction
+	 * propre : un clic droit sur un coffre doit toujours l'ouvrir.
+	 */
+	public static final TagKey<Block> CAMPFIRE_SEATS =
+			TagKey.create(Registries.BLOCK, ArcaMod.id("campfire_seats"));
+
+	/** Blocs que traverse une fleche a corps en os (defaut : les feuilles). */
+	public static final TagKey<Block> BONE_ARROW_PASSES_THROUGH =
+			TagKey.create(Registries.BLOCK, ArcaMod.id("bone_arrow_passes_through"));
+
+	/** Blocs que brise une fleche a corps en os (defaut : verre et vitres). */
+	public static final TagKey<Block> BONE_ARROW_BREAKS =
+			TagKey.create(Registries.BLOCK, ArcaMod.id("bone_arrow_breaks"));
+
 	private ModTags() {
 	}
 }

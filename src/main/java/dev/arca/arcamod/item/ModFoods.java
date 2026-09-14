@@ -1,5 +1,7 @@
 package dev.arca.arcamod.item;
 
+import dev.arca.arcamod.ArcaBalance;
+
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -18,40 +20,36 @@ import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
  */
 public final class ModFoods {
 
-	// ---- reglages -------------------------------------------------------
-
-	private static final int MINUTE = 60 * 20; // en ticks
-
-	public static final int HASTE_DURATION = 3 * MINUTE;
-	public static final int HASTE_AMPLIFIER = 0; // 0 = Celerite I
-
-	public static final int ENCHANTED_HASTE_DURATION = 8 * MINUTE;
-	public static final int ENCHANTED_HASTE_AMPLIFIER = 1; // 1 = Celerite II
+	// Reglages : ArcaBalance.GOLDEN_BEETROOT_* et ENCHANTED_GOLDEN_BEETROOT_*.
 
 	// ---- betterave doree ------------------------------------------------
 
 	public static final FoodProperties GOLDEN_BEETROOT = new FoodProperties.Builder()
-			.nutrition(4)
-			.saturationModifier(0.6F)
+			.nutrition(ArcaBalance.GOLDEN_BEETROOT_NUTRITION)
+			.saturationModifier(ArcaBalance.GOLDEN_BEETROOT_SATURATION)
 			.alwaysEdible() // mangeable meme le ventre plein, comme la pomme doree
 			.build();
 
 	public static final Consumable GOLDEN_BEETROOT_CONSUMABLE = Consumables.defaultFood()
 			.onConsume(new ApplyStatusEffectsConsumeEffect(
-					new MobEffectInstance(MobEffects.HASTE, HASTE_DURATION, HASTE_AMPLIFIER)))
+					new MobEffectInstance(MobEffects.HASTE,
+							ArcaBalance.seconds(ArcaBalance.GOLDEN_BEETROOT_HASTE_SECONDS),
+							ArcaBalance.GOLDEN_BEETROOT_HASTE_LEVEL)))
 			.build();
 
 	// ---- betterave doree enchantee --------------------------------------
 
 	public static final FoodProperties ENCHANTED_GOLDEN_BEETROOT = new FoodProperties.Builder()
-			.nutrition(4)
-			.saturationModifier(1.2F)
+			.nutrition(ArcaBalance.ENCHANTED_GOLDEN_BEETROOT_NUTRITION)
+			.saturationModifier(ArcaBalance.ENCHANTED_GOLDEN_BEETROOT_SATURATION)
 			.alwaysEdible()
 			.build();
 
 	public static final Consumable ENCHANTED_GOLDEN_BEETROOT_CONSUMABLE = Consumables.defaultFood()
 			.onConsume(new ApplyStatusEffectsConsumeEffect(
-					new MobEffectInstance(MobEffects.HASTE, ENCHANTED_HASTE_DURATION, ENCHANTED_HASTE_AMPLIFIER)))
+					new MobEffectInstance(MobEffects.HASTE,
+							ArcaBalance.seconds(ArcaBalance.ENCHANTED_GOLDEN_BEETROOT_HASTE_SECONDS),
+							ArcaBalance.ENCHANTED_GOLDEN_BEETROOT_HASTE_LEVEL)))
 			.build();
 
 	private ModFoods() {

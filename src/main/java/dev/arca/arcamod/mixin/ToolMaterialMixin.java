@@ -2,6 +2,7 @@ package dev.arca.arcamod.mixin;
 
 import dev.arca.arcamod.ArcaBalance;
 import dev.arca.arcamod.ArcaMod;
+import dev.arca.arcamod.config.ArcaFeature;
 
 import net.minecraft.world.item.ToolMaterial;
 
@@ -35,6 +36,12 @@ public class ToolMaterialMixin {
 
 	@Inject(method = "<clinit>", at = @At("TAIL"))
 	private static void arcamod$nerfWoodenTools(CallbackInfo ci) {
+		// Lu une seule fois au demarrage : changer l'interrupteur demande de
+		// relancer le jeu.
+		if (!ArcaFeature.WOODEN_TOOL_NERF.isEnabled()) {
+			return;
+		}
+
 		// Au minimum 1 utilisation : une durabilite de 0 rendrait l'outil
 		// inutilisable des le craft.
 		int durability = Math.max(1, Math.round(WOOD.durability() * ArcaBalance.WOOD_DURABILITY_MULTIPLIER));

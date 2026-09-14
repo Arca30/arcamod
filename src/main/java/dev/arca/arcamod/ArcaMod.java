@@ -3,15 +3,18 @@ package dev.arca.arcamod;
 import dev.arca.arcamod.registry.ModBlockEntities;
 import dev.arca.arcamod.registry.ModBlocks;
 import dev.arca.arcamod.registry.ModCreativeTabs;
+import dev.arca.arcamod.registry.ModDataComponents;
 import dev.arca.arcamod.registry.ModDecorBlocks;
 import dev.arca.arcamod.registry.ModEntities;
+import dev.arca.arcamod.registry.ModEvents;
 import dev.arca.arcamod.registry.ModExampleLoot;
 import dev.arca.arcamod.registry.ModExamples;
-import dev.arca.arcamod.registry.ModEvents;
 import dev.arca.arcamod.registry.ModFeatures;
 import dev.arca.arcamod.registry.ModItems;
 import dev.arca.arcamod.registry.ModLootTables;
 import dev.arca.arcamod.registry.ModMenus;
+import dev.arca.arcamod.registry.ModNetworking;
+import dev.arca.arcamod.registry.ModRecipes;
 import dev.arca.arcamod.registry.ModWorldGen;
 
 import net.fabricmc.api.ModInitializer;
@@ -33,12 +36,16 @@ public class ArcaMod implements ModInitializer {
 	public void onInitialize() {
 		// L'ordre compte : les items du bloc ont besoin des blocs, et le
 		// BlockEntity a besoin de connaitre son bloc.
+		// Les composants d'objet d'abord : des items les utilisent.
+		ModDataComponents.init();
 		ModBlocks.init();
 		ModDecorBlocks.init();
 		ModItems.init();
 		ModEntities.init();
 		ModBlockEntities.init();
 		ModMenus.init();
+		ModRecipes.init();
+		ModNetworking.init();
 		ModCreativeTabs.init();
 		ModLootTables.init();
 

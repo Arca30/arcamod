@@ -1,8 +1,13 @@
 package dev.arca.arcamod.registry;
 
 import dev.arca.arcamod.ArcaMod;
+import dev.arca.arcamod.entity.CampfireSeat;
 import dev.arca.arcamod.entity.ThrownDagger;
+import dev.arca.arcamod.entity.Scarecrow;
+import dev.arca.arcamod.entity.ScarecrowDamageNumber;
 import dev.arca.arcamod.entity.ThrownPebble;
+
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -10,6 +15,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.decoration.ArmorStand;
 
 /** Les entites du mod. */
 public final class ModEntities {
@@ -23,16 +29,48 @@ public final class ModEntities {
 					.updateInterval(10));
 
 	/**
-	 * La dague lancee. updateInterval plus court que pour une fleche : quand
-	 * elle est plantee dans un mob qui se deplace, sa position ne vient plus
-	 * que du serveur, il faut donc la rafraichir souvent.
+	 * La dague lancee. Memes reglages reseau que le trident (updateInterval
+	 * 20) : chaque paquet de position ecrase la trajectoire predite par le
+	 * client, donc plus il y en a, plus la dague saccade en vol. Plantee dans
+	 * un mob, le client la replace lui-meme a chaque image (voir ThrownDagger).
 	 */
 	public static final EntityType<ThrownDagger> THROWN_DAGGER = register("thrown_dagger",
 			EntityType.Builder.<ThrownDagger>of(ThrownDagger::new, MobCategory.MISC)
 					.noLootTable()
 					.sized(0.5F, 0.5F)
 					.clientTrackingRange(4)
-					.updateInterval(5));
+					.updateInterval(20));
+
+	/**
+	 * Siege invisible pres d'un feu de camp. Minuscule et jamais envoye en
+	 * position (updateInterval eleve) : il ne bouge pas.
+	 */
+	public static final EntityType<CampfireSeat> CAMPFIRE_SEAT = register("campfire_seat",
+			EntityType.Builder.<CampfireSeat>of(CampfireSeat::new, MobCategory.MISC)
+					.noLootTable()
+					.noSummon()
+					.sized(0.001F, 0.001F)
+					.clientTrackingRange(10)
+					.updateInterval(Integer.MAX_VALUE));
+
+	/** L'epouvantail d'entrainement : memes dimensions que le porte-armure. */
+	public static final EntityType<Scarecrow> SCARECROW = register("scarecrow",
+			EntityType.Builder.<Scarecrow>of(Scarecrow::new, MobCategory.MISC)
+					.noLootTable()
+					.sized(0.5F, 1.975F)
+					.clientTrackingRange(10));
+
+	/**
+	 * Le chiffre de degats au-dessus de l'epouvantail. Memes reglages reseau
+	 * que le text display vanilla.
+	 */
+	public static final EntityType<ScarecrowDamageNumber> SCARECROW_DAMAGE_NUMBER = register("scarecrow_damage_number",
+			EntityType.Builder.<ScarecrowDamageNumber>of(ScarecrowDamageNumber::new, MobCategory.MISC)
+					.noLootTable()
+					.noSummon()
+					.sized(0.0F, 0.0F)
+					.clientTrackingRange(10)
+					.updateInterval(1));
 
 	private static <T extends net.minecraft.world.entity.Entity> EntityType<T> register(String name,
 			EntityType.Builder<T> builder) {
@@ -41,6 +79,8 @@ public final class ModEntities {
 	}
 
 	public static void init() {
+		// Une entite vivante sans attributs fait planter le jeu a l'apparition.
+		FabricDefaultAttributeRegistry.register(SCARECROW, ArmorStand.createAttributes());
 	}
 
 	private ModEntities() {

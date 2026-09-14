@@ -1,6 +1,7 @@
 package dev.arca.arcamod.item;
 
 import dev.arca.arcamod.ArcaBalance;
+import dev.arca.arcamod.config.ArcaFeature;
 import dev.arca.arcamod.entity.ThrownDagger;
 
 import net.minecraft.core.Direction;
@@ -36,6 +37,10 @@ public class FlintDaggerItem extends Item implements ProjectileItem {
 	@Override
 	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
+
+		if (!ArcaFeature.DAGGER_THROWING.isEnabled()) {
+			return InteractionResult.PASS;
+		}
 
 		// Une dague sur le point de casser ne se lance pas : elle serait
 		// detruite en vol et le joueur la perdrait sans comprendre.

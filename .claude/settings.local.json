@@ -74,7 +74,15 @@
       "Bash(./gradlew compileJava --offline --rerun-tasks -I /private/tmp/claude-501/-Users-arno-Desktop-05-DEV-arcamod/41d900a8-b121-4879-bc02-3cf330b048b7/scratchpad/lint.gradle)",
       "Bash(python3 -c ' *)",
       "Bash(unzip -l build/libs/arcamod-1.0.0.jar)",
-      "Bash(javap -p -cp . dev.arca.arcamod.block.XpBushBlock)"
+      "Bash(javap -p -cp . dev.arca.arcamod.block.XpBushBlock)",
+      "Bash(JAR=$\\(find ~/.gradle/caches -iname \"*sources*.jar\" -path \"*minecraft*\" 2>/dev/null | head -1\\) *)",
+      "Bash(python3 tools/gen_decor_assets.py)",
+      "Bash(xattr -l gradle.properties)",
+      "Bash(xattr -dr com.apple.quarantine /Users/arno/Desktop/05_DEV/arcamod)",
+      "Bash(xattr -l gradle.properties build.gradle gradlew)",
+      "Bash(xargs -0 xattr -l)",
+      "Bash(xattr -l gradle.properties build.gradle gradlew settings.gradle)",
+      "Bash(ls -lO gradle.properties *)"
     ]
   }
 }

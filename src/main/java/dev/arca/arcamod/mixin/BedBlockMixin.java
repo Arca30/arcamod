@@ -1,5 +1,6 @@
 package dev.arca.arcamod.mixin;
 
+import dev.arca.arcamod.config.ArcaFeature;
 import dev.arca.arcamod.registry.ModTags;
 
 import net.minecraft.ChatFormatting;
@@ -31,7 +32,7 @@ public class BedBlockMixin {
 	@Inject(method = "useWithoutItem", at = @At("HEAD"), cancellable = true)
 	private void arcamod$requireShelter(BlockState state, Level level, BlockPos pos, Player player,
 			BlockHitResult hit, CallbackInfoReturnable<InteractionResult> cir) {
-		if (!state.is(ModTags.BEDS_REQUIRING_SHELTER) || !level.canSeeSky(pos.above())) {
+		if (!ArcaFeature.BED_NEEDS_SHELTER.isEnabled() || !state.is(ModTags.BEDS_REQUIRING_SHELTER) || !level.canSeeSky(pos.above())) {
 			return;
 		}
 

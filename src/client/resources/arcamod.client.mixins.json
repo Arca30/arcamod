@@ -3,8 +3,13 @@
 	"package": "dev.arca.arcamod.client.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"client": [
-		"ExampleClientMixin",
-		"AnvilScreenMixin"
+		"AnvilScreenMixin",
+		"ItemModelResolverMixin",
+		"ModelManagerAccessor",
+		"HudAccessor",
+		"MinecraftQuiverMixin",
+		"EquipmentLayerRendererMixin",
+		"OptionsScreenMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

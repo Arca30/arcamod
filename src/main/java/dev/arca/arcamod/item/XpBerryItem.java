@@ -1,5 +1,8 @@
 package dev.arca.arcamod.item;
 
+import dev.arca.arcamod.ArcaBalance;
+import dev.arca.arcamod.config.ArcaFeature;
+
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -24,12 +27,6 @@ import net.minecraft.world.level.block.Block;
  * barre de faim, alors qu'on veut un effet immediat.
  */
 public class XpBerryItem extends BlockItem {
-
-	/** Points d'XP donnes par baie (un four donne 1 orbe, un zombie 5). */
-	private static final int XP_PER_BERRY = 8;
-
-	/** Delai anti-spam entre deux baies, en ticks (20 ticks = 1 s). 0 = desactive. */
-	private static final int COOLDOWN_TICKS = 1;
 
 	public XpBerryItem(Block block, Properties properties) {
 		super(block, properties);
@@ -57,15 +54,19 @@ public class XpBerryItem extends BlockItem {
 	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
+		if (!ArcaFeature.XP_BERRY_EATING.isEnabled()) {
+			return InteractionResult.PASS;
+		}
+
 		// Avant le consume() : sinon le stack peut etre vide et le cooldown
 		// s'appliquerait a "air". Pose des deux cotes (serveur + client) pour
 		// que l'affichage du cooldown soit immediat.
-		if (COOLDOWN_TICKS > 0) {
-			player.getCooldowns().addCooldown(stack, COOLDOWN_TICKS);
+		if (ArcaBalance.XP_BERRY_COOLDOWN_TICKS > 0) {
+			player.getCooldowns().addCooldown(stack, ArcaBalance.XP_BERRY_COOLDOWN_TICKS);
 		}
 
 		if (level instanceof ServerLevel serverLevel) {
-			player.giveExperiencePoints(XP_PER_BERRY);
+			player.giveExperiencePoints(ArcaBalance.XP_BERRY_XP);
 			serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(),
 					SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS,
 					0.6F, 1.5F + serverLevel.getRandom().nextFloat() * 0.3F);

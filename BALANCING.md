@@ -1,7 +1,18 @@
 # Equilibrage d'ArcaMod
 
-Tout ce qui se regle cote Java est dans un seul fichier :
-`src/main/java/dev/arca/arcamod/ArcaBalance.java`.
+Deux endroits pour tout regler :
+
+| Quoi | Ou |
+| --- | --- |
+| Les **valeurs** (degats, chances, durees, quantites...) | `src/main/java/dev/arca/arcamod/ArcaBalance.java` |
+| Les **interrupteurs** ON/OFF de chaque fonctionnalite | en jeu : **Options > ArcaMod**, ou `config/arcamod.json` (dossier `run/config` en developpement) |
+
+La liste des interrupteurs et leur valeur par defaut est dans
+`src/main/java/dev/arca/arcamod/config/ArcaFeature.java`. Un interrupteur coupe
+le comportement d'une fonctionnalite, mais ne retire jamais ses blocs et objets
+du jeu (les mondes existants resteraient intacts). Dans le menu, l'infobulle
+indique en jaune les changements qui demandent de recharger le monde (butin)
+ou de relancer le jeu (outils en bois).
 
 Ce document liste ce qui vit ailleurs : fichiers de donnees (JSON) et scripts
 de generation.
@@ -285,3 +296,91 @@ python3 tools/gen_pebble_textures.py --force
 
 Genere les icones (caillou, outil, dague, fibres, ficelle). Sans `--force`, il
 ne touche pas aux fichiers existants : tes propres dessins ne risquent rien.
+
+---
+
+## 15. Table d'archerie et flèches composées
+
+Clic droit sur une table d'archerie vanilla : slots **pointe**, **corps**,
+**empennage**. Chaque craft consomme une pièce de chaque et donne le plus petit
+des trois `_YIELD`. Tout se règle dans `ArcaBalance`, section 21.
+
+Chaque pièce a les mêmes réglages génériques (multipliés entre les 3 pièces) :
+`_YIELD`, `_DAMAGE` (dégâts finaux), `_SPEED`, `_RANGE` (portée totale : la
+gravité est calculée pour l'atteindre), `_INACCURACY`, `_KNOCKBACK`,
+`_DRAW_SPEED` (bandage de l'arc), puis ses réglages d'effet.
+
+| Pièce | Objet | Effet par défaut |
+| --- | --- | --- |
+| Pointe | Silex | normale |
+| Pointe | Éclat d'améthyste | ignore 40% de l'armure (`_ARMOR_PIERCE`, `_TOUGHNESS_PIERCE`) |
+| Pointe | Pépite de fer | transperce 1 créature, portée -15% (plus lourde) |
+| Pointe | Éclat de prismarine | ignore la friction de l'eau |
+| Pointe | Boule de slime | 1 rebond, Lenteur IV 2,5 s, dégâts -50% |
+| Pointe | Perle de l'Ender | téléporte le tireur (5 dégâts, 5% d'endermite) |
+| Pointe | Poudre à canon | explosion 1.5, pas de dégâts directs, flèche détruite |
+| Corps | Bâton | normal |
+| Corps | Bambou | portée +20%, recul x1.75, 65% de casse en se plantant |
+| Corps | Bâton de blaze | enflamme créature (5 s) et bloc, disparaît dans l'eau |
+| Corps | Bâton de breeze | sans gravité 3 s, recul x0.15 |
+| Corps | Os | dégâts +30%, portée -30%, vitesse -20%, traverse les feuilles, brise 3 verres |
+| Empennage | Plume | normal |
+| Empennage | Membrane de phantom | portée +35%, dégâts -10% |
+| Empennage | Écaille de tatou | vitesse +20%, bandage +20%, dispersion x1.75 |
+
+| Tag | Rôle |
+| --- | --- |
+| `data/arcamod/tags/block/bone_arrow_passes_through.json` | blocs traversés par l'os (feuilles) |
+| `data/arcamod/tags/block/bone_arrow_breaks.json` | blocs brisés par l'os (verre, vitres) |
+
+Le nom de la flèche cite ses pièces spéciales (« Flèche (Améthyste, Bambou) »),
+format dans `lang/` : `item.arcamod.arrow_parts.name`. Les pièces sont gardées
+en craftant des flèches spectrales et des flèches à effet (les 8 flèches
+doivent alors être identiques).
+
+### Textures
+
+Une texture par pièce, assemblées automatiquement :
+
+```
+assets/arcamod/textures/item/arrow/tip/<id>.png
+assets/arcamod/textures/item/arrow/shaft/<id>.png
+assets/arcamod/textures/item/arrow/fletching/<id>.png
+assets/arcamod/textures/item/arrow/spectral_overlay.png   (optionnel)
+```
+
+Puis `python3 tools/gen_arrow_models.py` et F3+T en jeu. Une combinaison
+garde l'apparence vanilla tant qu'une de ses trois textures manque.
+
+## 16. Flèches trempées
+
+Clic droit sur un chaudron à potions avec des flèches (y compris celles de la
+table d'archerie, qui gardent leurs pièces) :
+`ARROW_DIP_ARROWS_PER_POTION` flèches par fiole, `ARROW_DIP_POTIONS_USED`
+fioles retirées par trempage.
+
+## 17. Cuir de chair putréfiée
+
+Recette de feu de camp : `data/arcamod/recipe/rotten_flesh_to_leather_campfire.json`
+(`cookingtime` 600 = 30 s). Seul le feu de camp l'accepte, pas le four.
+
+## 18. Repos au feu de camp
+
+Main vide, clic droit sur le dessus d'un bloc du tag
+`data/arcamod/tags/block/campfire_seats.json` (bûches, dalles, escaliers,
+tapis, botte de foin) avec un feu de camp allumé à portée. On se relève en
+s'accroupissant.
+
+| Réglage | Défaut |
+| --- | --- |
+| `CAMPFIRE_REST_RADIUS` | 3 blocs |
+| `CAMPFIRE_REST_INTERVAL_TICKS` | 300 (15 s) |
+| `CAMPFIRE_REST_HEAL` / `CAMPFIRE_REST_FOOD` | 1 / 1 (demi-cœur, demi-gigot) |
+| `CAMPFIRE_SEAT_HEIGHT_OFFSET` | -0.15 (hauteur du joueur assis) |
+
+## 19. Bannière de camp
+
+N'importe quelle bannière (sol ou mur) à moins de `CAMP_BANNER_CAMPFIRE_RADIUS`
+blocs d'un feu de camp allumé : aucun monstre n'apparaît naturellement dans un
+rayon de `CAMP_BANNER_RADIUS` blocs. Les monstres déjà présents, les spawners,
+les patrouilles, les phantoms et les raids ne sont pas concernés.

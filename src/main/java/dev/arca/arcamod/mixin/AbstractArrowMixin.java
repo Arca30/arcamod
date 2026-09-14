@@ -1,6 +1,7 @@
 package dev.arca.arcamod.mixin;
 
 import dev.arca.arcamod.ArcaBalance;
+import dev.arca.arcamod.config.ArcaFeature;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
@@ -34,7 +35,7 @@ public class AbstractArrowMixin {
 	private void arcamod$leaveLingeringCloud(BlockHitResult hitResult, CallbackInfo ci) {
 		AbstractArrow self = (AbstractArrow) (Object) this;
 
-		if (!ArcaBalance.ARROW_LEAVES_CLOUD || !(self instanceof Arrow)
+		if (!ArcaFeature.TIPPED_ARROW_CLOUDS.isEnabled() || !(self instanceof Arrow)
 				|| !(self.level() instanceof ServerLevel level)) {
 			return;
 		}

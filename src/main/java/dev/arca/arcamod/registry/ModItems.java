@@ -4,10 +4,13 @@ import java.util.function.Function;
 
 import dev.arca.arcamod.ArcaBalance;
 import dev.arca.arcamod.ArcaMod;
+import dev.arca.arcamod.item.ChargedEnchantingCrystalItem;
 import dev.arca.arcamod.item.FlintDaggerItem;
 import dev.arca.arcamod.item.ModFoods;
 import dev.arca.arcamod.item.ModToolMaterials;
 import dev.arca.arcamod.item.PebbleItem;
+import dev.arca.arcamod.item.QuiverItem;
+import dev.arca.arcamod.item.ScarecrowItem;
 import dev.arca.arcamod.item.XpBerryItem;
 
 import net.minecraft.core.Registry;
@@ -40,11 +43,11 @@ public final class ModItems {
 			// item.arcamod.xp_berry et pas de la cle du bloc.
 			new Item.Properties().useItemDescriptionPrefix());
 
-	/** Betterave doree : Celerite I pendant 10 minutes. */
+	/** Betterave doree : Celerite (duree et niveau dans ArcaBalance). */
 	public static final Item GOLDEN_BEETROOT = register("golden_beetroot", Item::new,
 			new Item.Properties().food(ModFoods.GOLDEN_BEETROOT, ModFoods.GOLDEN_BEETROOT_CONSUMABLE));
 
-	/** Betterave doree enchantee : Celerite II pendant 20 minutes. */
+	/** Betterave doree enchantee : Celerite plus longue et plus forte. */
 	public static final Item ENCHANTED_GOLDEN_BEETROOT = register("enchanted_golden_beetroot", Item::new,
 			new Item.Properties()
 					.rarity(Rarity.RARE)
@@ -78,6 +81,13 @@ public final class ModItems {
 
 	/** Ficelle de fibres : le lien qui tient l'outil en silex sur son manche. */
 	public static final Item PLANT_CORD = register("plant_cord", Item::new, new Item.Properties());
+
+	/**
+	 * L'aile de chauve-souris : lachee par les chauves-souris (voir
+	 * ModLootTables.BAT_WING_DROP_CHANCE dans ArcaBalance). Simple ingredient
+	 * pour l'instant, sans usage particulier.
+	 */
+	public static final Item BAT_WING = register("bat_wing", Item::new, new Item.Properties());
 
 	/**
 	 * L'outil en silex : pioche + hache + pelle en un seul objet.
@@ -131,10 +141,32 @@ public final class ModItems {
 			properties -> new BlockItem(ModBlocks.ENCHANTING_CRYSTAL, properties),
 			new Item.Properties().useBlockDescriptionPrefix());
 
+	/**
+	 * Sa version chargee : ne se trouve qu'en cassant un cristal charge (voir
+	 * la table de butin), jamais en craft. Se pose directement pret a
+	 * l'emploi.
+	 */
+	public static final Item CHARGED_ENCHANTING_CRYSTAL = register("charged_enchanting_crystal",
+			ChargedEnchantingCrystalItem::new,
+			new Item.Properties());
+
+	/**
+	 * Le carquois : 9 emplacements a fleches. Le composant CONTAINER vide par
+	 * defaut permet a l'infobulle vanilla de lister son contenu.
+	 */
+	public static final Item QUIVER = register("quiver", QuiverItem::new,
+			new Item.Properties()
+					.stacksTo(1)
+					.component(DataComponents.CONTAINER, net.minecraft.world.item.component.ItemContainerContents.EMPTY));
+
 	/** Le desenchanteur. */
 	public static final Item DISENCHANTER = register("disenchanter",
 			properties -> new BlockItem(ModBlocks.DISENCHANTER, properties),
 			new Item.Properties().useBlockDescriptionPrefix());
+
+	/** L'epouvantail d'entrainement (porte-armure + paille). */
+	public static final Item SCARECROW = register("scarecrow", ScarecrowItem::new,
+			new Item.Properties().stacksTo(16));
 
 	private static Item register(String name, Function<Item.Properties, Item> factory, Item.Properties properties) {
 		ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, ArcaMod.id(name));

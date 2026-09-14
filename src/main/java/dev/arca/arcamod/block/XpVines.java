@@ -2,6 +2,7 @@ package dev.arca.arcamod.block;
 
 import java.util.function.ToIntFunction;
 
+import dev.arca.arcamod.ArcaBalance;
 import dev.arca.arcamod.registry.ModItems;
 
 import net.minecraft.core.BlockPos;
@@ -32,24 +33,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  */
 public interface XpVines {
 
-	/** Nombre de baies recoltees sur UN segment, bornes incluses. */
-	int HARVEST_MIN = 1;
-	int HARVEST_MAX = 2;
-
-	/**
-	 * Probabilite, par random tick, qu'une baie repousse sur un segment vide.
-	 * Vaut pour la tete ET le corps : un seul reglage pour toute la plante.
-	 */
-	float BERRY_REGROW_CHANCE = 0.02F;
-
-	/** La poudre d'os fait-elle monter la plante d'un segment ? */
-	boolean BONEMEAL_GROWS_PLANT = true;
-
-	/** La poudre d'os peut-elle faire apparaitre une baie sur un segment vide ? */
-	boolean BONEMEAL_SPAWNS_BERRIES = false;
-
-	/** Niveau de lumiere emis par un segment qui porte des baies (0-15). */
-	int LIGHT_WITH_BERRIES = 10;
+	// Reglages de la plante (recolte, repousse, poudre d'os, lumiere) :
+	// ArcaBalance.XP_BUSH_*.
 
 	/** Boite de selection d'un segment : colonne de 14x16x14 px. */
 	VoxelShape SHAPE = Block.column(12.0, 0.0, 16.0);
@@ -82,7 +67,7 @@ public interface XpVines {
 	 *         s'arreter, son BlockState local est perime.
 	 */
 	static boolean tryRegrowBerries(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		if (state.getValue(BERRIES) || random.nextFloat() >= BERRY_REGROW_CHANCE) {
+		if (state.getValue(BERRIES) || random.nextFloat() >= ArcaBalance.XP_BUSH_BERRY_REGROW_CHANCE) {
 			return false;
 		}
 		growBerries(level, pos, state);
@@ -90,8 +75,8 @@ public interface XpVines {
 	}
 
 	/**
-	 * Recolte d'un segment : les baies vont directement dans l'inventaire, le
-	 * bloc n'est pas casse et sa lumiere s'eteint.
+	 * Recolte d'un segment : les baies tombent au sol, le bloc n'est pas
+	 * casse et sa lumiere s'eteint.
 	 */
 	static InteractionResult harvest(Player player, BlockState state, Level level, BlockPos pos) {
 		if (!state.getValue(BERRIES)) {
@@ -100,10 +85,10 @@ public interface XpVines {
 		}
 
 		if (level instanceof ServerLevel serverLevel) {
-			int count = serverLevel.getRandom().nextIntBetweenInclusive(HARVEST_MIN, HARVEST_MAX);
+			int count = serverLevel.getRandom().nextIntBetweenInclusive(ArcaBalance.XP_BUSH_HARVEST_MIN, ArcaBalance.XP_BUSH_HARVEST_MAX);
 			ItemStack berries = new ItemStack(ModItems.XP_BERRY, count);
 
-// On fait toujours tomber les baies au sol, quelle que soit la place en inventaire.
+			// Les baies tombent au sol, quelle que soit la place en inventaire.
 			Block.popResource(serverLevel, pos, berries);
 
 			float pitch = Mth.randomBetween(serverLevel.getRandom(), 0.8F, 1.2F);

@@ -2,13 +2,14 @@ package dev.arca.arcamod.registry;
 
 import java.util.function.Function;
 
+import dev.arca.arcamod.ArcaBalance;
 import dev.arca.arcamod.ArcaMod;
 import dev.arca.arcamod.block.ChickenEggsBlock;
 import dev.arca.arcamod.block.DisenchanterBlock;
 import dev.arca.arcamod.block.EnchantingCrystalBlock;
-import dev.arca.arcamod.block.PotionCauldronBlock;
 import dev.arca.arcamod.block.FallenSticksBlock;
 import dev.arca.arcamod.block.PebblesBlock;
+import dev.arca.arcamod.block.PotionCauldronBlock;
 import dev.arca.arcamod.block.XpBottlerBlock;
 import dev.arca.arcamod.block.XpBushBlock;
 import dev.arca.arcamod.block.XpBushPlantBlock;
@@ -33,7 +34,7 @@ public final class ModBlocks {
 					.mapColor(MapColor.PLANT)
 					.randomTicks()
 					.noCollision()
-					.lightLevel(XpVines.emission(XpVines.LIGHT_WITH_BERRIES))
+					.lightLevel(XpVines.emission(ArcaBalance.XP_BUSH_LIGHT_WITH_BERRIES))
 					.instabreak()
 					.sound(SoundType.CAVE_VINES)
 					.pushReaction(PushReaction.DESTROY));
@@ -48,7 +49,7 @@ public final class ModBlocks {
 					.mapColor(MapColor.PLANT)
 					.randomTicks()
 					.noCollision()
-					.lightLevel(XpVines.emission(XpVines.LIGHT_WITH_BERRIES))
+					.lightLevel(XpVines.emission(ArcaBalance.XP_BUSH_LIGHT_WITH_BERRIES))
 					.instabreak()
 					.sound(SoundType.CAVE_VINES)
 					.pushReaction(PushReaction.DESTROY));
@@ -119,14 +120,15 @@ public final class ModBlocks {
 			EnchantingCrystalBlock::new,
 			BlockBehaviour.Properties.of()
 					.mapColor(MapColor.COLOR_PURPLE)
-					.strength(1.5F)
-					.requiresCorrectToolForDrops()
+					// Pas de requiresCorrectToolForDrops() : combine a instabreak()
+					// et a l'absence de tag mineable/*, AUCUN outil n'etait
+					// "le bon", donc le cristal ne lachait jamais rien.
 					.noCollision()
 					.instabreak()
 					.noOcclusion()
 					.sound(SoundType.AMETHYST)
 					// il s'allume doucement une fois charge
-					.lightLevel(state -> state.getValue(EnchantingCrystalBlock.CHARGED) ? 7 : 0)
+					.lightLevel(state -> state.getValue(EnchantingCrystalBlock.CHARGED) ? ArcaBalance.CRYSTAL_CHARGED_LIGHT : 0)
 					.pushReaction(PushReaction.DESTROY));
 
 	/** Le desenchanteur : un pupitre de pierre et d'obsidienne. */

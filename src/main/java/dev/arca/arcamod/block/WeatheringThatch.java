@@ -3,6 +3,7 @@ package dev.arca.arcamod.block;
 import java.util.Optional;
 
 import dev.arca.arcamod.ArcaBalance;
+import dev.arca.arcamod.config.ArcaFeature;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -43,7 +44,8 @@ public interface WeatheringThatch {
 
 	/** Appelee par le randomTick de chaque bloc de la famille. */
 	static void fade(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		if (state.getValue(WAXED) || random.nextFloat() >= ArcaBalance.THATCH_FADE_CHANCE) {
+		if (!ArcaFeature.THATCH.isEnabled() || state.getValue(WAXED)
+				|| random.nextFloat() >= ArcaBalance.THATCH_FADE_CHANCE) {
 			return;
 		}
 

@@ -1,6 +1,8 @@
 package dev.arca.arcamod.item;
 
+import dev.arca.arcamod.ArcaBalance;
 import dev.arca.arcamod.ArcaMod;
+import dev.arca.arcamod.config.ArcaFeature;
 
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponents;
@@ -20,12 +22,14 @@ import net.minecraft.world.item.ItemInstance;
  *   3. une balise ouverte, {@link #STACKABLE}, pour tout le reste : potions,
  *      soupes, et ce que tu voudras y ajouter.
  *
- * Mettre STACK_SIZE a 1 desactive completement la fonctionnalite.
+ * Interrupteur : ArcaFeature.GEAR_STACKING. Taille : ArcaBalance.GEAR_STACK_SIZE.
  */
 public final class StackingRules {
 
-	/** Taille de pile accordee. */
-	public static final int STACK_SIZE = 16;
+	/** Taille de pile accordee (reglage : ArcaBalance.GEAR_STACK_SIZE). */
+	public static int stackSize() {
+		return ArcaBalance.GEAR_STACK_SIZE;
+	}
 
 	/**
 	 * Balise editable dans data/arcamod/tags/item/stackable.json : ajouter un
@@ -34,7 +38,7 @@ public final class StackingRules {
 	public static final TagKey<Item> STACKABLE = TagKey.create(Registries.ITEM, ArcaMod.id("stackable"));
 
 	public static boolean isEnabled() {
-		return STACK_SIZE > 1;
+		return ArcaFeature.GEAR_STACKING.isEnabled() && stackSize() > 1;
 	}
 
 	public static boolean shouldStack(ItemInstance stack) {

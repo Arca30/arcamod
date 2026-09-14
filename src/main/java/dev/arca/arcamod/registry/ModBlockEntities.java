@@ -26,6 +26,7 @@ public final class ModBlockEntities {
 			ArcaMod.id("potion_cauldron"),
 			new BlockEntityType<>(PotionCauldronBlockEntity::new, Set.of(ModBlocks.POTION_CAULDRON)));
 
+	/** Sert uniquement a l'animation du livre au-dessus du desenchanteur. */
 	public static final BlockEntityType<DisenchanterBlockEntity> DISENCHANTER = Registry.register(
 			BuiltInRegistries.BLOCK_ENTITY_TYPE,
 			ArcaMod.id("disenchanter"),

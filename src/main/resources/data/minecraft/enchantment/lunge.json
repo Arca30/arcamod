@@ -69,7 +69,7 @@
 							"entity": "this",
 							"predicate": {
 								"minecraft:flags": {
-									"is_in_water": true
+									"is_in_water": false
 								}
 							}
 						},

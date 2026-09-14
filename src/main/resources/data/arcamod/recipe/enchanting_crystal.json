@@ -2,6 +2,7 @@
 	"type": "minecraft:crafting_shaped",
 	"category": "misc",
 	"key": {
+		"A": "minecraft:ender_eye",
 		"L": "minecraft:amethyst_shard",
 		"E": "minecraft:echo_shard"
 	},

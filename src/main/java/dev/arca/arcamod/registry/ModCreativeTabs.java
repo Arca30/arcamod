@@ -42,13 +42,16 @@ public final class ModCreativeTabs {
 				.register(output -> {
 					output.accept(ModItems.PEBBLE);
 					output.accept(ModItems.FLINT_DAGGER);
+					output.accept(ModItems.QUIVER);
 					output.accept(ModItems.PATCHWORK_ELYTRA);
+					output.accept(ModItems.SCARECROW);
 				});
 
 		CreativeModeTabEvents.modifyOutputEvent(INGREDIENTS)
 				.register(output -> {
 					output.accept(ModItems.PLANT_FIBER);
 					output.accept(ModItems.PLANT_CORD);
+					output.accept(ModItems.BAT_WING);
 				});
 
 		CreativeModeTabEvents.modifyOutputEvent(TOOLS_AND_UTILITIES)
@@ -70,6 +73,7 @@ public final class ModCreativeTabs {
 					output.accept(ModItems.XP_BOTTLER);
 					output.accept(ModItems.DISENCHANTER);
 					output.accept(ModItems.ENCHANTING_CRYSTAL);
+					output.accept(ModItems.CHARGED_ENCHANTING_CRYSTAL);
 				});
 	}
 

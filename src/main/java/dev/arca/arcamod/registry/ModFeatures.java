@@ -2,6 +2,7 @@ package dev.arca.arcamod.registry;
 
 import dev.arca.arcamod.ArcaBalance;
 import dev.arca.arcamod.ArcaMod;
+import dev.arca.arcamod.config.ArcaFeature;
 import dev.arca.arcamod.worldgen.ClutterPatchFeature;
 
 import net.minecraft.core.Registry;
@@ -22,7 +23,7 @@ public final class ModFeatures {
 			BuiltInRegistries.FEATURE,
 			ArcaMod.id("pebble_patch"),
 			new ClutterPatchFeature(NoneFeatureConfiguration.CODEC,
-					() -> ModBlocks.PEBBLES, ArcaBalance.PEBBLE_PATCH_CHANCE,
+					() -> ModBlocks.PEBBLES, ArcaFeature.WORLDGEN_PEBBLES, ArcaBalance.PEBBLE_PATCH_CHANCE,
 					ArcaBalance.PEBBLE_PATCH_MIN_BLOCKS, ArcaBalance.PEBBLE_PATCH_MAX_BLOCKS,
 					ArcaBalance.PEBBLE_PATCH_SPREAD));
 
@@ -30,7 +31,7 @@ public final class ModFeatures {
 			BuiltInRegistries.FEATURE,
 			ArcaMod.id("stick_patch"),
 			new ClutterPatchFeature(NoneFeatureConfiguration.CODEC,
-					() -> ModBlocks.FALLEN_STICKS, ArcaBalance.STICK_PATCH_CHANCE,
+					() -> ModBlocks.FALLEN_STICKS, ArcaFeature.WORLDGEN_STICKS, ArcaBalance.STICK_PATCH_CHANCE,
 					ArcaBalance.STICK_PATCH_MIN_BLOCKS, ArcaBalance.STICK_PATCH_MAX_BLOCKS,
 					ArcaBalance.STICK_PATCH_SPREAD));
 

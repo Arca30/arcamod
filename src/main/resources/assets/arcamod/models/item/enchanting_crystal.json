@@ -1,3 +1,6 @@
 {
-	"parent": "arcamod:block/enchanting_crystal"
+	"parent": "minecraft:item/amethyst_bud",
+	"textures": {
+		"layer0": "minecraft:block/large_amethyst_bud"
+	}
 }

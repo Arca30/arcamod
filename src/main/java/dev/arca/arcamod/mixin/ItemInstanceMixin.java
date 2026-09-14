@@ -36,7 +36,7 @@ public interface ItemInstanceMixin {
 		}
 
 		if (StackingRules.shouldStack((ItemInstance) this)) {
-			cir.setReturnValue(StackingRules.STACK_SIZE);
+			cir.setReturnValue(StackingRules.stackSize());
 		}
 	}
 }

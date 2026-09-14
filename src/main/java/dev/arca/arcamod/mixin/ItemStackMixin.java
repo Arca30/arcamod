@@ -1,6 +1,7 @@
 package dev.arca.arcamod.mixin;
 
 import dev.arca.arcamod.ArcaMod;
+import dev.arca.arcamod.config.ArcaFeature;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,7 +22,8 @@ import java.util.function.BiConsumer;
 /**
  * Les outils ne disparaissent plus quand leur durabilite tombe a zero.
  *
- * Un outil casse reste dans l'inventaire, prend une texture d'outil brise et
+ * Un outil casse reste dans l'inventaire, s'affiche casse (le choix de la
+ * texture est fait cote client, voir ItemModelResolverMixin) et
  * ne sert plus a rien (vitesse de minage nulle, aucun butin, aucun bonus
  * d'attaque) tant qu'il n'est pas repare.
  *
@@ -33,12 +35,16 @@ import java.util.function.BiConsumer;
 @Mixin(ItemStack.class)
 public class ItemStackMixin {
 
-	/** Le modele d'item affiche par un outil casse. */
+	/**
+	 * Ancien modele force sur les outils casses (avant les textures par
+	 * outil). Il n'est plus pose, mais on le retire encore des objets de
+	 * mondes existants lors de leur reparation.
+	 */
 	private static final Identifier BROKEN_MODEL = ArcaMod.id("broken_tool");
 
 	private boolean arcamod$isBrokenTool() {
 		ItemStack self = (ItemStack) (Object) this;
-		return self.getCount() == 1 && self.isBroken();
+		return ArcaFeature.BROKEN_TOOLS_KEPT.isEnabled() && self.getCount() == 1 && self.isBroken();
 	}
 
 	/**
@@ -47,6 +53,11 @@ public class ItemStackMixin {
 	 */
 	@Redirect(method = "applyDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;shrink(I)V"))
 	private void arcamod$keepBrokenTool(ItemStack stack, int count) {
+		if (!ArcaFeature.BROKEN_TOOLS_KEPT.isEnabled()) {
+			stack.shrink(count); // vanilla : l'outil disparait
+			return;
+		}
+
 		if (stack.getCount() > 1) {
 			// La durabilite est portee par la pile : sans remise a neuf, les
 			// exemplaires restants se briseraient tous au coup suivant.
@@ -55,7 +66,9 @@ public class ItemStackMixin {
 			return;
 		}
 
-		stack.set(DataComponents.ITEM_MODEL, BROKEN_MODEL);
+		// Dernier exemplaire : on ne fait rien, il reste dans l'inventaire
+		// avec sa durabilite a zero. L'apparence cassee est choisie par le
+		// client (une texture par outil si elle existe).
 	}
 
 	/** Un outil deja casse ne s'use plus (et ne rejoue pas le son de casse). */
@@ -68,7 +81,7 @@ public class ItemStackMixin {
 		}
 	}
 
-	/** Repare = on enleve la texture d'outil brise. */
+	/** Repare = on enleve l'ancien modele d'outil brise (mondes existants). */
 	@Inject(method = "setDamageValue", at = @At("TAIL"))
 	private void arcamod$clearBrokenModel(int value, CallbackInfo ci) {
 		ItemStack self = (ItemStack) (Object) this;

@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * Un cadre rendu invisible a l'amethyste redevient visible des qu'on lui
+ * Un cadre rendu invisible (membrane de phantom) redevient visible des qu'on lui
  * retire son objet : sans ca il resterait introuvable.
  */
 @Mixin(ItemFrame.class)

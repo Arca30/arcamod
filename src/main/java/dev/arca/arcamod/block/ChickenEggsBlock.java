@@ -37,7 +37,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 /**
  * Des oeufs de poule poses au sol, facon oeufs de tortue.
  *
- * De 1 a 4 sur le meme bloc, dans les trois couleurs du jeu. Ils n'eclosent
+ * De ArcaBalance.EGGS_MIN a EGGS_MAX sur le meme bloc, dans les trois couleurs du jeu. Ils n'eclosent
  * que sur une botte de foin, au bout de ArcaBalance.EGG_HATCH_TICKS.
  *
  * L'eclosion passe par un tick programme (scheduleTick) et non par les ticks
