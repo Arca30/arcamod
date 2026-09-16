@@ -4,6 +4,7 @@ import java.util.Set;
 
 import dev.arca.arcamod.ArcaMod;
 import dev.arca.arcamod.block.entity.DisenchanterBlockEntity;
+import dev.arca.arcamod.block.entity.EndermanHeadBlockEntity;
 import dev.arca.arcamod.block.entity.PotionCauldronBlockEntity;
 import dev.arca.arcamod.block.entity.XpBottlerBlockEntity;
 
@@ -31,6 +32,12 @@ public final class ModBlockEntities {
 			BuiltInRegistries.BLOCK_ENTITY_TYPE,
 			ArcaMod.id("disenchanter"),
 			new BlockEntityType<>(DisenchanterBlockEntity::new, Set.of(ModBlocks.DISENCHANTER)));
+
+	/** Tete d'Enderman : detection du regard (serveur) et animation (client). */
+	public static final BlockEntityType<EndermanHeadBlockEntity> ENDERMAN_HEAD = Registry.register(
+			BuiltInRegistries.BLOCK_ENTITY_TYPE,
+			ArcaMod.id("enderman_head"),
+			new BlockEntityType<>(EndermanHeadBlockEntity::new, Set.of(ModBlocks.ENDERMAN_HEAD, ModBlocks.ENDERMAN_WALL_HEAD)));
 
 	public static void init() {
 	}

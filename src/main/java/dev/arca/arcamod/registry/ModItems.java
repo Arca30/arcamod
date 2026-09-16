@@ -6,22 +6,32 @@ import dev.arca.arcamod.ArcaBalance;
 import dev.arca.arcamod.ArcaMod;
 import dev.arca.arcamod.item.ChargedEnchantingCrystalItem;
 import dev.arca.arcamod.item.FlintDaggerItem;
+import dev.arca.arcamod.item.ModArmorMaterials;
 import dev.arca.arcamod.item.ModFoods;
 import dev.arca.arcamod.item.ModToolMaterials;
 import dev.arca.arcamod.item.PebbleItem;
+import dev.arca.arcamod.item.PinkGoldUpgradeTemplate;
 import dev.arca.arcamod.item.QuiverItem;
 import dev.arca.arcamod.item.ScarecrowItem;
+import dev.arca.arcamod.item.SlingshotItem;
 import dev.arca.arcamod.item.XpBerryItem;
 
+import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.ShovelItem;
+import net.minecraft.world.item.StandingAndWallBlockItem;
+import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.util.Unit;
@@ -131,7 +141,9 @@ public final class ModItems {
 					.component(DataComponents.GLIDER, Unit.INSTANCE)
 					.component(DataComponents.EQUIPPABLE, Equippable.builder(EquipmentSlot.CHEST)
 							.setEquipSound(SoundEvents.ARMOR_EQUIP_ELYTRA)
-							.setAsset(EquipmentAssets.ELYTRA)
+							// Ailes portees : assets/arcamod/equipment/patchwork_elytra.json
+							// -> textures/entity/equipment/wings/patchwork_elytra.png
+							.setAsset(ResourceKey.create(EquipmentAssets.ROOT_ID, ArcaMod.id("patchwork_elytra")))
 							.setDamageOnHurt(false)
 							.build())
 					.repairable(Items.PHANTOM_MEMBRANE));
@@ -168,6 +180,126 @@ public final class ModItems {
 	public static final Item SCARECROW = register("scarecrow", ScarecrowItem::new,
 			new Item.Properties().stacksTo(16));
 
+	// ---- Lance-pierre ----------------------------------------------------------
+
+	/** Le lance-pierre : Puissance, Recul et Solidite (voir les tags d'enchantement). */
+	public static final Item SLINGSHOT = register("slingshot", SlingshotItem::new,
+			new Item.Properties()
+					.durability(ArcaBalance.SLINGSHOT_DURABILITY)
+					.enchantable(ArcaBalance.SLINGSHOT_ENCHANTMENT_VALUE)
+					.repairable(Items.LEATHER));
+
+	// ---- Tete d'Enderman -------------------------------------------------------
+
+	/**
+	 * Se pose au sol ou au mur, et se porte sur la tete comme un crane. Lachee
+	 * par un Enderman tue par l'explosion d'un creeper charge.
+	 */
+	public static final Item ENDERMAN_HEAD = register("enderman_head",
+			properties -> new StandingAndWallBlockItem(ModBlocks.ENDERMAN_HEAD, ModBlocks.ENDERMAN_WALL_HEAD,
+					Direction.DOWN, properties),
+			new Item.Properties()
+					.rarity(Rarity.UNCOMMON)
+					.equippableUnswappable(EquipmentSlot.HEAD)
+					.useBlockDescriptionPrefix());
+
+	// ---- Soufre ----------------------------------------------------------------
+
+	/** Poudre de soufre : obtenue en brossant un bloc de soufre. */
+	public static final Item SULFUR_POWDER = register("sulfur_powder", Item::new, new Item.Properties());
+
+	public static final Item BRUSHED_SULFUR = register("brushed_sulfur",
+			properties -> new BlockItem(ModBlocks.BRUSHED_SULFUR, properties),
+			new Item.Properties().useBlockDescriptionPrefix());
+
+	// ---- Piment des ames -------------------------------------------------------
+
+	/**
+	 * Le piment des ames : se mange (Frappe ardente + Resistance au feu) et,
+	 * comme les baies sucrees, se plante sur le sable ou la terre des ames.
+	 */
+	public static final Item SOUL_PEPPER = register("soul_pepper",
+			properties -> new BlockItem(ModBlocks.SOUL_PEPPER_BUSH, properties),
+			new Item.Properties()
+					.useItemDescriptionPrefix()
+					.food(ModFoods.SOUL_PEPPER, ModFoods.SOUL_PEPPER_CONSUMABLE));
+
+	// ---- Or rose ---------------------------------------------------------------
+
+	public static final Item RAW_PINK_GOLD = register("raw_pink_gold", Item::new, new Item.Properties());
+
+	/** Le lingot donne aussi une couleur de garniture a la table de forge. */
+	public static final Item PINK_GOLD_INGOT = register("pink_gold_ingot", Item::new,
+			new Item.Properties().trimMaterial(ModArmorMaterials.PINK_GOLD_TRIM));
+
+	public static final Item PINK_GOLD_NUGGET = register("pink_gold_nugget", Item::new, new Item.Properties());
+
+	/**
+	 * Modele de forge "Amelioration en or rose" : exige par toutes les
+	 * recettes d'amelioration (or/cuivre -> or rose) de la table de forge.
+	 * Trouve dans les coffres au tresor des epaves, se duplique au craft.
+	 */
+	public static final Item PINK_GOLD_UPGRADE_SMITHING_TEMPLATE = register("pink_gold_upgrade_smithing_template",
+			PinkGoldUpgradeTemplate::create,
+			new Item.Properties().rarity(Rarity.UNCOMMON));
+
+	public static final Item PINK_GOLD_ORE = register("pink_gold_ore",
+			properties -> new BlockItem(ModBlocks.PINK_GOLD_ORE, properties),
+			new Item.Properties().useBlockDescriptionPrefix());
+
+	public static final Item DEEPSLATE_PINK_GOLD_ORE = register("deepslate_pink_gold_ore",
+			properties -> new BlockItem(ModBlocks.DEEPSLATE_PINK_GOLD_ORE, properties),
+			new Item.Properties().useBlockDescriptionPrefix());
+
+	public static final Item RAW_PINK_GOLD_BLOCK = register("raw_pink_gold_block",
+			properties -> new BlockItem(ModBlocks.RAW_PINK_GOLD_BLOCK, properties),
+			new Item.Properties().useBlockDescriptionPrefix());
+
+	public static final Item PINK_GOLD_BLOCK = register("pink_gold_block",
+			properties -> new BlockItem(ModBlocks.PINK_GOLD_BLOCK, properties),
+			new Item.Properties().useBlockDescriptionPrefix());
+
+	public static final Item PINK_GOLD_SWORD = register("pink_gold_sword", Item::new,
+			new Item.Properties().sword(ModToolMaterials.PINK_GOLD,
+					ArcaBalance.PINK_GOLD_SWORD_DAMAGE, ArcaBalance.PINK_GOLD_SWORD_SPEED));
+
+	public static final Item PINK_GOLD_SHOVEL = register("pink_gold_shovel",
+			properties -> new ShovelItem(ModToolMaterials.PINK_GOLD,
+					ArcaBalance.PINK_GOLD_SHOVEL_DAMAGE, ArcaBalance.PINK_GOLD_SHOVEL_SPEED, properties),
+			new Item.Properties());
+
+	public static final Item PINK_GOLD_PICKAXE = register("pink_gold_pickaxe", Item::new,
+			new Item.Properties().pickaxe(ModToolMaterials.PINK_GOLD,
+					ArcaBalance.PINK_GOLD_PICKAXE_DAMAGE, ArcaBalance.PINK_GOLD_PICKAXE_SPEED));
+
+	public static final Item PINK_GOLD_AXE = register("pink_gold_axe",
+			properties -> new AxeItem(ModToolMaterials.PINK_GOLD,
+					ArcaBalance.PINK_GOLD_AXE_DAMAGE, ArcaBalance.PINK_GOLD_AXE_SPEED, properties),
+			new Item.Properties());
+
+	public static final Item PINK_GOLD_HOE = register("pink_gold_hoe",
+			properties -> new HoeItem(ModToolMaterials.PINK_GOLD,
+					ArcaBalance.PINK_GOLD_HOE_DAMAGE, ArcaBalance.PINK_GOLD_HOE_SPEED, properties),
+			new Item.Properties());
+
+	/** La lance : les 7 derniers parametres (timings de charge) sont ceux de la lance en fer. */
+	public static final Item PINK_GOLD_SPEAR = register("pink_gold_spear", Item::new,
+			new Item.Properties().spear(ModToolMaterials.PINK_GOLD,
+					ArcaBalance.PINK_GOLD_SPEAR_ATTACK_DURATION, ArcaBalance.PINK_GOLD_SPEAR_DAMAGE_MULTIPLIER,
+					0.6F, 2.5F, 11.0F, 6.75F, 5.1F, 11.25F, 4.6F));
+
+	public static final Item PINK_GOLD_HELMET = register("pink_gold_helmet", Item::new,
+			new Item.Properties().humanoidArmor(ModArmorMaterials.PINK_GOLD, ArmorType.HELMET));
+
+	public static final Item PINK_GOLD_CHESTPLATE = register("pink_gold_chestplate", Item::new,
+			new Item.Properties().humanoidArmor(ModArmorMaterials.PINK_GOLD, ArmorType.CHESTPLATE));
+
+	public static final Item PINK_GOLD_LEGGINGS = register("pink_gold_leggings", Item::new,
+			new Item.Properties().humanoidArmor(ModArmorMaterials.PINK_GOLD, ArmorType.LEGGINGS));
+
+	public static final Item PINK_GOLD_BOOTS = register("pink_gold_boots", Item::new,
+			new Item.Properties().humanoidArmor(ModArmorMaterials.PINK_GOLD, ArmorType.BOOTS));
+
 	private static Item register(String name, Function<Item.Properties, Item> factory, Item.Properties properties) {
 		ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, ArcaMod.id(name));
 		Item item = factory.apply(properties.setId(key));
@@ -186,6 +318,14 @@ public final class ModItems {
 		// (c'est asProjectile() de chaque item qui fournit le projectile).
 		DispenserBlock.registerProjectileBehavior(PEBBLE);
 		DispenserBlock.registerProjectileBehavior(FLINT_DAGGER);
+
+		// La touffe de resine vanilla devient une couleur de garniture a la
+		// table de forge (data/arcamod/trim_material/resin_clump.json). Meme
+		// resolution que Item.Properties.trimMaterial() : la couleur est un
+		// registre de donnees, lue quand le monde charge.
+		DefaultItemComponentEvents.MODIFY.register(context -> context.modify(Items.RESIN_CLUMP,
+				(builder, registries, item) -> builder.set(DataComponents.PROVIDES_TRIM_MATERIAL,
+						registries.getOrThrow(ModArmorMaterials.RESIN_CLUMP_TRIM))));
 	}
 
 	private ModItems() {

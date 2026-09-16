@@ -9,7 +9,15 @@
 		"HudAccessor",
 		"MinecraftQuiverMixin",
 		"EquipmentLayerRendererMixin",
-		"OptionsScreenMixin"
+		"OptionsScreenMixin",
+		"EntityResinTurnMixin",
+		"LightCoordsDynamicLightMixin",
+		"EntityRendererDynamicLightMixin",
+		"WingsLayerMixin",
+		"CapeLayerMixin",
+		"InventoryScreenMixin",
+		"AvatarRenderStateMixin",
+		"AvatarRendererElytraMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

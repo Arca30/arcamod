@@ -1,6 +1,9 @@
 package dev.arca.arcamod.item;
 
+import java.util.List;
+
 import dev.arca.arcamod.ArcaBalance;
+import dev.arca.arcamod.registry.ModEffects;
 
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -50,6 +53,20 @@ public final class ModFoods {
 					new MobEffectInstance(MobEffects.HASTE,
 							ArcaBalance.seconds(ArcaBalance.ENCHANTED_GOLDEN_BEETROOT_HASTE_SECONDS),
 							ArcaBalance.ENCHANTED_GOLDEN_BEETROOT_HASTE_LEVEL)))
+			.build();
+
+	// ---- piment des ames ------------------------------------------------
+
+	public static final FoodProperties SOUL_PEPPER = new FoodProperties.Builder()
+			.nutrition(ArcaBalance.SOUL_PEPPER_NUTRITION)
+			.saturationModifier(ArcaBalance.SOUL_PEPPER_SATURATION)
+			.alwaysEdible() // on le mange pour son effet, meme rassasie
+			.build();
+
+	public static final Consumable SOUL_PEPPER_CONSUMABLE = Consumables.defaultFood()
+			.onConsume(new ApplyStatusEffectsConsumeEffect(List.of(
+					new MobEffectInstance(ModEffects.FIERY_STRIKES, ArcaBalance.SOUL_PEPPER_FIRE_ASPECT_TICKS),
+					new MobEffectInstance(MobEffects.FIRE_RESISTANCE, ArcaBalance.SOUL_PEPPER_FIRE_RESISTANCE_TICKS))))
 			.build();
 
 	private ModFoods() {

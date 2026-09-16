@@ -41,6 +41,15 @@ package dev.arca.arcamod;
  *   23. Banniere de camp
  *   24. Diagnostic
  *   25. Epouvantail d'entrainement
+ *   26. Lance-pierre
+ *   27. Resine collante
+ *   28. Tete d'Enderman (detecteur de regard)
+ *   29. Soufre (pinceau, poudre de soufre)
+ *   30. Or rose
+ *   31. Cuivre : oxydation et orages
+ *   32. Piment des ames
+ *   33. Garniture pulsante (echo)
+ *   34. Lumiere dynamique
  */
 public final class ArcaBalance {
 
@@ -165,8 +174,9 @@ public final class ArcaBalance {
 	/**
 	 * Pixel de la pointe dans la texture 16x16, compte depuis le coin
 	 * haut-droit (0 = pixel tout au coin). A ajuster avec la texture finale.
+	 * Texture actuelle : pointe au pixel (12, 3), soit 3 pixels du coin.
 	 */
-	public static final float DAGGER_RENDER_TIP_PIXEL_INSET = 1.0F;
+	public static final float DAGGER_RENDER_TIP_PIXEL_INSET = 3.0F;
 
 	/** Decalage de la pointe le long de la lame, en blocs. Positif = s'enfonce plus. */
 	public static final float DAGGER_RENDER_TIP_EXTRA_OFFSET = 0.0F;
@@ -260,10 +270,45 @@ public final class ArcaBalance {
 	/** true : une poche d'encre normale retire l'effet lumineux. */
 	public static final boolean INK_SAC_REMOVES_TRIM_GLOW = true;
 
-	/** Pepites obtenues en fondant une piece d'equipement. Vanilla : 1. */
-	public static final int IRON_GEAR_SMELTING_NUGGETS = 3;
-	public static final int GOLD_GEAR_SMELTING_NUGGETS = 3;
-	public static final int COPPER_GEAR_SMELTING_NUGGETS = 3;
+	// ---- Fonte de l'equipement en pepites (four, haut fourneau) ----
+	//
+	// Pepites = lingots de la recette x 9 x SMELTING_RETURN_NEW x durabilite
+	// restante (1.0 = neuf, 0.0 = casse). Arrondi a l'inferieur.
+	// Exemple : bottes en or neuves = 4 lingots = 36 pepites x 0.8 = 28.
+	// Au-dela d'une pile (64), le resultat est plafonne a 64.
+
+	/** Part des pepites rendue pour un objet neuf (0.8 = 80 %). */
+	public static final float SMELTING_RETURN_NEW = 0.8F;
+
+	/**
+	 * Minimum de pepites rendues, meme a durabilite 0. Doit rester >= 1 :
+	 * avec 0, le four refuse la recette et l'objet reste bloque dans l'entree.
+	 */
+	public static final int SMELTING_MIN_NUGGETS = 1;
+
+	/** Lingots de chaque recette (valeurs vanilla). */
+	public static final int SMELTING_INGOTS_HELMET = 5;
+	public static final int SMELTING_INGOTS_CHESTPLATE = 8;
+	public static final int SMELTING_INGOTS_LEGGINGS = 7;
+	public static final int SMELTING_INGOTS_BOOTS = 4;
+	public static final int SMELTING_INGOTS_SWORD = 2;
+	public static final int SMELTING_INGOTS_PICKAXE = 3;
+	public static final int SMELTING_INGOTS_AXE = 3;
+	public static final int SMELTING_INGOTS_SHOVEL = 1;
+	public static final int SMELTING_INGOTS_HOE = 2;
+	public static final int SMELTING_INGOTS_SPEAR = 1;
+
+	/** Armures de cheval et de nautile (pas de recette vanilla : valeur libre). */
+	public static final int SMELTING_INGOTS_ANIMAL_ARMOR = 5;
+
+	/** Objet reconnu par aucune categorie ci-dessus. */
+	public static final int SMELTING_INGOTS_OTHER = 1;
+
+	/**
+	 * Cotte de mailles : introuvable en craft, on la compte comme une armure
+	 * en fer multipliee par ce facteur (0.5 = moitie).
+	 */
+	public static final float SMELTING_CHAINMAIL_FACTOR = 0.5F;
 
 	/** Durabilite des elytres en membranes. Vanilla : 432. (Relancer le jeu.) */
 	public static final int PATCHWORK_ELYTRA_DURABILITY = 4;
@@ -339,6 +384,9 @@ public final class ArcaBalance {
 	/** Cout supplementaire par niveau de l'enchantement extrait. */
 	public static final int DISENCHANT_XP_PER_LEVEL = 1;
 
+	/** Lumiere emise par le desenchanteur (table d'enchantement vanilla : 7). */
+	public static final int DISENCHANTER_LIGHT = 7;
+
 	// ==================================================================
 	// 13. Cristal d'enchantement
 	// ==================================================================
@@ -396,7 +444,7 @@ public final class ArcaBalance {
 
 	/** Nombre de branches empilables sur un meme bloc. (Relancer le jeu.) */
 	public static final int STICKS_MIN = 1;
-	public static final int STICKS_MAX = 4;
+	public static final int STICKS_MAX = 3;
 
 	/** Hauteur de la boite de selection des cailloux et branches, en pixels. */
 	public static final double CLUTTER_SHAPE_HEIGHT = 1.0;
@@ -482,16 +530,16 @@ public final class ArcaBalance {
 	public static final float NAUTILUS_SHELL_DROP_CHANCE = 0.50F;
 
 	/** Noye equipe d'un trident : chance de le lacher. Vanilla : 0.085. (Immediat.) */
-	public static final float DROWNED_TRIDENT_DROP_CHANCE = 0.085F;
+	public static final float DROWNED_TRIDENT_DROP_CHANCE = 0.1F;
 
 	/** Fouille du renifleur : baie d'XP. */
 	public static final float SNIFFER_XP_BERRY_CHANCE = 0.20F;
 
 	/** Zombie tue par un joueur : petite pierre. */
-	public static final float ZOMBIE_PEBBLE_CHANCE = 0.25F;
+	public static final float ZOMBIE_PEBBLE_CHANCE = 0.0F;
 
 	/** Gravier casse a la pelle en fer : fibre vegetale. */
-	public static final float GRAVEL_FIBER_CHANCE = 0.10F;
+	public static final float GRAVEL_FIBER_CHANCE = 0.0F;
 
 	/** Cailloux ajoutes dans les coffres des maisons de village (plaines). */
 	public static final float VILLAGE_CHEST_PEBBLES_MIN = 2.0F;
@@ -624,6 +672,21 @@ public final class ArcaBalance {
 	public static final boolean ARROW_GUNPOWDER_BREAKS_BLOCKS = false;
 	/** true : l'explosion allume des feux. */
 	public static final boolean ARROW_GUNPOWDER_CAUSES_FIRE = false;
+
+	/**
+	 * Boule de resine : englue la cible (voir section 27, RESIN_*). Les
+	 * degats sont FIXES (ARROW_RESIN_FIXED_DAMAGE), quels que soient l'arc et
+	 * les autres pieces.
+	 */
+	public static final int ARROW_RESIN_YIELD = 4;
+	public static final double ARROW_RESIN_DAMAGE = 1.0;
+	public static final float ARROW_RESIN_SPEED = 1.0F;
+	public static final float ARROW_RESIN_RANGE = 1.0F;
+	public static final float ARROW_RESIN_INACCURACY = 1.0F;
+	public static final float ARROW_RESIN_KNOCKBACK = 0.0F;
+	public static final float ARROW_RESIN_DRAW_SPEED = 1.0F;
+	/** Degats fixes, en points (1 = un demi-coeur). Mettre -1 pour garder le calcul normal. */
+	public static final float ARROW_RESIN_FIXED_DAMAGE = 1.0F;
 
 	// ---- Corps --------------------------------------------------------------
 
@@ -758,7 +821,7 @@ public final class ArcaBalance {
 	 * Rayon, en blocs, autour d'une banniere de camp ou aucun monstre
 	 * n'apparait naturellement. Les monstres deja la ne sont pas chasses.
 	 */
-	public static final int CAMP_BANNER_RADIUS = 16;
+	public static final int CAMP_BANNER_RADIUS = 32;
 
 	/** Distance maximale entre la banniere et un feu de camp allume (cube). */
 	public static final int CAMP_BANNER_CAMPFIRE_RADIUS = 4;
@@ -772,6 +835,12 @@ public final class ArcaBalance {
 	 * du chaudron a potions (lignes "[PotionCauldron]").
 	 */
 	public static final boolean DEBUG_POTION_CAULDRON = false;
+
+	/**
+	 * true : ecrit dans la console chaque minerai d'or rose genere (lignes
+	 * "[PinkGold]", avec la position). Voir aussi /arcamod pinkgold scan.
+	 */
+	public static final boolean DEBUG_PINK_GOLD_ORE = false;
 
 	// ==================================================================
 	// 25. Epouvantail d'entrainement
@@ -820,6 +889,13 @@ public final class ArcaBalance {
 
 	/** true : les bras se balancent doucement comme ceux d'un joueur immobile. */
 	public static final boolean SCARECROW_ARMS_BOB = false;
+
+	/**
+	 * Grossissement des manches d'armure autour de l'epaule (0.05 = +5 %).
+	 * Evite que les epaules et le corps du plastron, parfaitement alignes
+	 * quand les bras sont immobiles, se melangent (z-fighting). 0 = desactive.
+	 */
+	public static final float SCARECROW_ARMOR_ARM_INFLATE = 0.05F;
 
 	// ---- Resine (figer) ----
 
@@ -876,6 +952,468 @@ public final class ArcaBalance {
 	public static final int SCARECROW_COLOR_EXPLOSION = 0xE83B3B; // TNT, creeper
 	public static final int SCARECROW_COLOR_LIGHTNING = 0xFFF36B; // foudre
 	public static final int SCARECROW_COLOR_REDUCTION = 0x8A8A8A; // ligne "avant armure"
+
+	// ==================================================================
+	// 26. Lance-pierre
+	// ==================================================================
+	//
+	// Clic droit maintenu pour tendre, relacher pour tirer (comme l'arc).
+	// Munitions cherchees dans la main secondaire, puis dans l'inventaire,
+	// dans l'ordre de l'enum SlingshotAmmo.
+	//
+	// Degats finaux = (degats de la munition + bonus Puissance) x tension.
+	// La tension va de 0 a 1 (courbe de l'arc vanilla).
+
+	/** Durabilite (arc vanilla : 384). */
+	public static final int SLINGSHOT_DURABILITY = 250;
+
+	/** Enchantabilite (arc vanilla : 1, or : 22). */
+	public static final int SLINGSHOT_ENCHANTMENT_VALUE = 10;
+
+	/** Ticks pour une tension complete (arc vanilla : 20). */
+	public static final int SLINGSHOT_FULL_DRAW_TICKS = 16;
+
+	/** Tension minimale pour que le tir parte (arc vanilla : 0.1). */
+	public static final float SLINGSHOT_MIN_DRAW = 0.15F;
+
+	/** Vitesse de depart a pleine tension (arc vanilla : 3.0, boule de neige : 1.5). */
+	public static final float SLINGSHOT_BASE_VELOCITY = 2.2F;
+
+	/** Dispersion du tir (arc vanilla : 1.0). */
+	public static final float SLINGSHOT_INACCURACY = 1.0F;
+
+	/** Durabilite perdue par tir. */
+	public static final int SLINGSHOT_DURABILITY_PER_SHOT = 1;
+
+	/** Temps de recharge apres un tir, en ticks (0 = aucun). */
+	public static final int SLINGSHOT_COOLDOWN_TICKS = 4;
+
+	/** Pleine tension : le projectile laisse une trainee de particules critiques. */
+	public static final boolean SLINGSHOT_CRIT_PARTICLES_AT_FULL_DRAW = true;
+
+	/** Puissance : degats AJOUTES par niveau, en points (1 = un demi-coeur). */
+	public static final float SLINGSHOT_POWER_DAMAGE_PER_LEVEL = 0.5F;
+
+	/** Recul de base inflige (0 = aucun ; 0.5 = recul d'un coup de poing). */
+	public static final float SLINGSHOT_BASE_KNOCKBACK = 0.1F;
+
+	/** Recul : force AJOUTEE par niveau d'enchantement Recul. */
+	public static final float SLINGSHOT_KNOCKBACK_PER_LEVEL = 0.5F;
+
+	/** Mode creatif : tire sans consommer de munition. */
+	public static final boolean SLINGSHOT_CREATIVE_INFINITE_AMMO = true;
+
+	// ---- Munitions ----
+	// _DAMAGE      degats a pleine tension, en points (1 = un demi-coeur) ;
+	// _VELOCITY    multiplicateur de vitesse de depart ;
+	// _GRAVITY     gravite par tick (boule de neige vanilla : 0.03) ;
+	// _RECOVERY    chance que la munition retombe au sol en item quand elle touche
+	//              un BLOC (sur une creature, elle disparait toujours).
+
+	/** Petite pierre : la munition de base. */
+	public static final float SLINGSHOT_PEBBLE_DAMAGE = 3.0F;
+	public static final float SLINGSHOT_PEBBLE_VELOCITY = 1.0F;
+	public static final double SLINGSHOT_PEBBLE_GRAVITY = 0.03;
+	public static final float SLINGSHOT_PEBBLE_RECOVERY = 0.5F;
+
+	/** Eclat d'amethyste : leger, rapide, se brise toujours. */
+	public static final float SLINGSHOT_AMETHYST_DAMAGE = 4.0F;
+	public static final float SLINGSHOT_AMETHYST_VELOCITY = 1.15F;
+	public static final double SLINGSHOT_AMETHYST_GRAVITY = 0.025;
+	public static final float SLINGSHOT_AMETHYST_RECOVERY = 0.0F;
+
+	/** Pepite de fer : lourde, fait mal, retombe vite. */
+	public static final float SLINGSHOT_IRON_NUGGET_DAMAGE = 5.0F;
+	public static final float SLINGSHOT_IRON_NUGGET_VELOCITY = 0.9F;
+	public static final double SLINGSHOT_IRON_NUGGET_GRAVITY = 0.04;
+	public static final float SLINGSHOT_IRON_NUGGET_RECOVERY = 0.25F;
+
+	/**
+	 * Boule de resine : degats FIXES (la tension et Puissance ne changent
+	 * rien), mais englue la cible (section 27).
+	 */
+	public static final float SLINGSHOT_RESIN_CLUMP_DAMAGE = 1.0F;
+	public static final float SLINGSHOT_RESIN_CLUMP_VELOCITY = 0.85F;
+	public static final double SLINGSHOT_RESIN_CLUMP_GRAVITY = 0.035;
+	public static final float SLINGSHOT_RESIN_CLUMP_RECOVERY = 0.0F;
+	/** true : Puissance et tension n'augmentent pas les degats de la resine. */
+	public static final boolean SLINGSHOT_RESIN_CLUMP_FIXED_DAMAGE = true;
+
+	// ==================================================================
+	// 27. Resine collante (lance-pierre, fleches a pointe de resine)
+	// ==================================================================
+
+	/** Sauts necessaires pour se liberer : tire au hasard entre MIN et MAX (inclus). */
+	public static final int RESIN_MIN_JUMPS = 3;
+	public static final int RESIN_MAX_JUMPS = 5;
+
+	/**
+	 * Duree maximale d'un joueur englue, en ticks (securite si le joueur ne
+	 * saute jamais). 600 = 30 s.
+	 */
+	public static final int RESIN_PLAYER_MAX_TICKS = 600;
+
+	/** Duree de l'engluement d'un mob (il ne sait pas sauter pour se liberer). 60 = 3 s. */
+	public static final int RESIN_MOB_TICKS = 60;
+
+	/** Delai minimum entre deux sauts comptes, en ticks (anti-spam de la touche). */
+	public static final int RESIN_JUMP_MIN_INTERVAL_TICKS = 3;
+
+	/** true : bloque aussi la camera du joueur englue. */
+	public static final boolean RESIN_FREEZES_VIEW = true;
+
+	/** true : affiche "Sautez pour vous liberer (x restants)" au-dessus de la barre. */
+	public static final boolean RESIN_SHOW_JUMPS_LEFT = true;
+
+	/** Couleur de l'effet (icone, particules). */
+	public static final int RESIN_EFFECT_COLOR = 0xE36E14;
+
+	// ==================================================================
+	// 28. Tete d'Enderman (detecteur de regard)
+	// ==================================================================
+
+	/** Distance maximale, en blocs, a laquelle un regard est detecte. */
+	public static final double ENDERMAN_HEAD_MAX_RANGE = 16.0;
+
+	/**
+	 * Tolerance du regard. Meme formule que l'Enderman vanilla (0.025) : le
+	 * cone se resserre avec la distance. Plus grand = plus facile a declencher.
+	 */
+	public static final double ENDERMAN_HEAD_LOOK_TOLERANCE = 0.06;
+
+	/** Signal au plus pres (15 = maximum redstone). */
+	public static final int ENDERMAN_HEAD_MAX_SIGNAL = 15;
+
+	/** Signal a la distance maximale (1 = le plus faible encore detecte). */
+	public static final int ENDERMAN_HEAD_MIN_SIGNAL = 1;
+
+	/** Frequence de la detection, en ticks (plus grand = moins de calculs). */
+	public static final int ENDERMAN_HEAD_CHECK_INTERVAL_TICKS = 2;
+
+	/** true : un joueur portant une citrouille sculptee (ou une tete d'Enderman) n'est pas detecte. */
+	public static final boolean ENDERMAN_HEAD_RESPECTS_DISGUISE = true;
+
+	/** true : les blocs transparents (verre...) ne bloquent pas le regard. */
+	public static final boolean ENDERMAN_HEAD_SEES_THROUGH_GLASS = true;
+
+	/** Tremblement de la tete quand elle est regardee (Enderman vanilla : 0.02). */
+	public static final float ENDERMAN_HEAD_SHAKE = 0.02F;
+
+	/** Ouverture de la bouche quand elle est regardee, en pixels (Enderman vanilla : 5). */
+	public static final float ENDERMAN_HEAD_JAW_OPEN_PIXELS = 5.0F;
+
+	/** Ticks pour ouvrir/fermer completement la bouche (0 = instantane, comme vanilla). */
+	public static final float ENDERMAN_HEAD_JAW_ANIMATION_TICKS = 3.0F;
+
+	/** Chance de lacher la tete quand un creeper charge tue un Enderman (vanilla : 1.0). */
+	public static final float ENDERMAN_HEAD_CHARGED_CREEPER_CHANCE = 1.0F;
+
+	// ==================================================================
+	// 29. Soufre (pinceau, poudre de soufre)
+	// ==================================================================
+
+	/**
+	 * Chaque bloc de soufre brosse tire une reserve cachee de poudre entre
+	 * MIN et MAX. Le bloc reste en place ; une fois la reserve videe OU le
+	 * temps de brossage ecoule, il devient "soufre epuise" et ne peut plus
+	 * etre brosse.
+	 */
+	public static final int SULFUR_POWDER_MIN = 0;
+	public static final int SULFUR_POWDER_MAX = 3;
+
+	/** Coups de pinceau (un toutes les 10 ticks = 0.5 s) entre deux poudres. */
+	public static final int SULFUR_STROKES_PER_POWDER = 2;
+
+	/** Coups de pinceau maximum sur un meme bloc ("temps max"). 8 coups = 4 s. */
+	public static final int SULFUR_MAX_STROKES = 8;
+
+	/** Durabilite perdue par le pinceau a chaque poudre obtenue. */
+	public static final int SULFUR_BRUSH_DURABILITY_PER_POWDER = 1;
+
+	/**
+	 * Un brossage interrompu est oublie apres ce delai, en ticks (1200 = 1 min).
+	 * La reserve deja tiree est perdue et sera retiree au prochain brossage.
+	 */
+	public static final int SULFUR_PROGRESS_FORGET_TICKS = 1200;
+
+	// ==================================================================
+	// 30. Or rose (alliage cuivre + or)
+	// ==================================================================
+	//
+	// "Solide comme le fer, rapide et enchantable comme l'or."
+
+	// ---- Outils ----
+	/** Durabilite des outils (fer 250, or 32). */
+	public static final int PINK_GOLD_TOOL_DURABILITY = 250;
+	/** Vitesse de minage (fer 6, or 12). */
+	public static final float PINK_GOLD_MINING_SPEED = 12.0F;
+	/** Bonus de degats du materiau (fer 2, or 0). */
+	public static final float PINK_GOLD_ATTACK_DAMAGE_BONUS = 2.0F;
+	/** Enchantabilite des outils (fer 14, or 22). */
+	public static final int PINK_GOLD_TOOL_ENCHANTMENT_VALUE = 22;
+
+	// Degats et vitesse d'attaque de chaque outil, AVANT le bonus du materiau
+	// (memes conventions que Items.java vanilla ; valeurs du fer par defaut).
+	public static final float PINK_GOLD_SWORD_DAMAGE = 3.0F;
+	public static final float PINK_GOLD_SWORD_SPEED = -2.4F;
+	public static final float PINK_GOLD_AXE_DAMAGE = 6.0F;
+	public static final float PINK_GOLD_AXE_SPEED = -3.1F;
+	public static final float PINK_GOLD_PICKAXE_DAMAGE = 1.0F;
+	public static final float PINK_GOLD_PICKAXE_SPEED = -2.8F;
+	public static final float PINK_GOLD_SHOVEL_DAMAGE = 1.5F;
+	public static final float PINK_GOLD_SHOVEL_SPEED = -3.0F;
+	public static final float PINK_GOLD_HOE_DAMAGE = -2.0F;
+	public static final float PINK_GOLD_HOE_SPEED = -1.0F;
+
+	/** Lance : duree d'attaque et multiplicateur de degats (fer : 0.95 / 0.95 ; or : 0.95 / 0.7). */
+	public static final float PINK_GOLD_SPEAR_ATTACK_DURATION = 0.95F;
+	public static final float PINK_GOLD_SPEAR_DAMAGE_MULTIPLIER = 0.95F;
+
+	// ---- Armure ----
+	/** Multiplicateur de durabilite de l'armure (fer 15, or 7). */
+	public static final int PINK_GOLD_ARMOR_DURABILITY = 15;
+	/** Protection par piece (fer : 2 / 6 / 5 / 2). */
+	public static final int PINK_GOLD_HELMET_DEFENSE = 2;
+	public static final int PINK_GOLD_CHESTPLATE_DEFENSE = 6;
+	public static final int PINK_GOLD_LEGGINGS_DEFENSE = 5;
+	public static final int PINK_GOLD_BOOTS_DEFENSE = 2;
+	/** Enchantabilite de l'armure (fer 9, or 25). */
+	public static final int PINK_GOLD_ARMOR_ENCHANTMENT_VALUE = 25;
+	/** Robustesse et resistance au recul (fer : 0 et 0). */
+	public static final float PINK_GOLD_ARMOR_TOUGHNESS = 0.0F;
+	public static final float PINK_GOLD_ARMOR_KNOCKBACK_RESISTANCE = 0.0F;
+
+	// ---- Minerai ----
+	/**
+	 * Le minerai n'apparait QUE la ou un filon d'or touche un filon de cuivre.
+	 * A chaque contact trouve, on remplace entre MIN et MAX blocs de chaque
+	 * filon (le minerai d'or rose garde la variante pierre/ardoise du bloc
+	 * remplace).
+	 */
+	public static final int PINK_GOLD_ORE_REPLACED_GOLD_MIN = 1;
+	public static final int PINK_GOLD_ORE_REPLACED_GOLD_MAX = 2;
+	public static final int PINK_GOLD_ORE_REPLACED_COPPER_MIN = 1;
+	public static final int PINK_GOLD_ORE_REPLACED_COPPER_MAX = 2;
+
+	/** Chance qu'un contact or/cuivre donne vraiment du minerai d'or rose. */
+	public static final float PINK_GOLD_ORE_CONTACT_CHANCE = 1.0F;
+
+	/** Hauteurs scannees (or : -64 a 32, +256 en badlands ; cuivre : -16 a 112). */
+	public static final int PINK_GOLD_ORE_MIN_Y = -64;
+	public static final int PINK_GOLD_ORE_MAX_Y = 128;
+
+	/** Taille maximale d'un filon explore (securite de performance). */
+	public static final int PINK_GOLD_ORE_MAX_VEIN_SIZE = 48;
+
+	// ---- Modele de forge ----
+	/** Chance de trouver le modele "Amelioration en or rose" dans un coffre au tresor d'epave. */
+	public static final float PINK_GOLD_TEMPLATE_SHIPWRECK_CHANCE = 0.65F;
+
+	// ==================================================================
+	// 31. Cuivre : oxydation de l'equipement et orages
+	// ==================================================================
+	//
+	// Les outils et armures en cuivre s'oxydent avec le temps, en 4 etats :
+	// 0 neuf, 1 expose, 2 altere, 3 oxyde. Plus ils sont oxydes, plus ils
+	// s'usent vite. Etre frappe par la foudre les remet a neuf.
+
+	/** Frequence du test d'oxydation, en ticks (1200 = 1 minute). */
+	public static final int COPPER_OXIDATION_INTERVAL_TICKS = 1200;
+
+	/** Chance qu'une piece passe a l'etat suivant a chaque test (0.05 = ~20 min par etat). */
+	public static final float COPPER_OXIDATION_CHANCE = 0.05F;
+
+	/** Multiplicateur de cette chance sous la pluie ou dans l'eau. */
+	public static final float COPPER_OXIDATION_WET_MULTIPLIER = 3.0F;
+
+	/** true : seule la piece portee ou tenue s'oxyde (pas celles rangees dans l'inventaire). */
+	public static final boolean COPPER_OXIDATION_ONLY_EQUIPPED = false;
+
+	/** true : l'armure posee sur un porte-armure ou un epouvantail s'oxyde aussi. */
+	public static final boolean COPPER_OXIDATION_ON_ARMOR_STANDS = true;
+
+	/**
+	 * Oxydation par l'usure : sous cette part de durabilite restante (0.5 =
+	 * 50 %), l'objet est au moins "expose", puis "altere", puis "oxyde", les
+	 * trois etats se partageant le reste a parts egales (50-33 %, 33-17 %,
+	 * 17-0 %). Si le temps l'a deja plus oxyde, c'est l'etat le plus avance
+	 * qui compte. Reparer l'objet fait redescendre cette part-la.
+	 * 0 = desactive.
+	 */
+	public static final float COPPER_OXIDATION_DURABILITY_START = 0.5F;
+
+	/**
+	 * Usure par etat d'oxydation : multiplicateur de la durabilite perdue
+	 * (index = etat 0, 1, 2, 3). 2.0 = s'use deux fois plus vite.
+	 */
+	public static final float[] COPPER_OXIDATION_WEAR_MULTIPLIER = {1.0F, 1.25F, 1.5F, 2.0F};
+
+	/** true : un eclair qui frappe le joueur desoxyde toute son armure en cuivre portee. */
+	public static final boolean COPPER_LIGHTNING_CLEANS_OXIDATION = true;
+
+	// ---- Orages ----
+	/** Frequence du test de foudre pendant un orage, en ticks (100 = 5 s). */
+	public static final int COPPER_LIGHTNING_CHECK_TICKS = 100;
+
+	/** Chance d'etre frappe a chaque test, PAR piece d'armure en cuivre portee (x4 en armure complete). */
+	public static final float COPPER_LIGHTNING_CHANCE_PER_PIECE = 0.005F;
+
+	/** Armure complete en cuivre frappee : Celerite (Haste) et Vitesse. */
+	public static final int COPPER_STORM_BUFF_SECONDS = 480;
+	/** Niveaux : 0 = I, 1 = II. */
+	public static final int COPPER_STORM_HASTE_AMPLIFIER = 0;
+	public static final int COPPER_STORM_SPEED_AMPLIFIER = 1;
+
+	// ==================================================================
+	// 32. Piment des ames (Nether)
+	// ==================================================================
+
+	/** Duree de "Frappe ardente" (Aura de feu : les coups au corps a corps enflamment). */
+	public static final int SOUL_PEPPER_FIRE_ASPECT_TICKS = 1200;
+
+	/** Secondes de feu infligees a chaque coup, comme Aura de feu I (4 s). */
+	public static final int SOUL_PEPPER_IGNITE_SECONDS = 4;
+
+	/** Duree de la Resistance au feu (50 ticks = 2.5 s). */
+	public static final int SOUL_PEPPER_FIRE_RESISTANCE_TICKS = 50;
+
+	/** Nourriture rendue (baies sucrees : 2 et 0.1). */
+	public static final int SOUL_PEPPER_NUTRITION = 2;
+	public static final float SOUL_PEPPER_SATURATION = 0.1F;
+
+	/** Piments recoltes sur un buisson mur (age 3), entre MIN et MAX. */
+	public static final int SOUL_PEPPER_HARVEST_MIN = 1;
+	public static final int SOUL_PEPPER_HARVEST_MAX = 3;
+
+	/** Piments recoltes sur un buisson presque mur (age 2). 0 = pas de recolte a cet age. */
+	public static final int SOUL_PEPPER_HARVEST_AGE_2 = 1;
+
+	/** Chance de pousser a chaque tick aleatoire (baies sucrees : 0.2). Pas besoin de lumiere. */
+	public static final float SOUL_PEPPER_GROW_CHANCE = 0.2F;
+
+	/** true : le buisson pique comme un buisson de baies sucrees. */
+	public static final boolean SOUL_PEPPER_BUSH_HURTS = true;
+
+	// ==================================================================
+	// 33. Garniture pulsante (eclat d'echo)
+	// ==================================================================
+
+	/** Duree d'une pulsation complete, en millisecondes. */
+	public static final int ECHO_TRIM_PULSE_PERIOD_MS = 3000;
+
+	/** Lumiere de la garniture au creux et au sommet de la pulsation (0 a 15). */
+	public static final int ECHO_TRIM_LIGHT_MIN = 0;
+	public static final int ECHO_TRIM_LIGHT_MAX = 5;
+
+	/**
+	 * Opacite de la garniture au creux de la pulsation (1.0 = toujours
+	 * opaque, 0.0 = disparait completement). La lumiere seule ne se voit pas
+	 * quand l'endroit est deja eclaire (plein jour) : c'est cette variation
+	 * d'opacite qui garde la pulsation visible partout.
+	 */
+	public static final float ECHO_TRIM_MIN_OPACITY = 0.30F;
+
+	// ==================================================================
+	// 33 bis. Plastron a elytres (table de craft)
+	// ==================================================================
+	//
+	// Recette : un plastron du tag arcamod:elytra_harness_chestplates (par
+	// defaut : plastron en netherite uniquement) + des elytres + les
+	// ingredients ci-dessous. Le plastron garde tout (enchantements,
+	// garniture, nom) ; les enchantements des elytres sont perdus.
+	// Le vol use la durabilite du PLASTRON.
+
+	/** Etoiles du Nether consommees par la recette. 0 = aucune. */
+	public static final int ELYTRA_HARNESS_NETHER_STARS = 1;
+
+	/** Membranes de phantom consommees par la recette. 0 = aucune. */
+	public static final int ELYTRA_HARNESS_PHANTOM_MEMBRANES = 4;
+
+	/** true : les elytres doivent etre intactes (aucune durabilite perdue). */
+	public static final boolean ELYTRA_HARNESS_REQUIRES_INTACT_ELYTRA = true;
+
+	/**
+	 * Usure en vol, multipliee par rapport a des elytres (vanilla : 1 point
+	 * toutes les 20 ticks de vol). 3 = un plastron en netherite (592) tient
+	 * environ 197 points de vol, contre 432 pour de vraies elytres.
+	 */
+	public static final int ELYTRA_HARNESS_GLIDE_WEAR = 3;
+
+	// ==================================================================
+	// 33 ter. Bibliotheque sculptee : nom du livre vise
+	// ==================================================================
+
+	/**
+	 * Duree d'affichage du nom (au-dessus de la barre d'objets), en ticks,
+	 * une fois que le regard quitte le livre. Tant qu'on le regarde, il reste.
+	 */
+	public static final int CHISELED_BOOKSHELF_NAME_TICKS = 20;
+
+	/** true : un livre enchante affiche ses enchantements plutot que "Livre enchante". */
+	public static final boolean CHISELED_BOOKSHELF_SHOW_ENCHANTMENTS = true;
+
+	// ==================================================================
+	// 34. Lumiere dynamique (client uniquement)
+	// ==================================================================
+	// La lumiere de CHAQUE objet / creature est dans les tables en haut de
+	// client/light/DynamicLightSources.java. Ici : portee, fluidite, cout.
+
+	/**
+	 * Perte de lumiere par bloc de distance. 1.0 = comme une torche posee
+	 * (vanilla). Plus haut = halo plus serre.
+	 */
+	public static final float DYNAMIC_LIGHT_FALLOFF_PER_BLOCK = 4.0F;
+
+	/**
+	 * Rayon maximal d'une source, en blocs. Une source plus forte que ce rayon
+	 * ne le permet decroit plus vite pour s'eteindre pile a ce rayon.
+	 * C'est LE reglage de cout : chaque bloc de rayon en plus = plus de
+	 * sections de chunk a reconstruire quand la source bouge.
+	 */
+	public static final float DYNAMIC_LIGHT_MAX_RADIUS = 10.0F;
+
+	/** Distance (blocs, depuis la camera) au-dela de laquelle les sources sont ignorees. */
+	public static final double DYNAMIC_LIGHT_SOURCE_RANGE = 64.0;
+
+	/** Nombre maximal de sources actives (les plus proches de la camera gagnent). */
+	public static final int DYNAMIC_LIGHT_MAX_SOURCES = 48;
+
+	/** Mise a jour des sources tous les N ticks. 1 = 20 fois par seconde (le plus fluide). */
+	public static final int DYNAMIC_LIGHT_UPDATE_INTERVAL_TICKS = 1;
+
+	/**
+	 * Deplacement minimal (blocs) avant de re-eclairer le decor. Plus petit =
+	 * plus fluide mais plus de reconstructions de chunks.
+	 */
+	public static final double DYNAMIC_LIGHT_MOVE_THRESHOLD = 0.25;
+
+	/** Variation minimale de luminosite (0 a 15) avant de re-eclairer le decor. */
+	public static final float DYNAMIC_LIGHT_CHANGE_THRESHOLD = 0.5F;
+
+	/**
+	 * Hauteur de la source sur une creature, en fraction de sa taille
+	 * (0 = pieds, 1 = sommet). 0.7 = a peu pres la main.
+	 */
+	public static final float DYNAMIC_LIGHT_SOURCE_HEIGHT = 0.7F;
+
+	/** Lumiere d'une entite en feu (creature, fleche enflammee...). 0 = aucune. */
+	public static final float DYNAMIC_LIGHT_ON_FIRE = 12.0F;
+
+	/** Lumiere d'un creeper au moment d'exploser (monte progressivement). */
+	public static final float DYNAMIC_LIGHT_CREEPER_MAX = 10.0F;
+
+	/** Lumiere d'un calmar luisant (s'eteint quand il est blesse, comme son rendu). */
+	public static final float DYNAMIC_LIGHT_GLOW_SQUID = 8.0F;
+
+	/** Lumiere d'une piece d'equipement a garniture lumineuse / pulsante. */
+	public static final float DYNAMIC_LIGHT_GLOWING_TRIM = 5.0F;
+	public static final float DYNAMIC_LIGHT_ECHO_TRIM = 4.0F;
+
+	/** true : torches, feux de camp... tenus ou laches s'eteignent sous l'eau. */
+	public static final boolean DYNAMIC_LIGHT_WATER_SENSITIVE = true;
+
+	/** true : les creatures et objets sont eux-memes eclaires (pas seulement le decor). */
+	public static final boolean DYNAMIC_LIGHT_ON_ENTITIES = true;
 
 	// ==================================================================
 	// Conversions (pour ne pas dupliquer ces calculs dans le reste du code)

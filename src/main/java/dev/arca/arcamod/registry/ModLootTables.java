@@ -8,6 +8,11 @@ import dev.arca.arcamod.config.ArcaFeature;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 
 import net.minecraft.advancements.predicates.ItemPredicate;
+import net.minecraft.advancements.predicates.entity.EntityPredicate;
+import net.minecraft.advancements.predicates.entity.EntityTypePredicate;
+import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -84,6 +89,34 @@ public final class ModLootTables {
 						.setRolls(ConstantValue.exactly(1.0F))
 						.when(LootItemRandomChanceCondition.randomChance(ArcaBalance.NAUTILUS_SHELL_DROP_CHANCE))
 						.add(LootItem.lootTableItem(Items.NAUTILUS_SHELL)));
+				return;
+			}
+
+			// Creeper charge : la table vanilla choisit le crane selon le type
+			// du mob tue. On ajoute une pool pour l'Enderman ; Creeper.killedEntity
+			// garantit toujours une seule tete par explosion.
+			if (key.equals(BuiltInLootTables.CHARGED_CREEPER) && ArcaFeature.ENDERMAN_HEAD_DROPS.isEnabled()) {
+				LootPool.Builder pool = LootPool.lootPool()
+						.setRolls(ConstantValue.exactly(1.0F))
+						.when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
+								EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(
+										registries.lookupOrThrow(Registries.ENTITY_TYPE), EntityTypes.ENDERMAN))))
+						.add(LootItem.lootTableItem(ModItems.ENDERMAN_HEAD));
+
+				if (ArcaBalance.ENDERMAN_HEAD_CHARGED_CREEPER_CHANCE < 1.0F) {
+					pool.when(LootItemRandomChanceCondition.randomChance(ArcaBalance.ENDERMAN_HEAD_CHARGED_CREEPER_CHANCE));
+				}
+
+				builder.withPool(pool);
+				return;
+			}
+
+			// Epaves : le modele d'amelioration en or rose, dans le coffre au tresor.
+			if (key.equals(BuiltInLootTables.SHIPWRECK_TREASURE) && ArcaFeature.PINK_GOLD_TEMPLATE_LOOT.isEnabled()) {
+				builder.withPool(LootPool.lootPool()
+						.setRolls(ConstantValue.exactly(1.0F))
+						.when(LootItemRandomChanceCondition.randomChance(ArcaBalance.PINK_GOLD_TEMPLATE_SHIPWRECK_CHANCE))
+						.add(LootItem.lootTableItem(ModItems.PINK_GOLD_UPGRADE_SMITHING_TEMPLATE)));
 				return;
 			}
 

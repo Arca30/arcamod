@@ -2,14 +2,15 @@
 	"type": "minecraft:crafting_shaped",
 	"category": "misc",
 	"key": {
-		"B": "minecraft:echo_shard",
-		"O": "minecraft:obsidian",
-		"D": "minecraft:resin_clump"
+		"B": "minecraft:book",
+		"E": "minecraft:echo_shard",
+		"S": "minecraft:sculk",
+		"C": "minecraft:sculk_catalyst"
 	},
 	"pattern": [
 		" B ",
-		"DOD",
-		"OOO"
+		"ESE",
+		"SCS"
 	],
 	"result": {
 		"id": "arcamod:disenchanter"

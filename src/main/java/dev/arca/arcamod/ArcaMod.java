@@ -1,10 +1,13 @@
 package dev.arca.arcamod;
 
+import dev.arca.arcamod.util.ElytraSlot;
+import dev.arca.arcamod.command.PinkGoldDebugCommand;
 import dev.arca.arcamod.registry.ModBlockEntities;
 import dev.arca.arcamod.registry.ModBlocks;
 import dev.arca.arcamod.registry.ModCreativeTabs;
 import dev.arca.arcamod.registry.ModDataComponents;
 import dev.arca.arcamod.registry.ModDecorBlocks;
+import dev.arca.arcamod.registry.ModEffects;
 import dev.arca.arcamod.registry.ModEntities;
 import dev.arca.arcamod.registry.ModEvents;
 import dev.arca.arcamod.registry.ModExampleLoot;
@@ -18,6 +21,7 @@ import dev.arca.arcamod.registry.ModRecipes;
 import dev.arca.arcamod.registry.ModWorldGen;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 
 import net.minecraft.resources.Identifier;
 
@@ -38,6 +42,9 @@ public class ArcaMod implements ModInitializer {
 		// BlockEntity a besoin de connaitre son bloc.
 		// Les composants d'objet d'abord : des items les utilisent.
 		ModDataComponents.init();
+		// Piece jointe "elytres rangees" du joueur (slot d'elytres).
+		ElytraSlot.init();
+		ModEffects.init();
 		ModBlocks.init();
 		ModDecorBlocks.init();
 		ModItems.init();
@@ -58,6 +65,10 @@ public class ArcaMod implements ModInitializer {
 		// des biomes ensuite.
 		ModFeatures.init();
 		ModWorldGen.init();
+
+		// Commandes de test (operateurs) : /arcamod pinkgold scan [rayon].
+		CommandRegistrationCallback.EVENT.register(
+				(dispatcher, buildContext, selection) -> PinkGoldDebugCommand.register(dispatcher));
 
 		LOGGER.info("ArcaMod loaded");
 	}

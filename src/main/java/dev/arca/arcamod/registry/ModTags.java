@@ -57,6 +57,18 @@ public final class ModTags {
 	public static final TagKey<Block> BONE_ARROW_BREAKS =
 			TagKey.create(Registries.BLOCK, ArcaMod.id("bone_arrow_breaks"));
 
+	/** Ce qui repare les outils en or rose (defaut : le lingot d'or rose). */
+	public static final TagKey<Item> PINK_GOLD_TOOL_MATERIALS =
+			TagKey.create(Registries.ITEM, ArcaMod.id("pink_gold_tool_materials"));
+
+	/** Ce qui repare l'armure en or rose (defaut : le lingot d'or rose). */
+	public static final TagKey<Item> REPAIRS_PINK_GOLD_ARMOR =
+			TagKey.create(Registries.ITEM, ArcaMod.id("repairs_pink_gold_armor"));
+
+	/** Blocs sur lesquels pousse le buisson de piments des ames (defaut : sable et terre des ames). */
+	public static final TagKey<Block> SOUL_PEPPER_PLANTABLE_ON =
+			TagKey.create(Registries.BLOCK, ArcaMod.id("soul_pepper_plantable_on"));
+
 	private ModTags() {
 	}
 }

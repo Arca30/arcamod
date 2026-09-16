@@ -2,11 +2,15 @@
 	"type": "minecraft:crafting_shaped",
 	"category": "equipment",
 	"key": {
+		"L": "minecraft:leather",
+		"B": "arcamod:bat_wing",
+		"S": "minecraft:string",
 		"M": "minecraft:phantom_membrane"
 	},
 	"pattern": [
-		"M M",
-		"MMM"
+		" L ",
+		"BSB",
+		"M M"
 	],
 	"result": {
 		"id": "arcamod:patchwork_elytra"

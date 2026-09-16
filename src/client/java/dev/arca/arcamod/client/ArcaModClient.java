@@ -1,6 +1,11 @@
 package dev.arca.arcamod.client;
 
+import dev.arca.arcamod.client.light.DynamicLights;
+import dev.arca.arcamod.client.render.CopperOxidationModelProperty;
 import dev.arca.arcamod.client.render.DisenchanterRenderer;
+import dev.arca.arcamod.client.render.EndermanHeadModel;
+import dev.arca.arcamod.client.render.EndermanHeadRenderer;
+import dev.arca.arcamod.client.render.EndermanHeadSpecialRenderer;
 import dev.arca.arcamod.client.render.PotionCauldronTint;
 import dev.arca.arcamod.client.render.ScarecrowDamageNumberRenderer;
 import dev.arca.arcamod.client.render.ScarecrowRenderer;
@@ -17,12 +22,15 @@ import dev.arca.arcamod.registry.ModBlockEntities;
 import dev.arca.arcamod.registry.ModDataComponents;
 import dev.arca.arcamod.registry.ModEntities;
 import dev.arca.arcamod.registry.ModMenus;
+import dev.arca.arcamod.util.CopperOxidation;
 
 import dev.arca.arcamod.registry.ModBlocks;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockColorRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -32,6 +40,7 @@ import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.item.properties.select.SelectItemModelProperties;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.special.SpecialModelRenderers;
 
 public class ArcaModClient implements ClientModInitializer {
 	@Override
@@ -39,6 +48,11 @@ public class ArcaModClient implements ClientModInitializer {
 		// Associe le type de menu (commun) a son ecran (client). Sans cette
 		// ligne, ouvrir le bloc affiche un ecran vide et un warning dans le log.
 		MenuScreens.register(ModMenus.XP_BOTTLER, XpBottlerScreen::new);
+
+		// Slot d'elytres du plastron : etat recu du serveur, bouton de l'inventaire.
+		ElytraSlotClient.init();
+		// Nom du livre vise dans une bibliotheque sculptee.
+		ChiseledBookshelfHud.register();
 		MenuScreens.register(ModMenus.DISENCHANTER, DisenchanterScreen::new);
 		MenuScreens.register(ModMenus.QUIVER, QuiverScreen::new);
 		MenuScreens.register(ModMenus.FLETCHING_TABLE, FletchingScreen::new);
@@ -46,11 +60,29 @@ public class ArcaModClient implements ClientModInitializer {
 		// Propriete de modele "arcamod:arrow_parts" : choisit le modele de la
 		// fleche selon ses pieces (assets/minecraft/items/*arrow.json).
 		SelectItemModelProperties.ID_MAPPER.put(ArcaMod.id("arrow_parts"), ArrowPartsModelProperty.TYPE);
+		// Propriete "arcamod:copper_oxidation" : apparence de l'equipement en
+		// cuivre oxyde (assets/minecraft/items/copper_*.json).
+		SelectItemModelProperties.ID_MAPPER.put(ArcaMod.id("copper_oxidation"), CopperOxidationModelProperty.TYPE);
 
 		// Infobulles : garniture lumineuse, fleche choisie du carquois.
 		ItemTooltipCallback.EVENT.register((stack, context, flag, lines) -> {
 			if (stack.has(ModDataComponents.GLOWING_TRIM)) {
 				lines.add(Component.translatable("tooltip.arcamod.glowing_trim").withStyle(ChatFormatting.AQUA));
+			}
+
+			if (stack.has(ModDataComponents.PULSING_TRIM)) {
+				lines.add(Component.translatable("tooltip.arcamod.pulsing_trim").withStyle(ChatFormatting.DARK_AQUA));
+			}
+
+			if (stack.has(ModDataComponents.ELYTRA_HARNESS)) {
+				lines.add(Component.translatable("tooltip.arcamod.elytra_harness").withStyle(ChatFormatting.LIGHT_PURPLE));
+			}
+
+			int oxidation = CopperOxidation.stage(stack);
+
+			if (oxidation > 0) {
+				lines.add(Component.translatable("tooltip.arcamod.copper_oxidation." + CopperOxidation.STAGE_NAMES[oxidation])
+						.withStyle(ChatFormatting.DARK_GREEN));
 			}
 
 			ArrowParts parts = stack.get(ModDataComponents.ARROW_PARTS);
@@ -80,6 +112,17 @@ public class ArcaModClient implements ClientModInitializer {
 		// boule de neige ou un oeuf.
 		EntityRenderers.register(ModEntities.THROWN_PEBBLE, ThrownItemRenderer::new);
 		EntityRenderers.register(ModEntities.THROWN_DAGGER, ThrownDaggerRenderer::new);
+		// Le projectile du lance-pierre s'affiche comme sa munition.
+		EntityRenderers.register(ModEntities.SLINGSHOT_SHOT, ThrownItemRenderer::new);
+
+		// Tete d'Enderman : modele, rendu pose (bloc) et rendu en item
+		// ("type": "arcamod:enderman_head" dans assets/arcamod/items/).
+		ModelLayerRegistry.registerModelLayer(EndermanHeadModel.LAYER, EndermanHeadModel::createLayer);
+		BlockEntityRenderers.register(ModBlockEntities.ENDERMAN_HEAD, EndermanHeadRenderer::new);
+		SpecialModelRenderers.ID_MAPPER.put(ArcaMod.id("enderman_head"), EndermanHeadSpecialRenderer.Unbaked.MAP_CODEC);
+
+		// Resine : chaque appui sur saut d'un joueur englue est envoye au serveur.
+		ResinJumpClient.register();
 		// Le siege du feu de camp est invisible : seul le joueur assis se voit.
 		EntityRenderers.register(ModEntities.CAMPFIRE_SEAT, NoopRenderer::new);
 		EntityRenderers.register(ModEntities.SCARECROW, ScarecrowRenderer::new);
@@ -89,6 +132,10 @@ public class ArcaModClient implements ClientModInitializer {
 		// d'enchantement. (Registre vanilla : celui de Fabric,
 		// BlockEntityRendererRegistry, est deprecie.)
 		BlockEntityRenderers.register(ModBlockEntities.DISENCHANTER, DisenchanterRenderer::new);
+
+		// Lumiere dynamique : torches tenues, fleches enflammees, objets
+		// lumineux au sol... (client/light, ArcaBalance section 34).
+		ClientTickEvents.END_CLIENT_TICK.register(DynamicLights::tick);
 	}
 
 	/** Ligne "Pointe : effet" de l'infobulle, seulement pour une piece speciale. */

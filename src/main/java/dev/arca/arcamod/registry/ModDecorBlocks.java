@@ -1,5 +1,7 @@
 package dev.arca.arcamod.registry;
 
+import dev.arca.arcamod.block.MossSlabBlock;
+import dev.arca.arcamod.block.MossStairBlock;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -131,8 +133,17 @@ public final class ModDecorBlocks {
 
 	private static void stairsAndSlab(String base, net.minecraft.world.level.block.state.BlockState baseState,
 			java.util.function.Supplier<BlockBehaviour.Properties> properties) {
-		register(base + "_stairs", stairProperties -> new StairBlock(baseState, stairProperties), properties.get());
-		register(base + "_slab", SlabBlock::new, properties.get());
+		// La mousse garde sa propagation a la poudre d'os, dalle et escalier compris.
+		boolean moss = "moss_block".equals(base);
+
+		register(base + "_stairs",
+				stairProperties -> moss
+						? new MossStairBlock(baseState, stairProperties)
+						: new StairBlock(baseState, stairProperties),
+				properties.get());
+		register(base + "_slab",
+				slabProperties -> moss ? new MossSlabBlock(slabProperties) : new SlabBlock(slabProperties),
+				properties.get());
 	}
 
 	/**

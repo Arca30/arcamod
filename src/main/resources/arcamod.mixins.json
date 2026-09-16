@@ -27,7 +27,17 @@
 		"LivingEntityArrowMixin",
 		"DisplayAccessor",
 		"TextDisplayAccessor",
-		"PlayerCritMixin"
+		"PlayerCritMixin",
+		"BrushItemSulfurMixin",
+		"ItemStackOxidationMixin",
+		"EntityThunderHitMixin",
+		"LivingEntityElytraHarnessMixin",
+		"SmithingTransformRecipeMixin",
+		"InventoryMenuMixin",
+		"AbstractContainerMenuInvoker",
+		"PlayerAdvancementsMixin",
+		"ChiseledBookShelfBlockEntityMixin",
+		"PlayerElytraSlotMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

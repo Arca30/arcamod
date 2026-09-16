@@ -384,3 +384,49 @@ N'importe quelle bannière (sol ou mur) à moins de `CAMP_BANNER_CAMPFIRE_RADIUS
 blocs d'un feu de camp allumé : aucun monstre n'apparaît naturellement dans un
 rayon de `CAMP_BANNER_RADIUS` blocs. Les monstres déjà présents, les spawners,
 les patrouilles, les phantoms et les raids ne sont pas concernés.
+
+## 20. Lance-pierre et résine
+
+Valeurs : `ArcaBalance` sections 26 (lance-pierre, munitions) et 27 (résine).
+
+| Fichier de données | Rôle |
+| --- | --- |
+| `data/arcamod/recipe/slingshot.json` | bâton + ficelle de fibres (diagonale) + cuir sous la ficelle |
+| `data/minecraft/enchantment/power.json`, `knockback.json` | copies vanilla, `supported_items` pointe vers `#arcamod:enchantable/power` / `knockback` |
+| `data/arcamod/tags/item/enchantable/*.json` | ajoute le lance-pierre à Puissance et Recul |
+| `assets/arcamod/items/slingshot.json` | animation de tension : `scale` = 1 / `SLINGSHOT_FULL_DRAW_TICKS` (0.0625 pour 16) |
+
+La pointe de résine de la table d'archerie : `ARROW_RESIN_*` (section 21).
+
+## 21. Tête d'Enderman, soufre
+
+- Tête : `ArcaBalance` section 28. Lâchée via la table `minecraft:charged_creeper/root`
+  (code : `ModLootTables`). Portée, elle déguise comme une citrouille
+  (`data/minecraft/tags/item/gaze_disguise_equipment.json`).
+- Soufre : section 29. Poudre à canon : `data/arcamod/recipe/gunpowder_from_sulfur.json`
+  (charbon + poudre de soufre + 2 poudres d'os = 2 poudres à canon).
+
+## 22. Or rose
+
+Valeurs : `ArcaBalance` section 30 (outils, armure, génération).
+
+| Fichier de données | Rôle |
+| --- | --- |
+| `data/arcamod/recipe/raw_pink_gold.json` | 4 cuivre brut + 4 or brut = 1 or rose brut (changer `count`) |
+| `data/arcamod/recipe/pink_gold_*_from_golden_smithing.json` / `_from_copper_smithing.json` | amélioration à la table de forge, garde les enchantements |
+| `data/arcamod/trim_material/pink_gold.json` | couleur de garniture |
+| `data/minecraft/tags/block/needs_iron_tool.json` | minerais : pioche en fer minimum |
+
+## 23. Modèle de forge, cuivre oxydé, piment des âmes, écho
+
+Valeurs : `ArcaBalance` sections 30 (chance dans les épaves), 31 (cuivre), 32 (piment), 33 (écho).
+
+| Fichier de données | Rôle |
+| --- | --- |
+| `data/arcamod/recipe/pink_gold_upgrade_smithing_template.json` | tuf autour, modèle au-dessus, lingot au centre : 2 modèles |
+| `data/arcamod/recipe/pink_gold_*_smithing.json` | le champ `template` exige le modèle |
+| `data/arcamod/worldgen/placed_feature/patch_soul_pepper_bush.json` | fréquence (`count`) et étalement des buissons dans la vallée des âmes |
+| `data/arcamod/loot_table/blocks/soul_pepper_bush.json` | piments lâchés quand on CASSE le buisson (la récolte au clic droit est dans ArcaBalance) |
+| `data/arcamod/tags/block/soul_pepper_plantable_on.json` | blocs où le buisson peut être planté |
+| `data/arcamod/recipe/echo_trim.json` | armure garnie + éclat d'écho = garniture pulsante |
+| `data/minecraft/tags/item/enchantable/sharp_weapon.json` | le trident accepte Tranchant (enclume) |

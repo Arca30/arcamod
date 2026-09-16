@@ -4,6 +4,7 @@ import dev.arca.arcamod.ArcaBalance;
 import dev.arca.arcamod.ArcaMod;
 import dev.arca.arcamod.config.ArcaFeature;
 import dev.arca.arcamod.worldgen.ClutterPatchFeature;
+import dev.arca.arcamod.worldgen.PinkGoldContactFeature;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -34,6 +35,12 @@ public final class ModFeatures {
 					() -> ModBlocks.FALLEN_STICKS, ArcaFeature.WORLDGEN_STICKS, ArcaBalance.STICK_PATCH_CHANCE,
 					ArcaBalance.STICK_PATCH_MIN_BLOCKS, ArcaBalance.STICK_PATCH_MAX_BLOCKS,
 					ArcaBalance.STICK_PATCH_SPREAD));
+
+	/** Or rose : remplace des blocs la ou l'or touche le cuivre (voir PinkGoldContactFeature). */
+	public static final Feature<NoneFeatureConfiguration> PINK_GOLD_CONTACT_ORE = Registry.register(
+			BuiltInRegistries.FEATURE,
+			ArcaMod.id("pink_gold_contact_ore"),
+			new PinkGoldContactFeature(NoneFeatureConfiguration.CODEC));
 
 	public static void init() {
 	}

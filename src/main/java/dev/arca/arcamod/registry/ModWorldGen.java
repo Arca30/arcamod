@@ -22,6 +22,8 @@ public final class ModWorldGen {
 	/** Pointent sur data/arcamod/worldgen/placed_feature/*.json. */
 	private static final ResourceKey<PlacedFeature> PEBBLE_PATCH = placedFeature("pebble_patch");
 	private static final ResourceKey<PlacedFeature> STICK_PATCH = placedFeature("stick_patch");
+	private static final ResourceKey<PlacedFeature> PINK_GOLD_CONTACT_ORE = placedFeature("pink_gold_contact_ore");
+	private static final ResourceKey<PlacedFeature> SOUL_PEPPER_BUSH = placedFeature("patch_soul_pepper_bush");
 
 	private static ResourceKey<PlacedFeature> placedFeature(String name) {
 		return ResourceKey.create(Registries.PLACED_FEATURE, ArcaMod.id(name));
@@ -68,6 +70,16 @@ public final class ModWorldGen {
 		// apres le terrain et les arbres.
 		BiomeModifications.addFeature(warmLand(), GenerationStep.Decoration.VEGETAL_DECORATION, PEBBLE_PATCH);
 		BiomeModifications.addFeature(treeCovered(), GenerationStep.Decoration.VEGETAL_DECORATION, STICK_PATCH);
+
+		// Meme etape que les minerais, ajoute APRES eux : l'or et le cuivre du
+		// chunk sont deja en place quand on cherche leurs points de contact.
+		BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Decoration.UNDERGROUND_ORES,
+				PINK_GOLD_CONTACT_ORE);
+
+		// Buissons de piments des ames : uniquement dans la vallee des ames.
+		// Frequence et taille des touffes : placed_feature/patch_soul_pepper_bush.json.
+		BiomeModifications.addFeature(BiomeSelectors.includeByKey(Biomes.SOUL_SAND_VALLEY),
+				GenerationStep.Decoration.VEGETAL_DECORATION, SOUL_PEPPER_BUSH);
 	}
 
 	private ModWorldGen() {

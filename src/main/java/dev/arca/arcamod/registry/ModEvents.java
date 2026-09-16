@@ -2,6 +2,7 @@ package dev.arca.arcamod.registry;
 
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
@@ -16,6 +17,7 @@ import dev.arca.arcamod.config.ArcaFeature;
 import dev.arca.arcamod.entity.CampfireSeat;
 import dev.arca.arcamod.menu.FletchingMenu;
 import dev.arca.arcamod.util.CauldronWashing;
+import dev.arca.arcamod.util.CopperOxidation;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -31,6 +33,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.monster.zombie.Drowned;
 import net.minecraft.world.entity.projectile.hurtingprojectile.LargeFireball;
@@ -63,6 +66,30 @@ public final class ModEvents {
 		registerFletchingTable();
 		registerArrowDipping();
 		registerCampfireResting();
+		registerFieryStrikes();
+		registerCopperOxidation();
+	}
+
+	/**
+	 * Frappe ardente (piment des ames) : un coup au corps a corps enflamme la
+	 * cible, comme Aura de feu. "Corps a corps" = l'attaquant est aussi
+	 * l'entite qui touche (pas une fleche, pas un projectile).
+	 */
+	private static void registerFieryStrikes() {
+		ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamage, damageTaken, blocked) -> {
+			if (blocked || !ArcaFeature.SOUL_PEPPER.isEnabled()
+					|| !(source.getEntity() instanceof LivingEntity attacker) || source.getDirectEntity() != attacker
+					|| !attacker.hasEffect(ModEffects.FIERY_STRIKES)) {
+				return;
+			}
+
+			entity.igniteForSeconds(ArcaBalance.SOUL_PEPPER_IGNITE_SECONDS);
+		});
+	}
+
+	/** Oxydation du cuivre et foudre attiree par le cuivre (voir CopperOxidation). */
+	private static void registerCopperOxidation() {
+		ServerTickEvents.END_LEVEL_TICK.register(CopperOxidation::tickLevel);
 	}
 
 	/**
@@ -478,6 +505,29 @@ public final class ModEvents {
 	 * chaume, qui grisera tout seul avec le temps. Sur du chaume deja
 	 * patine, la hache le decape d'une etape, comme sur le cuivre.
 	 */
+	/**
+	 * Le bloc de chaume correspondant a une botte de foin : le bloc plein,
+	 * mais aussi sa dalle et son escalier (poses par ModDecorBlocks). Rend
+	 * null si ce n'est pas du foin.
+	 */
+	private static Block thatchFromHay(BlockState state) {
+		String thatch = ModDecorBlocks.THATCH_STAGES.getFirst();
+
+		if (state.is(Blocks.HAY_BLOCK)) {
+			return ModDecorBlocks.byName(thatch);
+		}
+
+		if (state.is(ModDecorBlocks.byName("hay_block_slab"))) {
+			return ModDecorBlocks.byName(thatch + "_slab");
+		}
+
+		if (state.is(ModDecorBlocks.byName("hay_block_stairs"))) {
+			return ModDecorBlocks.byName(thatch + "_stairs");
+		}
+
+		return null;
+	}
+
 	private static void registerThatchScraping() {
 		UseBlockCallback.EVENT.register((player, level, hand, hit) -> {
 			if (!ArcaFeature.THATCH.isEnabled()) {
@@ -493,9 +543,12 @@ public final class ModEvents {
 			BlockPos pos = hit.getBlockPos();
 			BlockState state = level.getBlockState(pos);
 			BlockState result;
+			Block thatch = thatchFromHay(state);
 
-			if (state.is(Blocks.HAY_BLOCK)) {
-				result = ModDecorBlocks.byName(ModDecorBlocks.THATCH_STAGES.getFirst()).withPropertiesOf(state);
+			if (thatch != null) {
+				// withPropertiesOf garde l'orientation et la moitie : un
+				// escalier de foin donne le meme escalier en chaume.
+				result = thatch.withPropertiesOf(state);
 			} else {
 				// Sur du chaume : la hache enleve la cire, ou rajeunit d'une
 				// etape s'il n'y en a pas.

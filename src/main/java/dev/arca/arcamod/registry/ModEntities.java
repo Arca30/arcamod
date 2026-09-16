@@ -5,6 +5,7 @@ import dev.arca.arcamod.entity.CampfireSeat;
 import dev.arca.arcamod.entity.ThrownDagger;
 import dev.arca.arcamod.entity.Scarecrow;
 import dev.arca.arcamod.entity.ScarecrowDamageNumber;
+import dev.arca.arcamod.entity.SlingshotShot;
 import dev.arca.arcamod.entity.ThrownPebble;
 
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -23,6 +24,14 @@ public final class ModEntities {
 	/** Memes reglages que la boule de neige vanilla. */
 	public static final EntityType<ThrownPebble> THROWN_PEBBLE = register("thrown_pebble",
 			EntityType.Builder.<ThrownPebble>of(ThrownPebble::new, MobCategory.MISC)
+					.noLootTable()
+					.sized(0.25F, 0.25F)
+					.clientTrackingRange(4)
+					.updateInterval(10));
+
+	/** Le projectile du lance-pierre : memes reglages que la boule de neige. */
+	public static final EntityType<SlingshotShot> SLINGSHOT_SHOT = register("slingshot_shot",
+			EntityType.Builder.<SlingshotShot>of(SlingshotShot::new, MobCategory.MISC)
 					.noLootTable()
 					.sized(0.25F, 0.25F)
 					.clientTrackingRange(4)
