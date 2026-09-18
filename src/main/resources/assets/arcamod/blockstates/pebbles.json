@@ -18,6 +18,60 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_1_5"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_6"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_7"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_8"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_9"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_10"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_11"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_12"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_13"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_14"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_15"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_16"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_17"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_18"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_19"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_20"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_21"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_22"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_23"
 			}
 		],
 		"facing=north,pebbles=1,natural=false": [
@@ -38,6 +92,60 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_1_5"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_6"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_7"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_8"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_9"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_10"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_11"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_12"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_13"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_14"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_15"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_16"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_17"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_18"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_19"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_20"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_21"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_22"
+			},
+			{
+				"model": "arcamod:block/pebbles_1_23"
 			}
 		],
 		"facing=north,pebbles=2,natural=true": [
@@ -58,6 +166,60 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_2_5"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_6"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_7"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_8"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_9"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_10"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_11"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_12"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_13"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_14"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_15"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_16"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_17"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_18"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_19"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_20"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_21"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_22"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_23"
 			}
 		],
 		"facing=north,pebbles=2,natural=false": [
@@ -78,6 +240,60 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_2_5"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_6"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_7"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_8"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_9"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_10"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_11"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_12"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_13"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_14"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_15"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_16"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_17"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_18"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_19"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_20"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_21"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_22"
+			},
+			{
+				"model": "arcamod:block/pebbles_2_23"
 			}
 		],
 		"facing=north,pebbles=3,natural=true": [
@@ -98,6 +314,60 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_3_5"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_6"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_7"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_8"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_9"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_10"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_11"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_12"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_13"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_14"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_15"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_16"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_17"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_18"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_19"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_20"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_21"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_22"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_23"
 			}
 		],
 		"facing=north,pebbles=3,natural=false": [
@@ -118,6 +388,60 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_3_5"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_6"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_7"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_8"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_9"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_10"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_11"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_12"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_13"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_14"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_15"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_16"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_17"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_18"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_19"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_20"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_21"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_22"
+			},
+			{
+				"model": "arcamod:block/pebbles_3_23"
 			}
 		],
 		"facing=north,pebbles=4,natural=true": [
@@ -138,6 +462,60 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_4_5"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_6"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_7"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_8"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_9"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_10"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_11"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_12"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_13"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_14"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_15"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_16"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_17"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_18"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_19"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_20"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_21"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_22"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_23"
 			}
 		],
 		"facing=north,pebbles=4,natural=false": [
@@ -158,6 +536,60 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_4_5"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_6"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_7"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_8"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_9"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_10"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_11"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_12"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_13"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_14"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_15"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_16"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_17"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_18"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_19"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_20"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_21"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_22"
+			},
+			{
+				"model": "arcamod:block/pebbles_4_23"
 			}
 		],
 		"facing=north,pebbles=5,natural=true": [
@@ -178,6 +610,60 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_5_5"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_6"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_7"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_8"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_9"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_10"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_11"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_12"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_13"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_14"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_15"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_16"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_17"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_18"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_19"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_20"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_21"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_22"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_23"
 			}
 		],
 		"facing=north,pebbles=5,natural=false": [
@@ -198,6 +684,60 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_5_5"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_6"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_7"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_8"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_9"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_10"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_11"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_12"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_13"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_14"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_15"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_16"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_17"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_18"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_19"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_20"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_21"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_22"
+			},
+			{
+				"model": "arcamod:block/pebbles_5_23"
 			}
 		],
 		"facing=east,pebbles=1,natural=true": [
@@ -223,6 +763,78 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_1_5",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_6",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_7",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_8",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_9",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_10",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_11",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_12",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_13",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_14",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_15",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_16",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_17",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_18",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_19",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_20",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_21",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_22",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_23",
 				"y": 90
 			}
 		],
@@ -250,6 +862,78 @@
 			{
 				"model": "arcamod:block/pebbles_1_5",
 				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_6",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_7",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_8",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_9",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_10",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_11",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_12",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_13",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_14",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_15",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_16",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_17",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_18",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_19",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_20",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_21",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_22",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_1_23",
+				"y": 90
 			}
 		],
 		"facing=east,pebbles=2,natural=true": [
@@ -275,6 +959,78 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_2_5",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_6",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_7",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_8",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_9",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_10",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_11",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_12",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_13",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_14",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_15",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_16",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_17",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_18",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_19",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_20",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_21",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_22",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_23",
 				"y": 90
 			}
 		],
@@ -302,6 +1058,78 @@
 			{
 				"model": "arcamod:block/pebbles_2_5",
 				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_6",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_7",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_8",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_9",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_10",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_11",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_12",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_13",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_14",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_15",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_16",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_17",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_18",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_19",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_20",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_21",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_22",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_2_23",
+				"y": 90
 			}
 		],
 		"facing=east,pebbles=3,natural=true": [
@@ -327,6 +1155,78 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_3_5",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_6",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_7",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_8",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_9",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_10",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_11",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_12",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_13",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_14",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_15",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_16",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_17",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_18",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_19",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_20",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_21",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_22",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_23",
 				"y": 90
 			}
 		],
@@ -354,6 +1254,78 @@
 			{
 				"model": "arcamod:block/pebbles_3_5",
 				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_6",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_7",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_8",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_9",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_10",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_11",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_12",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_13",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_14",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_15",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_16",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_17",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_18",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_19",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_20",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_21",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_22",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_3_23",
+				"y": 90
 			}
 		],
 		"facing=east,pebbles=4,natural=true": [
@@ -379,6 +1351,78 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_4_5",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_6",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_7",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_8",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_9",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_10",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_11",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_12",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_13",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_14",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_15",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_16",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_17",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_18",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_19",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_20",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_21",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_22",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_23",
 				"y": 90
 			}
 		],
@@ -406,6 +1450,78 @@
 			{
 				"model": "arcamod:block/pebbles_4_5",
 				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_6",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_7",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_8",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_9",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_10",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_11",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_12",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_13",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_14",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_15",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_16",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_17",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_18",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_19",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_20",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_21",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_22",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_4_23",
+				"y": 90
 			}
 		],
 		"facing=east,pebbles=5,natural=true": [
@@ -431,6 +1547,78 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_5_5",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_6",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_7",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_8",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_9",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_10",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_11",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_12",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_13",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_14",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_15",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_16",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_17",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_18",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_19",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_20",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_21",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_22",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_23",
 				"y": 90
 			}
 		],
@@ -458,6 +1646,78 @@
 			{
 				"model": "arcamod:block/pebbles_5_5",
 				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_6",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_7",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_8",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_9",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_10",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_11",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_12",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_13",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_14",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_15",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_16",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_17",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_18",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_19",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_20",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_21",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_22",
+				"y": 90
+			},
+			{
+				"model": "arcamod:block/pebbles_5_23",
+				"y": 90
 			}
 		],
 		"facing=south,pebbles=1,natural=true": [
@@ -483,6 +1743,78 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_1_5",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_6",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_7",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_8",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_9",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_10",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_11",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_12",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_13",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_14",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_15",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_16",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_17",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_18",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_19",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_20",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_21",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_22",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_23",
 				"y": 180
 			}
 		],
@@ -510,6 +1842,78 @@
 			{
 				"model": "arcamod:block/pebbles_1_5",
 				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_6",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_7",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_8",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_9",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_10",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_11",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_12",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_13",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_14",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_15",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_16",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_17",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_18",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_19",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_20",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_21",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_22",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_1_23",
+				"y": 180
 			}
 		],
 		"facing=south,pebbles=2,natural=true": [
@@ -535,6 +1939,78 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_2_5",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_6",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_7",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_8",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_9",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_10",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_11",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_12",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_13",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_14",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_15",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_16",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_17",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_18",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_19",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_20",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_21",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_22",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_23",
 				"y": 180
 			}
 		],
@@ -562,6 +2038,78 @@
 			{
 				"model": "arcamod:block/pebbles_2_5",
 				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_6",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_7",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_8",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_9",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_10",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_11",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_12",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_13",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_14",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_15",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_16",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_17",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_18",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_19",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_20",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_21",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_22",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_2_23",
+				"y": 180
 			}
 		],
 		"facing=south,pebbles=3,natural=true": [
@@ -587,6 +2135,78 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_3_5",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_6",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_7",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_8",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_9",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_10",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_11",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_12",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_13",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_14",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_15",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_16",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_17",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_18",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_19",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_20",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_21",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_22",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_23",
 				"y": 180
 			}
 		],
@@ -614,6 +2234,78 @@
 			{
 				"model": "arcamod:block/pebbles_3_5",
 				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_6",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_7",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_8",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_9",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_10",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_11",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_12",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_13",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_14",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_15",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_16",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_17",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_18",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_19",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_20",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_21",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_22",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_3_23",
+				"y": 180
 			}
 		],
 		"facing=south,pebbles=4,natural=true": [
@@ -639,6 +2331,78 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_4_5",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_6",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_7",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_8",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_9",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_10",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_11",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_12",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_13",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_14",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_15",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_16",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_17",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_18",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_19",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_20",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_21",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_22",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_23",
 				"y": 180
 			}
 		],
@@ -666,6 +2430,78 @@
 			{
 				"model": "arcamod:block/pebbles_4_5",
 				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_6",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_7",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_8",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_9",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_10",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_11",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_12",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_13",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_14",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_15",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_16",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_17",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_18",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_19",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_20",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_21",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_22",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_4_23",
+				"y": 180
 			}
 		],
 		"facing=south,pebbles=5,natural=true": [
@@ -691,6 +2527,78 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_5_5",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_6",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_7",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_8",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_9",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_10",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_11",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_12",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_13",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_14",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_15",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_16",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_17",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_18",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_19",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_20",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_21",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_22",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_23",
 				"y": 180
 			}
 		],
@@ -718,6 +2626,78 @@
 			{
 				"model": "arcamod:block/pebbles_5_5",
 				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_6",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_7",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_8",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_9",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_10",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_11",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_12",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_13",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_14",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_15",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_16",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_17",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_18",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_19",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_20",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_21",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_22",
+				"y": 180
+			},
+			{
+				"model": "arcamod:block/pebbles_5_23",
+				"y": 180
 			}
 		],
 		"facing=west,pebbles=1,natural=true": [
@@ -743,6 +2723,78 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_1_5",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_6",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_7",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_8",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_9",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_10",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_11",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_12",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_13",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_14",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_15",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_16",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_17",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_18",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_19",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_20",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_21",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_22",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_23",
 				"y": 270
 			}
 		],
@@ -770,6 +2822,78 @@
 			{
 				"model": "arcamod:block/pebbles_1_5",
 				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_6",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_7",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_8",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_9",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_10",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_11",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_12",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_13",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_14",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_15",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_16",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_17",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_18",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_19",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_20",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_21",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_22",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_1_23",
+				"y": 270
 			}
 		],
 		"facing=west,pebbles=2,natural=true": [
@@ -795,6 +2919,78 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_2_5",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_6",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_7",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_8",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_9",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_10",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_11",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_12",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_13",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_14",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_15",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_16",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_17",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_18",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_19",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_20",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_21",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_22",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_23",
 				"y": 270
 			}
 		],
@@ -822,6 +3018,78 @@
 			{
 				"model": "arcamod:block/pebbles_2_5",
 				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_6",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_7",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_8",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_9",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_10",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_11",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_12",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_13",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_14",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_15",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_16",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_17",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_18",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_19",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_20",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_21",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_22",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_2_23",
+				"y": 270
 			}
 		],
 		"facing=west,pebbles=3,natural=true": [
@@ -847,6 +3115,78 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_3_5",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_6",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_7",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_8",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_9",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_10",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_11",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_12",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_13",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_14",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_15",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_16",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_17",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_18",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_19",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_20",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_21",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_22",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_23",
 				"y": 270
 			}
 		],
@@ -874,6 +3214,78 @@
 			{
 				"model": "arcamod:block/pebbles_3_5",
 				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_6",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_7",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_8",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_9",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_10",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_11",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_12",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_13",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_14",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_15",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_16",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_17",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_18",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_19",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_20",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_21",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_22",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_3_23",
+				"y": 270
 			}
 		],
 		"facing=west,pebbles=4,natural=true": [
@@ -899,6 +3311,78 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_4_5",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_6",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_7",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_8",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_9",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_10",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_11",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_12",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_13",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_14",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_15",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_16",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_17",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_18",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_19",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_20",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_21",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_22",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_23",
 				"y": 270
 			}
 		],
@@ -926,6 +3410,78 @@
 			{
 				"model": "arcamod:block/pebbles_4_5",
 				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_6",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_7",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_8",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_9",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_10",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_11",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_12",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_13",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_14",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_15",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_16",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_17",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_18",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_19",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_20",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_21",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_22",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_4_23",
+				"y": 270
 			}
 		],
 		"facing=west,pebbles=5,natural=true": [
@@ -952,6 +3508,78 @@
 			{
 				"model": "arcamod:block/pebbles_5_5",
 				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_6",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_7",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_8",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_9",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_10",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_11",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_12",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_13",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_14",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_15",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_16",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_17",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_18",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_19",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_20",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_21",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_22",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_23",
+				"y": 270
 			}
 		],
 		"facing=west,pebbles=5,natural=false": [
@@ -977,6 +3605,78 @@
 			},
 			{
 				"model": "arcamod:block/pebbles_5_5",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_6",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_7",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_8",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_9",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_10",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_11",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_12",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_13",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_14",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_15",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_16",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_17",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_18",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_19",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_20",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_21",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_22",
+				"y": 270
+			},
+			{
+				"model": "arcamod:block/pebbles_5_23",
 				"y": 270
 			}
 		]

@@ -4,12 +4,15 @@ import java.util.function.Function;
 
 import dev.arca.arcamod.ArcaBalance;
 import dev.arca.arcamod.ArcaMod;
+import dev.arca.arcamod.block.AshBlock;
+import dev.arca.arcamod.block.BurntLogBlock;
 import dev.arca.arcamod.block.ChickenEggsBlock;
 import dev.arca.arcamod.block.DisenchanterBlock;
 import dev.arca.arcamod.block.EnchantingCrystalBlock;
 import dev.arca.arcamod.block.EndermanHeadBlock;
 import dev.arca.arcamod.block.EndermanWallHeadBlock;
 import dev.arca.arcamod.block.FallenSticksBlock;
+import dev.arca.arcamod.block.IgnitedBurntLogBlock;
 import dev.arca.arcamod.block.PebblesBlock;
 import dev.arca.arcamod.block.PotionCauldronBlock;
 import dev.arca.arcamod.block.SoulPepperBushBlock;
@@ -18,6 +21,8 @@ import dev.arca.arcamod.block.XpBushBlock;
 import dev.arca.arcamod.block.XpBushPlantBlock;
 import dev.arca.arcamod.block.XpVines;
 
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
+
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -25,6 +30,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DropExperienceBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -197,6 +203,7 @@ public final class ModBlocks {
 	public static final SoulPepperBushBlock SOUL_PEPPER_BUSH = register("soul_pepper_bush", SoulPepperBushBlock::new,
 			BlockBehaviour.Properties.of()
 					.mapColor(MapColor.COLOR_CYAN)
+					.lightLevel(SoulPepperBushBlock::lightLevel)
 					.randomTicks()
 					.noCollision()
 					.sound(SoundType.SWEET_BERRY_BUSH)
@@ -244,6 +251,58 @@ public final class ModBlocks {
 	 * Properties (setId) AVANT de construire le bloc, sinon le jeu crashe au
 	 * demarrage.
 	 */
+	/**
+	 * Buche brulee : laissee par le feu au pied des troncs (voir BurntLogs).
+	 * Pas inflammable, pas dans #minecraft:logs (pas de planches). 6 charbons
+	 * de bois a l'etabli.
+	 */
+	public static final BurntLogBlock BURNT_LOG = register("burnt_log", BurntLogBlock::new,
+			BlockBehaviour.Properties.of()
+					.mapColor(MapColor.COLOR_BLACK)
+					.instrument(NoteBlockInstrument.BASS)
+					.strength(ArcaBalance.BURNT_LOG_HARDNESS)
+					.randomTicks()
+					.sound(SoundType.WOOD));
+
+	/**
+	 * Cendre : couches empilables, comme la neige fine. Deposee par le feu
+	 * (BurntLogs) et empilable a la main.
+	 */
+	public static final AshBlock ASH = register("ash", AshBlock::new,
+			BlockBehaviour.Properties.of()
+					.mapColor(MapColor.COLOR_GRAY)
+					.strength(ArcaBalance.ASH_HARDNESS)
+					.sound(SoundType.SAND)
+					// Pas .replaceable() : sinon FallingBlock.isFree considere la
+					// cendre comme du vide et un bloc qui tombe dessus se casse en
+					// objet au lieu de se poser. L'empilement et le remplacement
+					// passent par AshBlock.canBeReplaced.
+					.forceSolidOff()
+					.isViewBlocking((state, level, pos) -> state.getValue(AshBlock.LAYERS) >= AshBlock.MAX_LAYERS)
+					.pushReaction(PushReaction.DESTROY));
+
+	/**
+	 * Buche brulee incandescente : ce que laisse le feu. S'eteint en buche
+	 * brulee apres une minute, met le feu a ce qui la touche.
+	 */
+	public static final IgnitedBurntLogBlock IGNITED_BURNT_LOG = register("ignited_burnt_log", IgnitedBurntLogBlock::new,
+			BlockBehaviour.Properties.of()
+					.mapColor(MapColor.FIRE)
+					.instrument(NoteBlockInstrument.BASS)
+					.strength(ArcaBalance.BURNT_LOG_HARDNESS)
+					.lightLevel(state -> ArcaBalance.IGNITED_BURNT_LOG_LIGHT)
+					.emissiveRendering(state -> true)
+					.randomTicks()
+					.sound(SoundType.WOOD));
+
+	/** Bois brule : version 6 faces de la buche brulee. */
+	public static final RotatedPillarBlock BURNT_WOOD = register("burnt_wood", RotatedPillarBlock::new,
+			BlockBehaviour.Properties.of()
+					.mapColor(MapColor.COLOR_BLACK)
+					.instrument(NoteBlockInstrument.BASS)
+					.strength(ArcaBalance.BURNT_LOG_HARDNESS)
+					.sound(SoundType.WOOD));
+
 	private static <T extends Block> T register(String name, Function<BlockBehaviour.Properties, T> factory,
 			BlockBehaviour.Properties properties) {
 		ResourceKey<Block> key = ResourceKey.create(Registries.BLOCK, ArcaMod.id(name));
@@ -253,6 +312,10 @@ public final class ModBlocks {
 
 	/** Force le chargement de la classe (donc l'execution des champs static). */
 	public static void init() {
+		// .ignitedByLava() ne suffit pas pour le feu : il lit ses chances dans
+		// ce registre (comme FireBlock.bootStrap en vanilla).
+		FlammableBlockRegistry.getDefaultInstance().add(FALLEN_STICKS,
+				ArcaBalance.FALLEN_STICKS_IGNITE_ODDS, ArcaBalance.FALLEN_STICKS_BURN_ODDS);
 	}
 
 	private ModBlocks() {

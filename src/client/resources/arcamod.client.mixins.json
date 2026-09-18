@@ -17,7 +17,13 @@
 		"CapeLayerMixin",
 		"InventoryScreenMixin",
 		"AvatarRenderStateMixin",
-		"AvatarRendererElytraMixin"
+		"AvatarRendererElytraMixin",
+		"AbstractContainerScreenQuiverMixin",
+		"HudBookshelfNameMixin",
+		"HudAltimeterMixin",
+		"HudToolBeltMixin",
+		"MouseHandlerToolBeltMixin",
+		"SlotAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1

@@ -1,8 +1,8 @@
 {
 	"ambientocclusion": false,
 	"textures": {
-		"mossy_cobblestone": "minecraft:block/mossy_cobblestone",
-		"particle": "minecraft:block/mossy_cobblestone"
+		"tuff": "minecraft:block/tuff",
+		"particle": "minecraft:block/tuff"
 	},
 	"elements": [
 		{
@@ -10,29 +10,34 @@
 			"to": [7, 2.0, 13],
 			"faces": {
 				"up": {
-					"uv": [0, 6, 5, 8],
-					"texture": "#mossy_cobblestone"
+					"uv": [6, 5, 11, 7],
+					"texture": "#tuff"
 				},
 				"down": {
-					"uv": [0, 8, 5, 6],
-					"texture": "#mossy_cobblestone"
+					"uv": [6, 7, 11, 5],
+					"texture": "#tuff"
 				},
 				"north": {
-					"uv": [0, 6, 5, 8],
-					"texture": "#mossy_cobblestone"
+					"uv": [6, 5, 11, 7],
+					"texture": "#tuff"
 				},
 				"south": {
-					"uv": [0, 6, 5, 8],
-					"texture": "#mossy_cobblestone"
+					"uv": [6, 5, 11, 7],
+					"texture": "#tuff"
 				},
 				"east": {
-					"uv": [6, 0, 8, 2],
-					"texture": "#mossy_cobblestone"
+					"uv": [5, 6, 7, 8],
+					"texture": "#tuff"
 				},
 				"west": {
-					"uv": [6, 0, 8, 2],
-					"texture": "#mossy_cobblestone"
+					"uv": [5, 6, 7, 8],
+					"texture": "#tuff"
 				}
+			},
+			"rotation": {
+				"origin": [4.5, 0.0, 12.0],
+				"axis": "y",
+				"angle": 45
 			}
 		}
 	]

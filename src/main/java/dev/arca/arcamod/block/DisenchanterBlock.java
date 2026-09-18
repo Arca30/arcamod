@@ -67,9 +67,9 @@ public class DisenchanterBlock extends Block implements EntityBlock {
 	@Override
 	public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(Level level, BlockState state,
 			BlockEntityType<T> type) {
-		// Le livre n'anime rien de serveur : uniquement du rendu client.
+		// Serveur : propagation du sculk apres un desenchantement.
 		if (!level.isClientSide()) {
-			return null;
+			return createTickerHelper(type, ModBlockEntities.DISENCHANTER, DisenchanterBlockEntity::serverTick);
 		}
 
 		return createTickerHelper(type, ModBlockEntities.DISENCHANTER, DisenchanterBlockEntity::bookAnimationTick);

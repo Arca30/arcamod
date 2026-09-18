@@ -28,7 +28,7 @@ DYE_COLORS = ["white", "orange", "magenta", "light_blue", "yellow", "lime", "pin
 VANILLA_BASES = (["terracotta"]
                  + [c + "_terracotta" for c in DYE_COLORS]
                  + [c + "_concrete_powder" for c in DYE_COLORS]
-                 + ["moss_block", "hay_block"])
+                 + ["moss_block", "pale_moss_block", "hay_block"])
 
 # Les quatre etapes du chaume, de la plus jaune a la plus grise.
 THATCH_STAGES = ["thatch_block", "weathered_thatch_block", "aged_thatch_block", "gray_thatch_block"]

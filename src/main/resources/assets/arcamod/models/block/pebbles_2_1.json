@@ -2,7 +2,7 @@
 	"ambientocclusion": false,
 	"textures": {
 		"tuff": "minecraft:block/tuff",
-		"andesite": "minecraft:block/andesite",
+		"calcite": "minecraft:block/calcite",
 		"particle": "minecraft:block/tuff"
 	},
 	"elements": [
@@ -47,27 +47,27 @@
 			"faces": {
 				"up": {
 					"uv": [9, 5, 13, 9],
-					"texture": "#andesite"
+					"texture": "#calcite"
 				},
 				"down": {
 					"uv": [9, 9, 13, 5],
-					"texture": "#andesite"
+					"texture": "#calcite"
 				},
 				"north": {
 					"uv": [9, 5, 13, 7],
-					"texture": "#andesite"
+					"texture": "#calcite"
 				},
 				"south": {
 					"uv": [9, 5, 13, 7],
-					"texture": "#andesite"
+					"texture": "#calcite"
 				},
 				"east": {
 					"uv": [5, 9, 9, 11],
-					"texture": "#andesite"
+					"texture": "#calcite"
 				},
 				"west": {
 					"uv": [5, 9, 9, 11],
-					"texture": "#andesite"
+					"texture": "#calcite"
 				}
 			},
 			"rotation": {

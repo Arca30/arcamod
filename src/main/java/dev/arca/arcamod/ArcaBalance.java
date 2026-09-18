@@ -89,8 +89,11 @@ public final class ArcaBalance {
 	/** Durabilite. 131 = celle de la pierre. */
 	public static final int FLINT_DURABILITY = 131;
 
-	/** Vitesse de minage. 4.0 = celle de la pierre. */
-	public static final float FLINT_MINING_SPEED = 4.0F;
+	/**
+	 * Vitesse de minage : celle des outils en bois du mod (vanilla 2.0 x
+	 * WOOD_MINING_SPEED_MULTIPLIER = 1.4). Pierre : 4.0.
+	 */
+	public static final float FLINT_MINING_SPEED = 2.0F * WOOD_MINING_SPEED_MULTIPLIER;
 
 	/** Bonus de degats du materiau. 1.0 = pierre et cuivre. */
 	public static final float FLINT_ATTACK_DAMAGE_BONUS = 1.0F;
@@ -238,6 +241,48 @@ public final class ArcaBalance {
 	 */
 	public static final boolean QUIVER_BEFORE_INVENTORY_ARROWS = true;
 
+	/**
+	 * true : les fleches ramassees (au sol ou plantees) vont directement dans
+	 * un carquois de l'inventaire qui contient deja ce type de fleche.
+	 */
+	public static final boolean QUIVER_AUTO_PICKUP = true;
+
+	/**
+	 * Ramassage auto : true = une fois les piles identiques pleines, le
+	 * surplus occupe aussi les emplacements vides du carquois ; false = il va
+	 * dans l'inventaire.
+	 */
+	public static final boolean QUIVER_PICKUP_FILLS_EMPTY_SLOTS = true;
+
+	/**
+	 * Clics facon bundle dans l'inventaire : clic gauche avec des fleches sur
+	 * le carquois (ou avec le carquois sur des fleches) pour les ranger, clic
+	 * droit pour sortir la fleche choisie.
+	 */
+	public static final boolean QUIVER_BUNDLE_CLICKS = true;
+
+	/** Molette sur le carquois dans l'inventaire : choisit la fleche a tirer. */
+	public static final boolean QUIVER_SCROLL_SELECT = true;
+
+	/** Apercu du contenu (grille + jauge) dans l'infobulle, comme le bundle. */
+	public static final boolean QUIVER_TOOLTIP_PREVIEW = true;
+
+	/** Nombre de colonnes de la grille dans l'infobulle. */
+	public static final int QUIVER_TOOLTIP_COLUMNS = 3;
+
+	/**
+	 * Accroupi + clic droit maintenu : vide le carquois pile par pile, comme
+	 * le bundle (le clic droit simple ouvre toujours son inventaire).
+	 */
+	public static final boolean QUIVER_SNEAK_USE_DROPS = true;
+
+	/** Vidage : delai avant la 2e pile, puis entre chaque pile, en ticks. */
+	public static final int QUIVER_DROP_FIRST_DELAY_TICKS = 10;
+	public static final int QUIVER_DROP_INTERVAL_TICKS = 2;
+
+	/** Taille d'une pile pleine pour la jauge (capacite = 9 x cette valeur). */
+	public static final int QUIVER_STACK_CAPACITY = 64;
+
 	// ==================================================================
 	// 8. Fleches a effet (flaque a l'impact)
 	// ==================================================================
@@ -263,6 +308,13 @@ public final class ArcaBalance {
 	 * vanilla. La liste des objets en plus est le tag arcamod:stackable.
 	 */
 	public static final int GEAR_STACK_SIZE = 16;
+
+	/**
+	 * Taille de pile des livres enchantes (seuls les livres aux enchantements
+	 * strictement identiques s'empilent). 1 = comme en vanilla. Les
+	 * bibliotheques sculptees n'en acceptent toujours qu'un par emplacement.
+	 */
+	public static final int ENCHANTED_BOOK_STACK_SIZE = 16;
 
 	/** Luminosite des garnitures lumineuses, de 0 (normale) a 15 (pleine lumiere). */
 	public static final int GLOWING_TRIM_LIGHT = 15;
@@ -312,6 +364,19 @@ public final class ArcaBalance {
 
 	/** Durabilite des elytres en membranes. Vanilla : 432. (Relancer le jeu.) */
 	public static final int PATCHWORK_ELYTRA_DURABILITY = 4;
+
+	/**
+	 * Frein supplementaire en vol, applique a chaque tick (1.0 = vitesse
+	 * vanilla). Petit ecart = gros effet, car il se cumule : 0.997 donne
+	 * environ -20 % de vitesse de croisiere, 0.99 environ -50 %.
+	 */
+	public static final double PATCHWORK_ELYTRA_DRAG = 0.998;
+
+	/**
+	 * Vitesse maximale en vol, en blocs par seconde, fusees comprises. 0 = pas
+	 * de limite. Reperes vanilla : plane ~ 30, avec fusees ~ 33 a 40.
+	 */
+	public static final double PATCHWORK_ELYTRA_MAX_SPEED = 20.0;
 
 	// ==================================================================
 	// 10. Baie et buisson d'XP
@@ -387,6 +452,19 @@ public final class ArcaBalance {
 	/** Lumiere emise par le desenchanteur (table d'enchantement vanilla : 7). */
 	public static final int DISENCHANTER_LIGHT = 7;
 
+	/** Chance (0 a 1) qu'un desenchantement fasse pousser du sculk sous le desenchanteur. */
+	public static final float DISENCHANT_SCULK_CHANCE = 0.20F;
+
+	/** Nombre de blocs de sculk crees quand la chance tombe (tire entre MIN et MAX inclus). */
+	public static final int DISENCHANT_SCULK_MIN_BLOCKS = 1;
+	public static final int DISENCHANT_SCULK_MAX_BLOCKS = 3;
+
+	/** Delai entre l'apparition de deux blocs de sculk, en ticks (propagation progressive). */
+	public static final int DISENCHANT_SCULK_INTERVAL_TICKS = 10;
+
+	/** Distance max (en blocs) sous/autour du desenchanteur ou le sculk peut apparaitre. */
+	public static final int DISENCHANT_SCULK_RADIUS = 4;
+
 	// ==================================================================
 	// 13. Cristal d'enchantement
 	// ==================================================================
@@ -442,7 +520,24 @@ public final class ArcaBalance {
 	public static final int PEBBLES_MIN = 1;
 	public static final int PEBBLES_MAX = 5;
 
+	/**
+	 * Generation du monde : poids de chaque taille de tas de cailloux.
+	 * Case 0 = 1 caillou, case 1 = 2 cailloux... jusqu'a PEBBLES_MAX.
+	 * Chance d'une taille = son poids / somme des poids (ici 40+26+17+11+6 =
+	 * 100, donc 40 % de tas a 1 caillou... 6 % de tas a 5). Une case manquante
+	 * compte comme 0 (taille jamais generee).
+	 */
+	public static final int[] PEBBLE_COUNT_WEIGHTS = { 27, 30, 20, 15, 8 };
+
 	/** Nombre de branches empilables sur un meme bloc. (Relancer le jeu.) */
+	/**
+	 * Inflammabilite des branches au sol. Propagation : chance qu'un feu voisin
+	 * les allume (herbe haute : 60, feuilles : 30). Combustion : chance que le
+	 * feu les consume (herbe haute : 100, feuilles : 60). 0 = ne brulent pas.
+	 */
+	public static final int FALLEN_STICKS_IGNITE_ODDS = 60;
+	public static final int FALLEN_STICKS_BURN_ODDS = 100;
+
 	public static final int STICKS_MIN = 1;
 	public static final int STICKS_MAX = 3;
 
@@ -630,10 +725,10 @@ public final class ArcaBalance {
 	public static final float ARROW_SLIME_SPEED = 1.0F;
 	public static final float ARROW_SLIME_RANGE = 1.0F;
 	public static final float ARROW_SLIME_INACCURACY = 1.0F;
-	public static final float ARROW_SLIME_KNOCKBACK = 1.0F;
+	public static final float ARROW_SLIME_KNOCKBACK = 5.5F;
 	public static final float ARROW_SLIME_DRAW_SPEED = 1.0F;
 	/** Nombre de rebonds sur les blocs avant de se planter. */
-	public static final int ARROW_SLIME_BOUNCES = 1;
+	public static final int ARROW_SLIME_BOUNCES = 2;
 	/** Vitesse conservee a chaque rebond (0.6 = 60%). */
 	public static final float ARROW_SLIME_BOUNCE_RESTITUTION = 0.6F;
 	/** Lenteur appliquee : duree en ticks (50 = 2.5 s) et niveau (3 = Lenteur IV). */
@@ -855,6 +950,17 @@ public final class ArcaBalance {
 	 */
 	public static final boolean SCARECROW_USE_INVULNERABILITY_FRAMES = true;
 
+	/**
+	 * Fabrication : clic droit avec une botte de foin sur un porte-armure
+	 * portant un plastron ET des jambieres en cuir (toute couleur, toute
+	 * durabilite). true : le cuir est consomme ; false : l'epouvantail le garde
+	 * sur lui.
+	 */
+	public static final boolean SCARECROW_CONVERSION_CONSUMES_LEATHER = true;
+
+	/** Nombre de bottes de foin consommees par la transformation. */
+	public static final int SCARECROW_CONVERSION_HAY_COST = 1;
+
 	/** Pour le casser : il faut etre accroupi... */
 	public static final boolean SCARECROW_BREAK_REQUIRES_SNEAK = true;
 
@@ -886,6 +992,12 @@ public final class ArcaBalance {
 
 	/** Angle d'un bras vide ecarte, en degres (90 = a l'horizontale). */
 	public static final float SCARECROW_ARM_ANGLE = 90.0F;
+
+	/** Item en 3D (inventaire, main) : taille du modele (0.6 = tient dans un bloc). */
+	public static final float SCARECROW_ITEM_SCALE = 0.6F;
+
+	/** Item en 3D : rotation du modele autour de l'axe vertical, en degres. */
+	public static final float SCARECROW_ITEM_YAW = 0.0F;
 
 	/** true : les bras se balancent doucement comme ceux d'un joueur immobile. */
 	public static final boolean SCARECROW_ARMS_BOB = false;
@@ -1029,6 +1141,35 @@ public final class ArcaBalance {
 	public static final float SLINGSHOT_IRON_NUGGET_RECOVERY = 0.25F;
 
 	/**
+	 * Autres pepites (or, cuivre, or rose) : comme le fer, avec 0.5 point de
+	 * degats en moins.
+	 */
+	public static final float SLINGSHOT_NUGGET_DAMAGE = SLINGSHOT_IRON_NUGGET_DAMAGE - 0.5F;
+	public static final float SLINGSHOT_NUGGET_VELOCITY = SLINGSHOT_IRON_NUGGET_VELOCITY;
+	public static final double SLINGSHOT_NUGGET_GRAVITY = SLINGSHOT_IRON_NUGGET_GRAVITY;
+	public static final float SLINGSHOT_NUGGET_RECOVERY = SLINGSHOT_IRON_NUGGET_RECOVERY;
+
+	// ---- Rebond des pepites (fer, or, cuivre, or rose) ----
+
+	/** Nombre de rebonds sur le sol avant de retomber en item ou de se briser. */
+	public static final int SLINGSHOT_NUGGET_BOUNCES = 1;
+
+	/** true : rebondit aussi sur les murs et plafonds (false = uniquement le dessus des blocs). */
+	public static final boolean SLINGSHOT_NUGGET_BOUNCE_ON_WALLS = false;
+
+	/** Vitesse verticale gardee au rebond (0.4 = 40 %). */
+	public static final double SLINGSHOT_NUGGET_BOUNCE_RESTITUTION = 0.4;
+
+	/** Vitesse horizontale gardee au rebond (frottement du sol). */
+	public static final double SLINGSHOT_NUGGET_BOUNCE_FRICTION = 0.6;
+
+	/** En dessous de cette vitesse d'impact (blocs/tick), la pepite ne rebondit pas : elle se pose. */
+	public static final double SLINGSHOT_NUGGET_BOUNCE_MIN_SPEED = 0.15;
+
+	/** Degats d'une pepite qui touche une creature APRES avoir rebondi (0.5 = moitie). */
+	public static final float SLINGSHOT_NUGGET_BOUNCE_DAMAGE_MULTIPLIER = 0.5F;
+
+	/**
 	 * Boule de resine : degats FIXES (la tension et Puissance ne changent
 	 * rien), mais englue la cible (section 27).
 	 */
@@ -1054,7 +1195,39 @@ public final class ArcaBalance {
 	public static final int RESIN_PLAYER_MAX_TICKS = 600;
 
 	/** Duree de l'engluement d'un mob (il ne sait pas sauter pour se liberer). 60 = 3 s. */
-	public static final int RESIN_MOB_TICKS = 60;
+	public static final int RESIN_MOB_TICKS = 45;
+
+	/**
+	 * Duree de l'engluement des boss, en ticks (10 = 0.5 s). La liste est le
+	 * tag data/arcamod/tags/entity_type/resin_resistant.json (wither, dragon,
+	 * gardiens...), modifiable sans recompiler.
+	 */
+	public static final int RESIN_BOSS_TICKS = 10;
+
+	/** true : un mob englue ne peut lancer aucun projectile (fleches, boules de feu, potions...). */
+	public static final boolean RESIN_BLOCKS_MOB_PROJECTILES = true;
+
+	/** true : un mob englue relache l'arme qu'il bandait / chargeait (arc, arbalete, trident). */
+	public static final boolean RESIN_CANCELS_MOB_WEAPON_CHARGE = true;
+
+	/** true : un creeper englue fige sa meche (ni progression, ni desamorcage). */
+	public static final boolean RESIN_FREEZES_CREEPER_FUSE = true;
+
+	/** true : fleches a pointe de resine et resine du lance-pierre ne repoussent jamais la cible. */
+	public static final boolean RESIN_NO_KNOCKBACK = true;
+
+	/**
+	 * true : un creeper englue EN PLEINE meche finit d'exploser des qu'il est
+	 * libere, meme si le joueur s'est eloigne. false : il reprend son
+	 * comportement normal (et se desamorce si le joueur est trop loin).
+	 */
+	public static final boolean RESIN_CREEPER_EXPLODES_AFTER_RELEASE = true;
+
+	/** Particules de resine autour d'une creature engluee : tous les N ticks (0 = aucune). */
+	public static final int RESIN_PARTICLE_INTERVAL_TICKS = 4;
+
+	/** Nombre de particules a chaque salve. */
+	public static final int RESIN_PARTICLE_COUNT = 2;
 
 	/** Delai minimum entre deux sauts comptes, en ticks (anti-spam de la touche). */
 	public static final int RESIN_JUMP_MIN_INTERVAL_TICKS = 3;
@@ -1248,6 +1421,12 @@ public final class ArcaBalance {
 	 */
 	public static final float[] COPPER_OXIDATION_WEAR_MULTIPLIER = {1.0F, 1.25F, 1.5F, 2.0F};
 
+	/**
+	 * Durabilite perdue par la hache qui retire la cire d'un equipement en
+	 * cuivre (table de craft). 0 = la hache ressort intacte.
+	 */
+	public static final int COPPER_UNWAX_AXE_DAMAGE = 0;
+
 	/** true : un eclair qui frappe le joueur desoxyde toute son armure en cuivre portee. */
 	public static final boolean COPPER_LIGHTNING_CLEANS_OXIDATION = true;
 
@@ -1268,11 +1447,17 @@ public final class ArcaBalance {
 	// 32. Piment des ames (Nether)
 	// ==================================================================
 
-	/** Duree de "Frappe ardente" (Aura de feu : les coups au corps a corps enflamment). */
-	public static final int SOUL_PEPPER_FIRE_ASPECT_TICKS = 1200;
+	/** Duree de "Frappe ardente" (Aura de feu + riposte enflammee), en ticks. 600 = 30 s. */
+	public static final int SOUL_PEPPER_FIRE_ASPECT_TICKS = 600;
 
 	/** Secondes de feu infligees a chaque coup, comme Aura de feu I (4 s). */
 	public static final int SOUL_PEPPER_IGNITE_SECONDS = 4;
+
+	/**
+	 * Riposte : toute creature qui frappe au corps a corps quelqu'un sous
+	 * "Frappe ardente" prend feu pendant ces secondes. 0 = desactive.
+	 */
+	public static final int SOUL_PEPPER_RETALIATION_IGNITE_SECONDS = 4;
 
 	/** Duree de la Resistance au feu (50 ticks = 2.5 s). */
 	public static final int SOUL_PEPPER_FIRE_RESISTANCE_TICKS = 50;
@@ -1293,6 +1478,13 @@ public final class ArcaBalance {
 
 	/** true : le buisson pique comme un buisson de baies sucrees. */
 	public static final boolean SOUL_PEPPER_BUSH_HURTS = true;
+
+	/**
+	 * Lumiere emise par le buisson selon son stade (0 a 15, torche des ames :
+	 * 10). Les stades plus jeunes n'eclairent pas. (Relancer le jeu.)
+	 */
+	public static final int SOUL_PEPPER_BUSH_LIGHT_BEFORE_LAST_STAGE = 5;
+	public static final int SOUL_PEPPER_BUSH_LIGHT_LAST_STAGE = 8;
 
 	// ==================================================================
 	// 33. Garniture pulsante (eclat d'echo)
@@ -1352,6 +1544,19 @@ public final class ArcaBalance {
 	/** true : un livre enchante affiche ses enchantements plutot que "Livre enchante". */
 	public static final boolean CHISELED_BOOKSHELF_SHOW_ENCHANTMENTS = true;
 
+	/**
+	 * true : le nom s'affiche plus bas que les messages de la barre d'action
+	 * (voir CHISELED_BOOKSHELF_NAME_LOWER_OFFSET).
+	 */
+	public static final boolean CHISELED_BOOKSHELF_NAME_AT_ITEM_NAME_POSITION = true;
+
+	/**
+	 * De combien de pixels le nom descend sous la position des messages de la
+	 * barre d'action (0 = vanilla, 13 = pile a la place du nom de l'objet tenu).
+	 * Tant que le nom de l'objet tenu s'affiche, le livre revient a 0.
+	 */
+	public static final int CHISELED_BOOKSHELF_NAME_LOWER_OFFSET = 13;
+
 	// ==================================================================
 	// 34. Lumiere dynamique (client uniquement)
 	// ==================================================================
@@ -1362,7 +1567,7 @@ public final class ArcaBalance {
 	 * Perte de lumiere par bloc de distance. 1.0 = comme une torche posee
 	 * (vanilla). Plus haut = halo plus serre.
 	 */
-	public static final float DYNAMIC_LIGHT_FALLOFF_PER_BLOCK = 4.0F;
+	public static final float DYNAMIC_LIGHT_FALLOFF_PER_BLOCK = 2.0F;
 
 	/**
 	 * Rayon maximal d'une source, en blocs. Une source plus forte que ce rayon
@@ -1424,10 +1629,287 @@ public final class ArcaBalance {
 		return hearts * 2.0F;
 	}
 
+	// ==================================================================
+	// 35. Interface du bundle
+	// ==================================================================
+
+	/**
+	 * Nombre maximal d'emplacements de l'interface. Il s'affiche toujours
+	 * (nombre d'emplacements utilises + 1 vide), jusqu'a ce maximum. Un bundle
+	 * ne peut de toute facon pas contenir plus de 64 piles (poids max = 1).
+	 */
+	public static final int BUNDLE_INTERFACE_MAX_SLOTS = 64;
+
+	/** Emplacements par ligne dans l'interface (9 = largeur d'un coffre). */
+	public static final int BUNDLE_INTERFACE_COLUMNS = 9;
+
 	/** Secondes -> ticks. */
 	public static int seconds(int seconds) {
 		return seconds * 20;
 	}
+
+	// ---- Altimetre --------------------------------------------------------------
+	// Shift + clic droit : memorise l'altitude (Y du bloc sous les pieds).
+	// Re-shift + clic droit : l'efface.
+
+	/** Ecart (en blocs) toleré pour considerer le joueur "a la bonne hauteur" (0 = Y exact). */
+	public static final int ALTIMETER_TOLERANCE_BLOCKS = 0;
+
+	/** Taille de pile de l'altimetre. */
+	public static final int ALTIMETER_MAX_STACK_SIZE = 64;
+
+	/** Affiche aussi l'altitude memorisee a cote de l'altitude actuelle. */
+	public static final boolean ALTIMETER_HUD_SHOW_TARGET = true;
+
+	/** L'altitude s'affiche aussi quand l'altimetre est dans la main secondaire. */
+	public static final boolean ALTIMETER_HUD_IN_OFFHAND = true;
+
+	/** Hauteur du texte depuis le bas de l'ecran (vanilla, nom de l'objet : 59). */
+	public static final int ALTIMETER_HUD_Y_OFFSET = 59;
+
+	/** Couleurs du texte (RGB) : sans altitude memorisee, a la bonne hauteur, au-dessus, en dessous. */
+	public static final int ALTIMETER_HUD_COLOR_DEFAULT = 0xFFFFFF;
+	public static final int ALTIMETER_HUD_COLOR_LEVEL = 0x55FF55;
+	public static final int ALTIMETER_HUD_COLOR_UP = 0xFFAA55;
+	public static final int ALTIMETER_HUD_COLOR_DOWN = 0x55AAFF;
+
+	/** Volume et hauteurs du son quand on memorise / efface l'altitude. */
+	public static final float ALTIMETER_SOUND_VOLUME = 1.0F;
+	public static final float ALTIMETER_SOUND_PITCH_SET = 1.4F;
+	public static final float ALTIMETER_SOUND_PITCH_CLEAR = 0.8F;
+
+	// ---- Ceinture a outils ----------------------------------------------------
+	// Se porte dans la case au-dessus du bouclier (inventaire).
+	// Touche "Ceinture a outils" (R par defaut) :
+	//  - appui court : echange l'objet en main avec l'outil choisi de la ceinture ;
+	//  - maintenue + molette : choisit l'outil (la barre d'objets ne bouge pas).
+	// Objets acceptes : tag data/arcamod/tags/item/tool_belt_allowed.json.
+
+	/** Nombre d'emplacements de la ceinture (1 a 5, gabarit de l'ecran de l'entonnoir). */
+	public static final int TOOL_BELT_SLOTS = 5;
+
+	/** Les lanternes rangees dans la ceinture portee eclairent (lumiere dynamique). */
+	public static final boolean TOOL_BELT_LANTERN_LIGHT = true;
+
+	/** Lumiere des lanternes de la ceinture, en fraction de leur lumiere en main (1.0 = identique). */
+	public static final float TOOL_BELT_LANTERN_LIGHT_FACTOR = 1.0F;
+
+	/**
+	 * Main pleine d'un objet qui ne va pas dans la ceinture : il est range
+	 * ailleurs dans l'inventaire pour laisser la place a l'outil. false = echange refuse.
+	 */
+	public static final boolean TOOL_BELT_STASH_OTHER_ITEMS = true;
+
+	/**
+	 * Accroupi (Shift) + molette, un objet rangeable en main : fait tourner
+	 * l'objet en main avec les outils de la ceinture. Main vide ou autre
+	 * objet : la molette garde son comportement normal.
+	 */
+	public static final boolean TOOL_BELT_SNEAK_SCROLL_ROLL = true;
+
+	/** Affiche la colonne de la ceinture a droite de la barre d'objets tant que la touche est maintenue. */
+	public static final boolean TOOL_BELT_HUD = true;
+
+	/** Decalage (pixels) de la colonne de la ceinture a droite de la barre d'objets. */
+	public static final int TOOL_BELT_HUD_X_OFFSET = 8;
+
+	/** Duree d'affichage (ticks) du nom de l'outil choisi a la molette. */
+	public static final int TOOL_BELT_NAME_DISPLAY_TICKS = 30;
+
+	// ---- Buches brulees ------------------------------------------------------
+	// Quand le feu consume une buche au pied d'un arbre, elle peut devenir une
+	// buche brulee (6 charbons de bois a l'etabli) au lieu de disparaitre.
+	// Chaque colonne de tronc est traitee a part : un arbre 2x2 a 4 chances.
+
+	/**
+	 * Chance (0 a 1) qu'un ARBRE qui brule laisse une buche brulee a son pied.
+	 *
+	 * La chance est ensuite repartie entre les colonnes du tronc : un chene
+	 * (1 colonne) la joue d'un coup, un chene noir ou un sapin geant (4
+	 * colonnes) a la meme chance globale, repartie sur ses quatre pieds.
+	 */
+	public static final float BURNT_LOG_TREE_CHANCE = 0.6F;
+
+	/**
+	 * Les buches qui ne reposent plus sur rien s'effritent quand le feu a mange
+	 * ce qui les portait (plus de troncs qui flottent apres un incendie). Elles
+	 * disparaissent par le haut, sans animation de chute et sans rien lacher.
+	 */
+	public static final boolean BURNT_LOG_COLLAPSE = true;
+
+	/**
+	 * Taille maximale d'un amas de buches juge par l'effondrement. Au-dela, on
+	 * considere qu'il tient (une charpente de maison ne s'ecroule pas). Plus
+	 * c'est haut, plus le calcul est lourd a chaque buche brulee.
+	 */
+	public static final int BURNT_LOG_COLLAPSE_MAX_LOGS = 64;
+
+	/**
+	 * Buches effritees a chaque buche brulee, en partant du haut de l'amas.
+	 * Plus c'est bas, plus l'amas s'efface lentement, au rythme du feu.
+	 */
+	public static final int BURNT_LOG_COLLAPSE_PER_EVENT = 2;
+
+	/** Une buche qui s'effrite laisse de la cendre, comme si elle avait brule. */
+	public static final boolean BURNT_LOG_COLLAPSE_LEAVES_ASH = true;
+
+	/** Profondeur de recherche du pied d'un tronc (hauteur maximale d'un arbre). */
+	public static final int BURNT_LOG_TRUNK_SCAN = 32;
+
+	/** Nombre maximum de buches brulees par colonne, en partant du sol (1 = seulement celle du sol). */
+	public static final int BURNT_LOG_MAX_PER_COLUMN = 2;
+
+	/**
+	 * Chance que la buche du dessus brule aussi, si celle du dessous a deja
+	 * reussi (chaque buche supplementaire refait ce tirage).
+	 */
+	public static final float BURNT_LOG_NEXT_CHANCE = 0.5F;
+
+	/**
+	 * Duree (ticks) pendant laquelle le tirage d'une colonne reste le meme.
+	 * Les buches d'un tronc ne brulent pas dans l'ordre : le resultat est
+	 * tire une fois par colonne (et par periode) pour que "celle du dessus"
+	 * suive toujours "celle du sol". 6000 = 5 minutes.
+	 */
+	public static final int BURNT_LOG_ROLL_PERIOD_TICKS = 6000;
+
+	/**
+	 * Chance qu'une buche soit consumee quand un feu la touche (vanilla : 5,
+	 * feuilles : 60). Le jeu tire sur 300 a chaque tick du feu : a 5, le feu
+	 * s'eteint souvent avant d'avoir brule le tronc. Touche TOUTES les buches
+	 * inflammables (maisons en bois comprises).
+	 */
+	public static final int FIRE_LOG_BURN_ODDS = 5;
+
+	/** Chance qu'un feu voisin se propage a une buche (vanilla : 5). */
+	public static final int FIRE_LOG_IGNITE_ODDS = 5;
+
+	// ---- Buche brulee incandescente ------------------------------------------
+
+	/** Duree (ticks) avant qu'une buche incandescente s'eteigne (1200 = 1 min). */
+	public static final int IGNITED_BURNT_LOG_DURATION_TICKS = 1200;
+
+	/** Intervalle (ticks) des verifications : feu proche, propagation, extinction. */
+	public static final int IGNITED_BURNT_LOG_CHECK_TICKS = 20;
+
+	/** Chance, a chaque verification et pour chaque bloc inflammable qui la touche, d'y mettre le feu. */
+	public static final float IGNITED_BURNT_LOG_IGNITE_CHANCE = 0.15F;
+
+	/** Une buche voisine sans aucune face a l'air (coeur d'un tronc large) est consumee directement. */
+	public static final boolean IGNITED_BURNT_LOG_CONSUMES_ENCLOSED_LOGS = true;
+
+	/** Lumiere emise (0 a 15). */
+	public static final int IGNITED_BURNT_LOG_LIGHT = 9;
+
+	/** Degats en marchant dessus, comme le bloc de magma (1.0 = un demi-coeur, 0 = aucun). */
+	public static final float IGNITED_BURNT_LOG_STEP_DAMAGE = 1.0F;
+
+	/** Particules : une chance sur N, a chaque image d'ambiance (plus grand = plus rare). */
+	public static final int IGNITED_BURNT_LOG_SMOKE_CHANCE = 12;
+	public static final int IGNITED_BURNT_LOG_ASH_CHANCE = 8;
+
+	/**
+	 * Hauteur de depart des cendres, en partant du bas du bloc. Leur vitesse
+	 * n'est pas reglable (elles descendent toujours un peu) : monte cette
+	 * valeur pour qu'elles tombent le long du bloc au lieu de dessous.
+	 */
+	public static final double IGNITED_BURNT_LOG_ASH_HEIGHT = 1.0;
+
+	/** Duree de cuisson (ticks) d'un aliment pose sur la buche, quel qu'il soit (600 = 30 s). */
+	public static final int IGNITED_BURNT_LOG_COOK_TICKS = 600;
+
+	/** Particules du "pschitt" quand la buche s'eteint : vapeur, puis fumee. */
+	public static final int IGNITED_BURNT_LOG_DOUSE_STEAM = 5;
+	public static final int IGNITED_BURNT_LOG_DOUSE_SMOKE = 3;
+
+	/** La pluie eteint la buche (si le ciel est visible au-dessus). L'eau qui la touche l'eteint toujours. */
+	public static final boolean IGNITED_BURNT_LOG_RAIN_DOUSES = true;
+
+	/**
+	 * Inflammabilite minimale d'un bloc pour que les braises en bouteille
+	 * puissent l'allumer (herbe et feuilles mortes : 100, laine et feuilles :
+	 * 60, planches : 20, buche : 5). Voir aussi le tag arcamod:hot_coal_ignitable.
+	 */
+	public static final int HOT_COAL_MIN_BURN_ODDS = 60;
+
+	/** Recuperer des braises avec une bouteille eteint la buche. */
+	public static final boolean HOT_COAL_EXTINGUISHES_LOG = true;
+
+	/** Combustible au four : buche brulee et incandescente = autant de charbons de bois. */
+	public static final int BURNT_LOG_FUEL_CHARCOAL = 6;
+
+	/** Lumiere des braises en bouteille tenues en main (lumiere dynamique, 0 a 15). */
+	public static final float HOT_COAL_IN_A_BOTTLE_LIGHT = 6.0F;
+
+	// ---- Cendre ---------------------------------------------------------------
+	// Le feu depose de la cendre sous ce qui brule. Un nouvel endroit ne recoit
+	// qu'une couche ; en revanche un depot epaissit en priorite un tas voisin
+	// (ASH_STACK_CHANCE) et lui ajoute alors plusieurs couches d'un coup. Avec
+	// des positions qui penchent vers le centre, on obtient quelques monticules
+	// au pied de l'arbre, entoures de fines couches, au lieu d'un tapis.
+
+	/** Chance qu'une buche consumee par le feu laisse une couche de cendre. */
+	public static final float ASH_FROM_LOG_CHANCE = 0.6F;
+
+	/**
+	 * Chance qu'un bloc de bois travaille consume (planches, escalier,
+	 * barriere... tag arcamod:ash_from_wood) laisse de la cendre. Volontairement
+	 * plus faible que pour une buche.
+	 */
+	public static final float ASH_FROM_WOOD_CHANCE = 0.12F;
+
+	/** Chance qu'un bloc de feuilles consume laisse une couche de cendre (il y en a beaucoup). */
+	public static final float ASH_FROM_LEAVES_CHANCE = 0.05F;
+
+	/** Chance d'epaissir un tas voisin plutot que d'en commencer un nouveau. */
+	public static final float ASH_STACK_CHANCE = 0.92F;
+
+	/**
+	 * Poids du nombre de couches d'un tas tout neuf : 1 couche, 2 couches,
+	 * 3 couches. Ici 6/3/1, soit 60 %, 30 % et 10 %.
+	 */
+	public static final int[] ASH_NEW_PILE_WEIGHTS = { 6, 3, 1 };
+
+	/** Couches ajoutees d'un coup quand un depot epaissit un tas existant. */
+	public static final int ASH_BURST_MIN = 2;
+	public static final int ASH_BURST_MAX = 4;
+
+	/**
+	 * Rayon (blocs) autour du bloc brule ou une NOUVELLE couche peut se poser.
+	 * Le tirage est triangulaire : le centre sort bien plus souvent que le bord.
+	 */
+	public static final int ASH_SPREAD_RADIUS = 1;
+
+	/**
+	 * Rayon (blocs) ou l'on cherche un tas a epaissir. Plus large que le rayon
+	 * de pose : une cendre qui tombe un peu a cote rejoint quand meme le tas
+	 * voisin au lieu d'en commencer un nouveau.
+	 */
+	public static final int ASH_PILE_SEARCH_RADIUS = 3;
+
+	/** Hauteur de chute maximale : la cendre cherche le sol sous elle sur cette distance. */
+	public static final int ASH_FALL_DISTANCE = 12;
+
+	/** Nombre d'endroits essayes avant d'abandonner (un endroit plein ou sans sol ne compte pas). */
+	public static final int ASH_PLACE_ATTEMPTS = 2;
+
+	/** Couches maximum deposees par le feu (1 couche = 1 pixel ; a la main : 16, le bloc plein). */
+	public static final int ASH_NATURAL_MAX_LAYERS = 6;
+
+	/** Rayon (blocs) dans lequel un feu ou un feu de camp allume rallume / entretient une buche brulee. */
+	public static final int BURNT_LOG_REIGNITE_RADIUS = 1;
+
+	/** Rayon (blocs) pour la lave (1 = il faut qu'elle touche la buche). */
+	public static final int BURNT_LOG_LAVA_RADIUS = 1;
+
+	/** Intervalle (ticks) auquel une buche brulee eteinte cherche un feu proche. */
+	public static final int BURNT_LOG_REIGNITE_CHECK_TICKS = 40;
+
+	/** Durete de la cendre (neige fine : 0.1). */
+	public static final float ASH_HARDNESS = 0.1F;
+
+	/** Durete de la buche brulee (buche vanilla : 2.0). Le charbon obtenu a l'etabli est dans les recettes JSON. */
+	public static final float BURNT_LOG_HARDNESS = 1.5F;
 
 	/**
 	 * Convertit des degats "affiches en jeu" en valeur a passer au jeu.

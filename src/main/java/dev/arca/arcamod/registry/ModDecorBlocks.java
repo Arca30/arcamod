@@ -1,5 +1,8 @@
 package dev.arca.arcamod.registry;
 
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.data.worldgen.features.VegetationFeatures;
+import net.minecraft.data.worldgen.features.CaveFeatures;
 import dev.arca.arcamod.block.MossSlabBlock;
 import dev.arca.arcamod.block.MossStairBlock;
 import java.util.ArrayList;
@@ -69,6 +72,7 @@ public final class ModDecorBlocks {
 		}
 
 		bases.add("moss_block");
+		bases.add("pale_moss_block");
 		bases.add("hay_block");
 		return List.copyOf(bases);
 	}
@@ -133,16 +137,23 @@ public final class ModDecorBlocks {
 
 	private static void stairsAndSlab(String base, net.minecraft.world.level.block.state.BlockState baseState,
 			java.util.function.Supplier<BlockBehaviour.Properties> properties) {
-		// La mousse garde sa propagation a la poudre d'os, dalle et escalier compris.
-		boolean moss = "moss_block".equals(base);
+		// La mousse (claire comme pale) garde sa propagation a la poudre d'os,
+		// dalle et escalier compris : chacune pose sa propre structure.
+		ResourceKey<ConfiguredFeature<?, ?>> mossPatch = switch (base) {
+			case "moss_block" -> CaveFeatures.MOSS_PATCH_BONEMEAL;
+			case "pale_moss_block" -> VegetationFeatures.PALE_MOSS_PATCH_BONEMEAL;
+			default -> null;
+		};
 
 		register(base + "_stairs",
-				stairProperties -> moss
-						? new MossStairBlock(baseState, stairProperties)
+				stairProperties -> mossPatch != null
+						? new MossStairBlock(baseState, stairProperties, mossPatch)
 						: new StairBlock(baseState, stairProperties),
 				properties.get());
 		register(base + "_slab",
-				slabProperties -> moss ? new MossSlabBlock(slabProperties) : new SlabBlock(slabProperties),
+				slabProperties -> mossPatch != null
+						? new MossSlabBlock(slabProperties, mossPatch)
+						: new SlabBlock(slabProperties),
 				properties.get());
 	}
 

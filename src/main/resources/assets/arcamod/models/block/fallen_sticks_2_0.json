@@ -1,9 +1,9 @@
 {
 	"ambientocclusion": false,
 	"textures": {
-		"jungle_log": "minecraft:block/jungle_log",
-		"spruce_log": "minecraft:block/spruce_log",
-		"particle": "minecraft:block/jungle_log"
+		"cherry_log": "minecraft:block/cherry_log",
+		"birch_log": "minecraft:block/birch_log",
+		"particle": "minecraft:block/oak_log"
 	},
 	"elements": [
 		{
@@ -12,27 +12,27 @@
 			"faces": {
 				"up": {
 					"uv": [14, 3, 15, 11],
-					"texture": "#jungle_log"
+					"texture": "#cherry_log"
 				},
 				"down": {
 					"uv": [14, 11, 15, 3],
-					"texture": "#jungle_log"
+					"texture": "#cherry_log"
 				},
 				"north": {
 					"uv": [14, 3, 15, 4],
-					"texture": "#jungle_log"
+					"texture": "#cherry_log"
 				},
 				"south": {
 					"uv": [14, 3, 15, 4],
-					"texture": "#jungle_log"
+					"texture": "#cherry_log"
 				},
 				"east": {
 					"uv": [3, 14, 11, 15],
-					"texture": "#jungle_log"
+					"texture": "#cherry_log"
 				},
 				"west": {
 					"uv": [3, 14, 11, 15],
-					"texture": "#jungle_log"
+					"texture": "#cherry_log"
 				}
 			},
 			"rotation": {
@@ -47,27 +47,27 @@
 			"faces": {
 				"up": {
 					"uv": [8, 7, 9, 14],
-					"texture": "#spruce_log"
+					"texture": "#birch_log"
 				},
 				"down": {
 					"uv": [8, 14, 9, 7],
-					"texture": "#spruce_log"
+					"texture": "#birch_log"
 				},
 				"north": {
 					"uv": [8, 7, 9, 8],
-					"texture": "#spruce_log"
+					"texture": "#birch_log"
 				},
 				"south": {
 					"uv": [8, 7, 9, 8],
-					"texture": "#spruce_log"
+					"texture": "#birch_log"
 				},
 				"east": {
 					"uv": [7, 8, 14, 9],
-					"texture": "#spruce_log"
+					"texture": "#birch_log"
 				},
 				"west": {
 					"uv": [7, 8, 14, 9],
-					"texture": "#spruce_log"
+					"texture": "#birch_log"
 				}
 			},
 			"rotation": {

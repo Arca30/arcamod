@@ -69,6 +69,25 @@ public final class ModTags {
 	public static final TagKey<Block> SOUL_PEPPER_PLANTABLE_ON =
 			TagKey.create(Registries.BLOCK, ArcaMod.id("soul_pepper_plantable_on"));
 
+	/** Ce qui se range dans la ceinture a outils (outils, briquet, cisailles, lanternes...). */
+	public static final TagKey<Item> TOOL_BELT_ALLOWED =
+			TagKey.create(Registries.ITEM, ArcaMod.id("tool_belt_allowed"));
+
+	/** Le sol sous lequel une buche peut bruler en buche brulee (defaut : #minecraft:dirt). */
+	public static final TagKey<Block> BURNT_LOG_GROUND =
+			TagKey.create(Registries.BLOCK, ArcaMod.id("burnt_log_ground"));
+
+	/** Blocs que les braises en bouteille peuvent enflammer (defaut : laine, feuilles, tapis, foin). */
+	public static final TagKey<Block> HOT_COAL_IGNITABLE =
+			TagKey.create(Registries.BLOCK, ArcaMod.id("hot_coal_ignitable"));
+
+	/**
+	 * Les blocs de bois travailles (planches, escaliers, barrieres, portes...)
+	 * qui laissent aussi un peu de cendre en brulant, moins que les buches.
+	 */
+	public static final TagKey<Block> ASH_FROM_WOOD =
+			TagKey.create(Registries.BLOCK, ArcaMod.id("ash_from_wood"));
+
 	private ModTags() {
 	}
 }

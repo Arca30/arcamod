@@ -1,38 +1,43 @@
 {
 	"ambientocclusion": false,
 	"textures": {
-		"birch_log": "minecraft:block/birch_log",
-		"particle": "minecraft:block/birch_log"
+		"acacia_log": "minecraft:block/acacia_log",
+		"particle": "minecraft:block/oak_log"
 	},
 	"elements": [
 		{
-			"from": [7, 0.0, 4],
+			"from": [7, 0.0, 1],
 			"to": [8, 1.0, 14],
 			"faces": {
 				"up": {
-					"uv": [14, 5, 15, 15],
-					"texture": "#birch_log"
+					"uv": [5, 1, 6, 14],
+					"texture": "#acacia_log"
 				},
 				"down": {
-					"uv": [14, 15, 15, 5],
-					"texture": "#birch_log"
+					"uv": [5, 14, 6, 1],
+					"texture": "#acacia_log"
 				},
 				"north": {
-					"uv": [14, 5, 15, 6],
-					"texture": "#birch_log"
+					"uv": [5, 1, 6, 2],
+					"texture": "#acacia_log"
 				},
 				"south": {
-					"uv": [14, 5, 15, 6],
-					"texture": "#birch_log"
+					"uv": [5, 1, 6, 2],
+					"texture": "#acacia_log"
 				},
 				"east": {
-					"uv": [5, 14, 15, 15],
-					"texture": "#birch_log"
+					"uv": [1, 5, 14, 6],
+					"texture": "#acacia_log"
 				},
 				"west": {
-					"uv": [5, 14, 15, 15],
-					"texture": "#birch_log"
+					"uv": [1, 5, 14, 6],
+					"texture": "#acacia_log"
 				}
+			},
+			"rotation": {
+				"origin": [7.5, 0.0, 7.5],
+				"axis": "y",
+				"angle": -45
 			}
 		}
 	]

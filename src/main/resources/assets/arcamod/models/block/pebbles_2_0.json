@@ -1,8 +1,9 @@
 {
 	"ambientocclusion": false,
 	"textures": {
-		"gravel": "minecraft:block/gravel",
-		"particle": "minecraft:block/gravel"
+		"calcite": "minecraft:block/calcite",
+		"andesite": "minecraft:block/andesite",
+		"particle": "minecraft:block/calcite"
 	},
 	"elements": [
 		{
@@ -11,68 +12,63 @@
 			"faces": {
 				"up": {
 					"uv": [13, 13, 16, 16],
-					"texture": "#gravel"
+					"texture": "#calcite"
 				},
 				"down": {
 					"uv": [13, 16, 16, 13],
-					"texture": "#gravel"
+					"texture": "#calcite"
 				},
 				"north": {
 					"uv": [13, 13, 16, 14],
-					"texture": "#gravel"
+					"texture": "#calcite"
 				},
 				"south": {
 					"uv": [13, 13, 16, 14],
-					"texture": "#gravel"
+					"texture": "#calcite"
 				},
 				"east": {
 					"uv": [13, 13, 16, 14],
-					"texture": "#gravel"
+					"texture": "#calcite"
 				},
 				"west": {
 					"uv": [13, 13, 16, 14],
-					"texture": "#gravel"
+					"texture": "#calcite"
 				}
 			},
 			"rotation": {
 				"origin": [6.5, 0.0, 4.5],
 				"axis": "y",
-				"angle": 45
+				"angle": 22.5
 			}
 		},
 		{
-			"from": [1, 0.01, 7],
-			"to": [6, 1.01, 11],
+			"from": [7, 0.01, 11],
+			"to": [11, 1.01, 14],
 			"faces": {
 				"up": {
-					"uv": [4, 12, 9, 16],
-					"texture": "#gravel"
+					"uv": [12, 3, 16, 6],
+					"texture": "#andesite"
 				},
 				"down": {
-					"uv": [4, 16, 9, 12],
-					"texture": "#gravel"
+					"uv": [12, 6, 16, 3],
+					"texture": "#andesite"
 				},
 				"north": {
-					"uv": [4, 12, 9, 13],
-					"texture": "#gravel"
+					"uv": [12, 3, 16, 4],
+					"texture": "#andesite"
 				},
 				"south": {
-					"uv": [4, 12, 9, 13],
-					"texture": "#gravel"
+					"uv": [12, 3, 16, 4],
+					"texture": "#andesite"
 				},
 				"east": {
-					"uv": [12, 4, 16, 5],
-					"texture": "#gravel"
+					"uv": [3, 12, 6, 13],
+					"texture": "#andesite"
 				},
 				"west": {
-					"uv": [12, 4, 16, 5],
-					"texture": "#gravel"
+					"uv": [3, 12, 6, 13],
+					"texture": "#andesite"
 				}
-			},
-			"rotation": {
-				"origin": [3.5, 0.01, 9.0],
-				"axis": "y",
-				"angle": -22.5
 			}
 		}
 	]

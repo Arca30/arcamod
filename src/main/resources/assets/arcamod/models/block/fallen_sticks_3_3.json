@@ -1,110 +1,110 @@
 {
 	"ambientocclusion": false,
 	"textures": {
-		"oak_log": "minecraft:block/oak_log",
-		"stripped_oak_log": "minecraft:block/stripped_oak_log",
+		"dark_oak_log": "minecraft:block/dark_oak_log",
+		"jungle_log": "minecraft:block/jungle_log",
 		"birch_log": "minecraft:block/birch_log",
 		"particle": "minecraft:block/oak_log"
 	},
 	"elements": [
 		{
-			"from": [8, 0.0, 5],
-			"to": [9, 1.0, 15],
+			"from": [2, 0.0, 7],
+			"to": [13, 1.0, 8],
 			"faces": {
 				"up": {
-					"uv": [6, 3, 7, 13],
-					"texture": "#oak_log"
+					"uv": [2, 12, 13, 13],
+					"texture": "#dark_oak_log"
 				},
 				"down": {
-					"uv": [6, 13, 7, 3],
-					"texture": "#oak_log"
+					"uv": [2, 13, 13, 12],
+					"texture": "#dark_oak_log"
 				},
 				"north": {
-					"uv": [6, 3, 7, 4],
-					"texture": "#oak_log"
+					"uv": [2, 12, 13, 13],
+					"texture": "#dark_oak_log"
 				},
 				"south": {
-					"uv": [6, 3, 7, 4],
-					"texture": "#oak_log"
+					"uv": [2, 12, 13, 13],
+					"texture": "#dark_oak_log"
 				},
 				"east": {
-					"uv": [3, 6, 13, 7],
-					"texture": "#oak_log"
+					"uv": [12, 2, 13, 3],
+					"texture": "#dark_oak_log"
 				},
 				"west": {
-					"uv": [3, 6, 13, 7],
-					"texture": "#oak_log"
+					"uv": [12, 2, 13, 3],
+					"texture": "#dark_oak_log"
 				}
 			}
 		},
 		{
-			"from": [2, 0.01, 6],
-			"to": [11, 1.01, 7],
+			"from": [1, 0.01, 12],
+			"to": [14, 1.01, 13],
 			"faces": {
 				"up": {
-					"uv": [0, 15, 9, 16],
-					"texture": "#stripped_oak_log"
+					"uv": [0, 0, 13, 1],
+					"texture": "#jungle_log"
 				},
 				"down": {
-					"uv": [0, 16, 9, 15],
-					"texture": "#stripped_oak_log"
+					"uv": [0, 1, 13, 0],
+					"texture": "#jungle_log"
 				},
 				"north": {
-					"uv": [0, 15, 9, 16],
-					"texture": "#stripped_oak_log"
+					"uv": [0, 0, 13, 1],
+					"texture": "#jungle_log"
 				},
 				"south": {
-					"uv": [0, 15, 9, 16],
-					"texture": "#stripped_oak_log"
+					"uv": [0, 0, 13, 1],
+					"texture": "#jungle_log"
 				},
 				"east": {
-					"uv": [15, 0, 16, 1],
-					"texture": "#stripped_oak_log"
+					"uv": [0, 0, 1, 1],
+					"texture": "#jungle_log"
 				},
 				"west": {
-					"uv": [15, 0, 16, 1],
-					"texture": "#stripped_oak_log"
+					"uv": [0, 0, 1, 1],
+					"texture": "#jungle_log"
 				}
 			},
 			"rotation": {
-				"origin": [6.5, 0.01, 6.5],
+				"origin": [7.5, 0.01, 12.5],
 				"axis": "y",
 				"angle": 22.5
 			}
 		},
 		{
-			"from": [1, 0.02, 4],
-			"to": [2, 1.02, 15],
+			"from": [3, 0.02, 3],
+			"to": [12, 1.02, 4],
 			"faces": {
 				"up": {
-					"uv": [13, 3, 14, 14],
+					"uv": [6, 7, 15, 8],
 					"texture": "#birch_log"
 				},
 				"down": {
-					"uv": [13, 14, 14, 3],
+					"uv": [6, 8, 15, 7],
 					"texture": "#birch_log"
 				},
 				"north": {
-					"uv": [13, 3, 14, 4],
+					"uv": [6, 7, 15, 8],
 					"texture": "#birch_log"
 				},
 				"south": {
-					"uv": [13, 3, 14, 4],
+					"uv": [6, 7, 15, 8],
 					"texture": "#birch_log"
 				},
 				"east": {
-					"uv": [3, 13, 14, 14],
+					"uv": [7, 6, 8, 7],
 					"texture": "#birch_log"
 				},
 				"west": {
-					"uv": [3, 13, 14, 14],
+					"uv": [7, 6, 8, 7],
 					"texture": "#birch_log"
 				}
 			},
 			"rotation": {
-				"origin": [1.5, 0.02, 9.5],
+				"origin": [7.5, 0.02, 3.5],
 				"axis": "y",
-				"angle": 45
+				"angle": -22.5
 			}
 		}
 	]

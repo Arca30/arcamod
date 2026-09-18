@@ -3,6 +3,7 @@ package dev.arca.arcamod.registry;
 import java.util.Set;
 
 import dev.arca.arcamod.ArcaMod;
+import dev.arca.arcamod.block.entity.IgnitedBurntLogBlockEntity;
 import dev.arca.arcamod.block.entity.DisenchanterBlockEntity;
 import dev.arca.arcamod.block.entity.EndermanHeadBlockEntity;
 import dev.arca.arcamod.block.entity.PotionCauldronBlockEntity;
@@ -38,6 +39,12 @@ public final class ModBlockEntities {
 			BuiltInRegistries.BLOCK_ENTITY_TYPE,
 			ArcaMod.id("enderman_head"),
 			new BlockEntityType<>(EndermanHeadBlockEntity::new, Set.of(ModBlocks.ENDERMAN_HEAD, ModBlocks.ENDERMAN_WALL_HEAD)));
+
+	/** Buche brulee incandescente : aliments en train de cuire. */
+	public static final BlockEntityType<IgnitedBurntLogBlockEntity> IGNITED_BURNT_LOG = Registry.register(
+			BuiltInRegistries.BLOCK_ENTITY_TYPE,
+			ArcaMod.id("ignited_burnt_log"),
+			new BlockEntityType<>(IgnitedBurntLogBlockEntity::new, Set.of(ModBlocks.IGNITED_BURNT_LOG)));
 
 	public static void init() {
 	}

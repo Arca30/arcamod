@@ -1,109 +1,110 @@
 {
 	"ambientocclusion": false,
 	"textures": {
-		"spruce_log": "minecraft:block/spruce_log",
-		"jungle_log": "minecraft:block/jungle_log",
-		"particle": "minecraft:block/spruce_log"
+		"mangrove_log": "minecraft:block/mangrove_log",
+		"dark_oak_log": "minecraft:block/dark_oak_log",
+		"cherry_log": "minecraft:block/cherry_log",
+		"particle": "minecraft:block/oak_log"
 	},
 	"elements": [
 		{
-			"from": [2, 0.0, 3],
-			"to": [14, 1.0, 4],
+			"from": [2, 0.0, 14],
+			"to": [12, 1.0, 15],
 			"faces": {
 				"up": {
-					"uv": [4, 2, 16, 3],
-					"texture": "#spruce_log"
+					"uv": [6, 2, 16, 3],
+					"texture": "#mangrove_log"
 				},
 				"down": {
-					"uv": [4, 3, 16, 2],
-					"texture": "#spruce_log"
+					"uv": [6, 3, 16, 2],
+					"texture": "#mangrove_log"
 				},
 				"north": {
-					"uv": [4, 2, 16, 3],
-					"texture": "#spruce_log"
+					"uv": [6, 2, 16, 3],
+					"texture": "#mangrove_log"
 				},
 				"south": {
-					"uv": [4, 2, 16, 3],
-					"texture": "#spruce_log"
+					"uv": [6, 2, 16, 3],
+					"texture": "#mangrove_log"
 				},
 				"east": {
-					"uv": [2, 4, 3, 5],
-					"texture": "#spruce_log"
+					"uv": [2, 6, 3, 7],
+					"texture": "#mangrove_log"
 				},
 				"west": {
-					"uv": [2, 4, 3, 5],
-					"texture": "#spruce_log"
+					"uv": [2, 6, 3, 7],
+					"texture": "#mangrove_log"
 				}
 			}
 		},
 		{
-			"from": [2, 0.01, 14],
-			"to": [14, 1.01, 15],
+			"from": [2, 0.01, 1],
+			"to": [14, 1.01, 2],
 			"faces": {
 				"up": {
-					"uv": [0, 9, 12, 10],
-					"texture": "#jungle_log"
+					"uv": [0, 8, 12, 9],
+					"texture": "#dark_oak_log"
 				},
 				"down": {
-					"uv": [0, 10, 12, 9],
-					"texture": "#jungle_log"
+					"uv": [0, 9, 12, 8],
+					"texture": "#dark_oak_log"
 				},
 				"north": {
-					"uv": [0, 9, 12, 10],
-					"texture": "#jungle_log"
+					"uv": [0, 8, 12, 9],
+					"texture": "#dark_oak_log"
 				},
 				"south": {
-					"uv": [0, 9, 12, 10],
-					"texture": "#jungle_log"
+					"uv": [0, 8, 12, 9],
+					"texture": "#dark_oak_log"
 				},
 				"east": {
-					"uv": [9, 0, 10, 1],
-					"texture": "#jungle_log"
+					"uv": [8, 0, 9, 1],
+					"texture": "#dark_oak_log"
 				},
 				"west": {
-					"uv": [9, 0, 10, 1],
-					"texture": "#jungle_log"
+					"uv": [8, 0, 9, 1],
+					"texture": "#dark_oak_log"
 				}
 			},
 			"rotation": {
-				"origin": [8.0, 0.01, 14.5],
+				"origin": [8.0, 0.01, 1.5],
 				"axis": "y",
-				"angle": -45
+				"angle": -22.5
 			}
 		},
 		{
-			"from": [3, 0.02, 10],
-			"to": [14, 1.02, 11],
+			"from": [5, 0.02, 10],
+			"to": [13, 1.02, 11],
 			"faces": {
 				"up": {
-					"uv": [3, 8, 14, 9],
-					"texture": "#jungle_log"
+					"uv": [8, 2, 16, 3],
+					"texture": "#cherry_log"
 				},
 				"down": {
-					"uv": [3, 9, 14, 8],
-					"texture": "#jungle_log"
+					"uv": [8, 3, 16, 2],
+					"texture": "#cherry_log"
 				},
 				"north": {
-					"uv": [3, 8, 14, 9],
-					"texture": "#jungle_log"
+					"uv": [8, 2, 16, 3],
+					"texture": "#cherry_log"
 				},
 				"south": {
-					"uv": [3, 8, 14, 9],
-					"texture": "#jungle_log"
+					"uv": [8, 2, 16, 3],
+					"texture": "#cherry_log"
 				},
 				"east": {
-					"uv": [8, 3, 9, 4],
-					"texture": "#jungle_log"
+					"uv": [2, 8, 3, 9],
+					"texture": "#cherry_log"
 				},
 				"west": {
-					"uv": [8, 3, 9, 4],
-					"texture": "#jungle_log"
+					"uv": [2, 8, 3, 9],
+					"texture": "#cherry_log"
 				}
 			},
 			"rotation": {
-				"origin": [8.5, 0.02, 10.5],
+				"origin": [9.0, 0.02, 10.5],
 				"axis": "y",
-				"angle": -45
+				"angle": 22.5
 			}
 		}
 	]

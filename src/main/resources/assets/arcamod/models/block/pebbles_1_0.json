@@ -1,8 +1,8 @@
 {
 	"ambientocclusion": false,
 	"textures": {
-		"gravel": "minecraft:block/gravel",
-		"particle": "minecraft:block/gravel"
+		"calcite": "minecraft:block/calcite",
+		"particle": "minecraft:block/calcite"
 	},
 	"elements": [
 		{
@@ -11,33 +11,33 @@
 			"faces": {
 				"up": {
 					"uv": [13, 13, 16, 16],
-					"texture": "#gravel"
+					"texture": "#calcite"
 				},
 				"down": {
 					"uv": [13, 16, 16, 13],
-					"texture": "#gravel"
+					"texture": "#calcite"
 				},
 				"north": {
 					"uv": [13, 13, 16, 14],
-					"texture": "#gravel"
+					"texture": "#calcite"
 				},
 				"south": {
 					"uv": [13, 13, 16, 14],
-					"texture": "#gravel"
+					"texture": "#calcite"
 				},
 				"east": {
 					"uv": [13, 13, 16, 14],
-					"texture": "#gravel"
+					"texture": "#calcite"
 				},
 				"west": {
 					"uv": [13, 13, 16, 14],
-					"texture": "#gravel"
+					"texture": "#calcite"
 				}
 			},
 			"rotation": {
 				"origin": [6.5, 0.0, 4.5],
 				"axis": "y",
-				"angle": 45
+				"angle": 22.5
 			}
 		}
 	]

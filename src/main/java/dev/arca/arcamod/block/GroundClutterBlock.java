@@ -184,16 +184,21 @@ public abstract class GroundClutterBlock extends VegetationBlock {
 		return level.setBlock(pos, this.withNatural(placed, false), 3);
 	}
 
+	/**
+	 * Taille d'un tas genere entre min et max. Par defaut, toutes les tailles
+	 * ont la meme chance ; une sous-classe peut favoriser les petits tas.
+	 */
+	protected int pickClusterCount(RandomSource random, int min, int max) {
+		return min + random.nextInt(Math.max(1, max - min + 1));
+	}
+
 	/** Pose un tas complet d'un coup (utilise par la generation du monde). */
 	public boolean placeCluster(LevelAccessor level, BlockPos pos, RandomSource random, int min, int max) {
 		if (!level.getBlockState(pos).isAir() || !this.canPlaceAt(level, pos)) {
 			return false;
 		}
 
-		int count = Math.clamp(
-				min + random.nextInt(Math.max(1, max - min + 1)),
-				this.getMinCount(),
-				this.getMaxCount());
+		int count = Math.clamp(this.pickClusterCount(random, min, max), this.getMinCount(), this.getMaxCount());
 
 		return level.setBlock(pos, this.withNatural(this.defaultBlockState()
 				.setValue(FACING, Direction.Plane.HORIZONTAL.getRandomDirection(random))

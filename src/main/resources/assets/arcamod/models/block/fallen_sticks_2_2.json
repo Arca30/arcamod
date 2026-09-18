@@ -1,79 +1,79 @@
 {
 	"ambientocclusion": false,
 	"textures": {
-		"jungle_log": "minecraft:block/jungle_log",
 		"birch_log": "minecraft:block/birch_log",
-		"particle": "minecraft:block/jungle_log"
+		"jungle_log": "minecraft:block/jungle_log",
+		"particle": "minecraft:block/oak_log"
 	},
 	"elements": [
 		{
-			"from": [8, 0.0, 1],
-			"to": [9, 1.0, 12],
+			"from": [10, 0.0, 5],
+			"to": [11, 1.0, 12],
 			"faces": {
 				"up": {
-					"uv": [7, 2, 8, 13],
-					"texture": "#jungle_log"
+					"uv": [4, 5, 5, 12],
+					"texture": "#birch_log"
 				},
 				"down": {
-					"uv": [7, 13, 8, 2],
-					"texture": "#jungle_log"
+					"uv": [4, 12, 5, 5],
+					"texture": "#birch_log"
 				},
 				"north": {
-					"uv": [7, 2, 8, 3],
-					"texture": "#jungle_log"
+					"uv": [4, 5, 5, 6],
+					"texture": "#birch_log"
 				},
 				"south": {
-					"uv": [7, 2, 8, 3],
-					"texture": "#jungle_log"
+					"uv": [4, 5, 5, 6],
+					"texture": "#birch_log"
 				},
 				"east": {
-					"uv": [2, 7, 13, 8],
-					"texture": "#jungle_log"
+					"uv": [5, 4, 12, 5],
+					"texture": "#birch_log"
 				},
 				"west": {
-					"uv": [2, 7, 13, 8],
-					"texture": "#jungle_log"
+					"uv": [5, 4, 12, 5],
+					"texture": "#birch_log"
 				}
 			},
 			"rotation": {
-				"origin": [8.5, 0.0, 6.5],
+				"origin": [10.5, 0.0, 8.5],
 				"axis": "y",
-				"angle": 45
+				"angle": 22.5
 			}
 		},
 		{
-			"from": [5, 0.01, 9],
-			"to": [14, 1.01, 10],
+			"from": [12, 0.01, 4],
+			"to": [13, 1.01, 15],
 			"faces": {
 				"up": {
-					"uv": [7, 7, 16, 8],
-					"texture": "#birch_log"
+					"uv": [1, 5, 2, 16],
+					"texture": "#jungle_log"
 				},
 				"down": {
-					"uv": [7, 8, 16, 7],
-					"texture": "#birch_log"
+					"uv": [1, 16, 2, 5],
+					"texture": "#jungle_log"
 				},
 				"north": {
-					"uv": [7, 7, 16, 8],
-					"texture": "#birch_log"
+					"uv": [1, 5, 2, 6],
+					"texture": "#jungle_log"
 				},
 				"south": {
-					"uv": [7, 7, 16, 8],
-					"texture": "#birch_log"
+					"uv": [1, 5, 2, 6],
+					"texture": "#jungle_log"
 				},
 				"east": {
-					"uv": [7, 7, 8, 8],
-					"texture": "#birch_log"
+					"uv": [5, 1, 16, 2],
+					"texture": "#jungle_log"
 				},
 				"west": {
-					"uv": [7, 7, 8, 8],
-					"texture": "#birch_log"
+					"uv": [5, 1, 16, 2],
+					"texture": "#jungle_log"
 				}
 			},
 			"rotation": {
-				"origin": [9.5, 0.01, 9.5],
+				"origin": [12.5, 0.01, 9.5],
 				"axis": "y",
-				"angle": 22.5
+				"angle": -22.5
 			}
 		}
 	]

@@ -2,7 +2,8 @@
 	"ambientocclusion": false,
 	"textures": {
 		"tuff": "minecraft:block/tuff",
-		"andesite": "minecraft:block/andesite",
+		"calcite": "minecraft:block/calcite",
+		"diorite": "minecraft:block/diorite",
 		"particle": "minecraft:block/tuff"
 	},
 	"elements": [
@@ -47,27 +48,27 @@
 			"faces": {
 				"up": {
 					"uv": [9, 5, 13, 9],
-					"texture": "#andesite"
+					"texture": "#calcite"
 				},
 				"down": {
 					"uv": [9, 9, 13, 5],
-					"texture": "#andesite"
+					"texture": "#calcite"
 				},
 				"north": {
 					"uv": [9, 5, 13, 7],
-					"texture": "#andesite"
+					"texture": "#calcite"
 				},
 				"south": {
 					"uv": [9, 5, 13, 7],
-					"texture": "#andesite"
+					"texture": "#calcite"
 				},
 				"east": {
 					"uv": [5, 9, 9, 11],
-					"texture": "#andesite"
+					"texture": "#calcite"
 				},
 				"west": {
 					"uv": [5, 9, 9, 11],
-					"texture": "#andesite"
+					"texture": "#calcite"
 				}
 			},
 			"rotation": {
@@ -82,27 +83,27 @@
 			"faces": {
 				"up": {
 					"uv": [0, 8, 4, 12],
-					"texture": "#tuff"
+					"texture": "#diorite"
 				},
 				"down": {
 					"uv": [0, 12, 4, 8],
-					"texture": "#tuff"
+					"texture": "#diorite"
 				},
 				"north": {
 					"uv": [0, 8, 4, 9],
-					"texture": "#tuff"
+					"texture": "#diorite"
 				},
 				"south": {
 					"uv": [0, 8, 4, 9],
-					"texture": "#tuff"
+					"texture": "#diorite"
 				},
 				"east": {
 					"uv": [8, 0, 12, 1],
-					"texture": "#tuff"
+					"texture": "#diorite"
 				},
 				"west": {
 					"uv": [8, 0, 12, 1],
-					"texture": "#tuff"
+					"texture": "#diorite"
 				}
 			},
 			"rotation": {

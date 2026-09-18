@@ -34,10 +34,20 @@
 		"LivingEntityElytraHarnessMixin",
 		"SmithingTransformRecipeMixin",
 		"InventoryMenuMixin",
+		"PlayerToolBeltMixin",
+		"FireBlockBurntLogMixin",
 		"AbstractContainerMenuInvoker",
 		"PlayerAdvancementsMixin",
 		"ChiseledBookShelfBlockEntityMixin",
-		"PlayerElytraSlotMixin"
+		"PlayerElytraSlotMixin",
+		"ItemEntityQuiverPickupMixin",
+		"AbstractArrowQuiverPickupMixin",
+		"AbstractContainerMenuQuiverSelectMixin",
+		"AnvilMenuBookStackMixin",
+		"BundleItemMixin",
+		"ServerLevelResinProjectileMixin",
+		"CreeperResinMixin",
+		"SwellGoalResinMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

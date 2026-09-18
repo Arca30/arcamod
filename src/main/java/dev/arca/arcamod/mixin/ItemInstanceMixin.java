@@ -5,12 +5,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import dev.arca.arcamod.ArcaBalance;
 import dev.arca.arcamod.item.StackingRules;
 
 import net.minecraft.world.item.ItemInstance;
+import net.minecraft.world.item.Items;
 
 /**
- * Releve la taille de pile des potions, armures et outils.
+ * Releve la taille de pile des potions, armures, outils et livres enchantes.
  *
  * On vise l'interface ItemInstance et pas ItemStack : getMaxStackSize() y est
  * declaree en methode par defaut, ItemStack ne la redefinit pas. Un mixin sur
@@ -31,7 +33,20 @@ public interface ItemInstanceMixin {
 
 	@Inject(method = "getMaxStackSize", at = @At("RETURN"), cancellable = true)
 	private void arcamod$stackGear(CallbackInfoReturnable<Integer> cir) {
-		if (cir.getReturnValue() != 1 || !StackingRules.isEnabled()) {
+		if (cir.getReturnValue() != 1) {
+			return; // deja empilable
+		}
+
+		// Livres enchantes : reglage a part, independant de GEAR_STACKING.
+		if (((ItemInstance) this).typeHolder().value() == Items.ENCHANTED_BOOK) {
+			if (ArcaBalance.ENCHANTED_BOOK_STACK_SIZE > 1) {
+				cir.setReturnValue(ArcaBalance.ENCHANTED_BOOK_STACK_SIZE);
+			}
+
+			return;
+		}
+
+		if (!StackingRules.isEnabled()) {
 			return; // deja empilable, ou fonctionnalite desactivee
 		}
 

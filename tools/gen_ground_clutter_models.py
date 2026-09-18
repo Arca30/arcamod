@@ -36,7 +36,7 @@ SEED = 20260912
 
 # Nombre de modeles differents par quantite. Plus il y en a, plus les tas
 # sont varies, mais plus il y a de fichiers (VARIANTS x MAX_COUNT par bloc).
-VARIANTS = 6
+VARIANTS = 24
 
 # --- Cailloux ---
 PEBBLE_MAX_COUNT = None       # lu dans ArcaBalance.PEBBLES_MAX
@@ -52,6 +52,10 @@ PEBBLE_TEXTURES = [
     "minecraft:block/andesite",
     "minecraft:block/gravel",
     "minecraft:block/mossy_cobblestone",
+    "minecraft:block/deepslate",
+    "minecraft:block/basalt_side",    # pas de "basalt.png" : on prend le flanc
+    "minecraft:block/calcite",
+    "minecraft:block/smooth_basalt",
 ]
 
 # --- Branches ---
@@ -69,7 +73,14 @@ STICK_TEXTURES = [
     "minecraft:block/jungle_log",
     "minecraft:block/dark_oak_log",
     "minecraft:block/stripped_oak_log",
+    "minecraft:block/acacia_log",
+    "minecraft:block/cherry_log",
+    "minecraft:block/mangrove_log",
+    "minecraft:block/pale_oak_log",
 ]
+
+# Texture des particules des branches (casse, marche dessus).
+STICK_PARTICLE = "minecraft:block/oak_log"
 
 # Marge laissee libre sur les bords du bloc, en pixels : evite que les objets
 # ne depassent sur le bloc d'a cote.
@@ -232,9 +243,12 @@ def generate(kind, name, max_count):
                 palette = PEBBLE_TEXTURES if kind == "pebble" else STICK_TEXTURES
                 textures[key] = next(t for t in palette if t.split("/")[-1] == key)
 
+            # Particules (casse, marche) : chene pour toutes les branches,
+            # sinon la texture du premier objet.
+            particle = STICK_PARTICLE if kind == "stick" else next(iter(textures.values()))
             model = {
                 "ambientocclusion": False,
-                "textures": dict(textures, particle=next(iter(textures.values()))),
+                "textures": dict(textures, particle=particle),
                 "elements": kept,
             }
             write_json(ASSETS / f"models/block/{name}_{count}_{index}.json", model)

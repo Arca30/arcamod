@@ -4,8 +4,10 @@ import java.util.function.Function;
 
 import dev.arca.arcamod.ArcaBalance;
 import dev.arca.arcamod.ArcaMod;
+import dev.arca.arcamod.item.AltimeterItem;
 import dev.arca.arcamod.item.ChargedEnchantingCrystalItem;
 import dev.arca.arcamod.item.FlintDaggerItem;
+import dev.arca.arcamod.item.HotCoalBottleItem;
 import dev.arca.arcamod.item.ModArmorMaterials;
 import dev.arca.arcamod.item.ModFoods;
 import dev.arca.arcamod.item.ModToolMaterials;
@@ -14,6 +16,7 @@ import dev.arca.arcamod.item.PinkGoldUpgradeTemplate;
 import dev.arca.arcamod.item.QuiverItem;
 import dev.arca.arcamod.item.ScarecrowItem;
 import dev.arca.arcamod.item.SlingshotItem;
+import dev.arca.arcamod.item.ToolBeltItem;
 import dev.arca.arcamod.item.XpBerryItem;
 
 import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
@@ -299,6 +302,35 @@ public final class ModItems {
 
 	public static final Item PINK_GOLD_BOOTS = register("pink_gold_boots", Item::new,
 			new Item.Properties().humanoidArmor(ModArmorMaterials.PINK_GOLD, ArmorType.BOOTS));
+
+	/** Altimetre : affiche l'altitude, et compare a une altitude memorisee (shift + clic droit). */
+	public static final Item ALTIMETER = register("altimeter", AltimeterItem::new,
+			new Item.Properties().stacksTo(ArcaBalance.ALTIMETER_MAX_STACK_SIZE));
+
+	/** Ceinture a outils : se porte dans la case au-dessus du bouclier (voir ToolBelt). */
+	public static final Item TOOL_BELT = register("tool_belt", ToolBeltItem::new,
+			new Item.Properties().stacksTo(1));
+
+	public static final Item BURNT_LOG = register("burnt_log",
+			properties -> new BlockItem(ModBlocks.BURNT_LOG, properties),
+			new Item.Properties().useBlockDescriptionPrefix());
+
+	public static final Item IGNITED_BURNT_LOG = register("ignited_burnt_log",
+			properties -> new BlockItem(ModBlocks.IGNITED_BURNT_LOG, properties),
+			new Item.Properties().useBlockDescriptionPrefix());
+
+	/** Braises en bouteille : allument un feu de camp ou un bloc tres inflammable. */
+	public static final Item HOT_COAL_IN_A_BOTTLE = register("hot_coal_in_a_bottle", HotCoalBottleItem::new,
+			new Item.Properties().stacksTo(16));
+
+	/** Cendre : se pose et s'empile couche par couche, comme la neige fine. */
+	public static final Item ASH = register("ash",
+			properties -> new BlockItem(ModBlocks.ASH, properties),
+			new Item.Properties().useBlockDescriptionPrefix());
+
+	public static final Item BURNT_WOOD = register("burnt_wood",
+			properties -> new BlockItem(ModBlocks.BURNT_WOOD, properties),
+			new Item.Properties().useBlockDescriptionPrefix());
 
 	private static Item register(String name, Function<Item.Properties, Item> factory, Item.Properties properties) {
 		ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, ArcaMod.id(name));

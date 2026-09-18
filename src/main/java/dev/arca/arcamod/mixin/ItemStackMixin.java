@@ -12,9 +12,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.function.BiConsumer;
@@ -25,7 +31,8 @@ import java.util.function.BiConsumer;
  * Un outil casse reste dans l'inventaire, s'affiche casse (le choix de la
  * texture est fait cote client, voir ItemModelResolverMixin) et
  * ne sert plus a rien (vitesse de minage nulle, aucun butin, aucun bonus
- * d'attaque) tant qu'il n'est pas repare.
+ * d'attaque, aucune utilisation au clic droit : arc, canne a peche, bouclier,
+ * briquet, labour, ecorcage...) tant qu'il n'est pas repare.
  *
  * Deux cas differents au moment de la casse :
  *  - pile de plusieurs outils : comportement d'origine du mod, on consomme un
@@ -88,6 +95,37 @@ public class ItemStackMixin {
 
 		if (!self.isBroken() && BROKEN_MODEL.equals(self.get(DataComponents.ITEM_MODEL))) {
 			self.remove(DataComponents.ITEM_MODEL);
+		}
+	}
+
+	/**
+	 * Clic droit inutilisable : dans le vide (arc, arbalete, canne a peche,
+	 * trident, bouclier...). Les objets equipables (armures, elytres) restent
+	 * enfilables et retirables.
+	 */
+	@Inject(method = "use", at = @At("HEAD"), cancellable = true)
+	private void arcamod$brokenToolCannotBeUsed(Level level, Player player, InteractionHand hand,
+			CallbackInfoReturnable<InteractionResult> cir) {
+		if (this.arcamod$isBrokenTool() && !((ItemStack) (Object) this).has(DataComponents.EQUIPPABLE)) {
+			cir.setReturnValue(InteractionResult.FAIL);
+		}
+	}
+
+	/** Clic droit sur un bloc : briquet, houe, hache, pelle, pinceau... */
+	@Inject(method = "useOn", at = @At("HEAD"), cancellable = true)
+	private void arcamod$brokenToolCannotBeUsedOnBlock(UseOnContext context,
+			CallbackInfoReturnable<InteractionResult> cir) {
+		if (this.arcamod$isBrokenTool()) {
+			cir.setReturnValue(InteractionResult.FAIL);
+		}
+	}
+
+	/** Clic droit sur une creature : cisailles sur un mouton, etc. */
+	@Inject(method = "interactLivingEntity", at = @At("HEAD"), cancellable = true)
+	private void arcamod$brokenToolCannotBeUsedOnEntity(Player player, LivingEntity target, InteractionHand hand,
+			CallbackInfoReturnable<InteractionResult> cir) {
+		if (this.arcamod$isBrokenTool()) {
+			cir.setReturnValue(InteractionResult.FAIL);
 		}
 	}
 

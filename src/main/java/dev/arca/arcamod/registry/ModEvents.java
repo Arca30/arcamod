@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 
 import dev.arca.arcamod.ArcaBalance;
+import dev.arca.arcamod.entity.Scarecrow;
 import dev.arca.arcamod.block.ChickenEggsBlock;
 import dev.arca.arcamod.block.EnchantingCrystalBlock;
 import dev.arca.arcamod.block.PotionCauldronBlock;
@@ -26,13 +27,18 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.monster.zombie.Drowned;
@@ -56,6 +62,7 @@ public final class ModEvents {
 		registerStickPlacing();
 		registerEggPlacing();
 		registerItemFrameHiding();
+		registerScarecrowConversion();
 		registerThatchScraping();
 		registerCrystalCharging();
 		registerPotionPouring();
@@ -71,19 +78,26 @@ public final class ModEvents {
 	}
 
 	/**
-	 * Frappe ardente (piment des ames) : un coup au corps a corps enflamme la
-	 * cible, comme Aura de feu. "Corps a corps" = l'attaquant est aussi
-	 * l'entite qui touche (pas une fleche, pas un projectile).
+	 * Frappe ardente (piment des ames), au corps a corps uniquement
+	 * ("corps a corps" = l'attaquant est aussi l'entite qui touche : pas une
+	 * fleche, pas un projectile) :
+	 *  - les coups de celui qui a l'effet enflamment la cible (Aura de feu) ;
+	 *  - ceux qui le frappent prennent feu a leur tour (riposte).
 	 */
 	private static void registerFieryStrikes() {
 		ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamage, damageTaken, blocked) -> {
 			if (blocked || !ArcaFeature.SOUL_PEPPER.isEnabled()
-					|| !(source.getEntity() instanceof LivingEntity attacker) || source.getDirectEntity() != attacker
-					|| !attacker.hasEffect(ModEffects.FIERY_STRIKES)) {
+					|| !(source.getEntity() instanceof LivingEntity attacker) || source.getDirectEntity() != attacker) {
 				return;
 			}
 
-			entity.igniteForSeconds(ArcaBalance.SOUL_PEPPER_IGNITE_SECONDS);
+			if (attacker.hasEffect(ModEffects.FIERY_STRIKES)) {
+				entity.igniteForSeconds(ArcaBalance.SOUL_PEPPER_IGNITE_SECONDS);
+			}
+
+			if (entity.hasEffect(ModEffects.FIERY_STRIKES) && ArcaBalance.SOUL_PEPPER_RETALIATION_IGNITE_SECONDS > 0) {
+				attacker.igniteForSeconds(ArcaBalance.SOUL_PEPPER_RETALIATION_IGNITE_SECONDS);
+			}
 		});
 	}
 
@@ -695,6 +709,84 @@ public final class ModEvents {
 
 				if (!player.hasInfiniteMaterials()) {
 					stack.shrink(1);
+				}
+			}
+
+			return InteractionResult.SUCCESS;
+		});
+	}
+
+	/**
+	 * Fabrication de l'epouvantail : clic droit avec une botte de foin sur un
+	 * porte-armure qui porte un plastron et des jambieres en cuir. Le
+	 * porte-armure est remplace par un epouvantail, au meme endroit et dans le
+	 * meme sens ; le reste de son equipement (casque, bottes, objets en main)
+	 * et son nom sont conserves.
+	 */
+	private static void registerScarecrowConversion() {
+		UseEntityCallback.EVENT.register((player, level, hand, entity, hit) -> {
+			if (!ArcaFeature.SCARECROW.isEnabled() || player.isSpectator()) {
+				return InteractionResult.PASS;
+			}
+
+			ItemStack hay = player.getItemInHand(hand);
+
+			// Scarecrow herite de ArmorStand : on ne transforme que le vanilla.
+			if (!(entity instanceof ArmorStand stand) || entity instanceof Scarecrow || !hay.is(Items.HAY_BLOCK)
+					|| !stand.getItemBySlot(EquipmentSlot.CHEST).is(Items.LEATHER_CHESTPLATE)
+					|| !stand.getItemBySlot(EquipmentSlot.LEGS).is(Items.LEATHER_LEGGINGS)) {
+				return InteractionResult.PASS;
+			}
+
+			int cost = Math.max(0, ArcaBalance.SCARECROW_CONVERSION_HAY_COST);
+
+			if (!player.hasInfiniteMaterials() && hay.getCount() < cost) {
+				return InteractionResult.FAIL;
+			}
+
+			if (level instanceof ServerLevel serverLevel) {
+				Scarecrow scarecrow = ModEntities.SCARECROW.create(serverLevel, EntitySpawnReason.CONVERSION);
+
+				if (scarecrow == null) {
+					return InteractionResult.FAIL;
+				}
+
+				scarecrow.snapTo(stand.getX(), stand.getY(), stand.getZ(), stand.getYRot(), 0.0F);
+				scarecrow.setCustomName(stand.getCustomName());
+				scarecrow.setCustomNameVisible(stand.isCustomNameVisible());
+
+				for (EquipmentSlot slot : EquipmentSlot.values()) {
+					boolean leather = slot == EquipmentSlot.CHEST || slot == EquipmentSlot.LEGS;
+
+					if (leather && ArcaBalance.SCARECROW_CONVERSION_CONSUMES_LEATHER) {
+						continue;
+					}
+
+					ItemStack worn = stand.getItemBySlot(slot);
+
+					if (!worn.isEmpty()) {
+						scarecrow.setItemSlot(slot, worn.copy());
+					}
+				}
+
+				// Vide le porte-armure avant de le retirer : rien ne doit tomber.
+				for (EquipmentSlot slot : EquipmentSlot.values()) {
+					stand.setItemSlot(slot, ItemStack.EMPTY);
+				}
+
+				stand.discard();
+				serverLevel.addFreshEntity(scarecrow);
+				scarecrow.gameEvent(GameEvent.ENTITY_PLACE, player);
+
+				serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.HAY_BLOCK.defaultBlockState()),
+						scarecrow.getX(), scarecrow.getY(0.6), scarecrow.getZ(), 30, 0.25, 0.4, 0.25, 0.05);
+				serverLevel.playSound(null, scarecrow.getX(), scarecrow.getY(), scarecrow.getZ(),
+						SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 1.0F, 0.8F);
+				serverLevel.playSound(null, scarecrow.getX(), scarecrow.getY(), scarecrow.getZ(),
+						SoundEvents.ARMOR_STAND_PLACE, SoundSource.BLOCKS, 0.75F, 0.8F);
+
+				if (!player.hasInfiniteMaterials()) {
+					hay.shrink(cost);
 				}
 			}
 

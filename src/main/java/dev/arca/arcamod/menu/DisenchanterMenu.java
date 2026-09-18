@@ -3,6 +3,7 @@ package dev.arca.arcamod.menu;
 import java.util.List;
 
 import dev.arca.arcamod.ArcaBalance;
+import dev.arca.arcamod.block.entity.DisenchanterBlockEntity;
 import dev.arca.arcamod.registry.ModBlocks;
 import dev.arca.arcamod.registry.ModMenus;
 
@@ -69,6 +70,13 @@ public class DisenchanterMenu extends AbstractContainerMenu {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return !EnchantmentHelper.getEnchantmentsForCrafting(stack).isEmpty();
+			}
+
+			// Un seul objet : sinon toute une pile de livres enchantes perdrait
+			// son enchantement pour un seul livre produit.
+			@Override
+			public int getMaxStackSize() {
+				return 1;
 			}
 		});
 
@@ -184,7 +192,15 @@ public class DisenchanterMenu extends AbstractContainerMenu {
 		}
 
 		this.input.removeItem(SLOT_BOOKS, 1);
-		this.access.execute((level, pos) -> level.levelEvent(1042, pos, 0));
+		this.access.execute((level, pos) -> {
+			level.levelEvent(1042, pos, 0);
+
+			// Le savoir arrache laisse parfois une trace : du sculk pousse dessous.
+			if (level.getRandom().nextFloat() < ArcaBalance.DISENCHANT_SCULK_CHANCE
+					&& level.getBlockEntity(pos) instanceof DisenchanterBlockEntity disenchanter) {
+				disenchanter.startSculkSpread();
+			}
+		});
 		this.updateResult();
 	}
 

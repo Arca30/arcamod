@@ -1,9 +1,11 @@
 package dev.arca.arcamod.registry;
 
 import dev.arca.arcamod.ArcaMod;
+import dev.arca.arcamod.menu.BundleMenu;
 import dev.arca.arcamod.menu.DisenchanterMenu;
 import dev.arca.arcamod.menu.FletchingMenu;
 import dev.arca.arcamod.menu.QuiverMenu;
+import dev.arca.arcamod.menu.ToolBeltMenu;
 import dev.arca.arcamod.menu.XpBottlerMenu;
 
 import net.minecraft.core.Registry;
@@ -41,6 +43,18 @@ public final class ModMenus {
 			BuiltInRegistries.MENU,
 			ArcaMod.id("fletching_table"),
 			new MenuType<>(FletchingMenu::new, FeatureFlags.VANILLA_SET));
+
+	/** Interface du bundle (accroupi + clic droit), voir BundleItemMixin. */
+	public static final MenuType<BundleMenu> BUNDLE = Registry.register(
+			BuiltInRegistries.MENU,
+			ArcaMod.id("bundle"),
+			new MenuType<>(BundleMenu::new, FeatureFlags.VANILLA_SET));
+
+	/** Ceinture a outils (clic droit en main). */
+	public static final MenuType<ToolBeltMenu> TOOL_BELT = Registry.register(
+			BuiltInRegistries.MENU,
+			ArcaMod.id("tool_belt"),
+			new MenuType<>(ToolBeltMenu::new, FeatureFlags.VANILLA_SET));
 
 	public static void init() {
 	}

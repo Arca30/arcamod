@@ -1,6 +1,8 @@
 package dev.arca.arcamod;
 
 import dev.arca.arcamod.util.ElytraSlot;
+import dev.arca.arcamod.util.BurntLogs;
+import dev.arca.arcamod.util.ToolBelt;
 import dev.arca.arcamod.command.PinkGoldDebugCommand;
 import dev.arca.arcamod.registry.ModBlockEntities;
 import dev.arca.arcamod.registry.ModBlocks;
@@ -44,8 +46,12 @@ public class ArcaMod implements ModInitializer {
 		ModDataComponents.init();
 		// Piece jointe "elytres rangees" du joueur (slot d'elytres).
 		ElytraSlot.init();
+		// Piece jointe "ceinture portee" du joueur.
+		ToolBelt.init();
 		ModEffects.init();
 		ModBlocks.init();
+		// Le feu consume mieux les buches (ArcaBalance.FIRE_LOG_BURN_ODDS).
+		BurntLogs.init();
 		ModDecorBlocks.init();
 		ModItems.init();
 		ModEntities.init();

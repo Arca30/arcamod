@@ -1,43 +1,43 @@
 {
 	"ambientocclusion": false,
 	"textures": {
-		"gravel": "minecraft:block/gravel",
-		"particle": "minecraft:block/gravel"
+		"diorite": "minecraft:block/diorite",
+		"particle": "minecraft:block/diorite"
 	},
 	"elements": [
 		{
-			"from": [5, 0.0, 7],
-			"to": [9, 2.0, 12],
+			"from": [7, 0.0, 1],
+			"to": [12, 2.0, 6],
 			"faces": {
 				"up": {
-					"uv": [12, 10, 16, 15],
-					"texture": "#gravel"
+					"uv": [4, 5, 9, 10],
+					"texture": "#diorite"
 				},
 				"down": {
-					"uv": [12, 15, 16, 10],
-					"texture": "#gravel"
+					"uv": [4, 10, 9, 5],
+					"texture": "#diorite"
 				},
 				"north": {
-					"uv": [12, 10, 16, 12],
-					"texture": "#gravel"
+					"uv": [4, 5, 9, 7],
+					"texture": "#diorite"
 				},
 				"south": {
-					"uv": [12, 10, 16, 12],
-					"texture": "#gravel"
+					"uv": [4, 5, 9, 7],
+					"texture": "#diorite"
 				},
 				"east": {
-					"uv": [10, 12, 15, 14],
-					"texture": "#gravel"
+					"uv": [5, 4, 10, 6],
+					"texture": "#diorite"
 				},
 				"west": {
-					"uv": [10, 12, 15, 14],
-					"texture": "#gravel"
+					"uv": [5, 4, 10, 6],
+					"texture": "#diorite"
 				}
 			},
 			"rotation": {
-				"origin": [7.0, 0.0, 9.5],
+				"origin": [9.5, 0.0, 3.5],
 				"axis": "y",
-				"angle": -45
+				"angle": -22.5
 			}
 		}
 	]
