@@ -1731,27 +1731,12 @@ public final class ArcaBalance {
 	public static final float BURNT_LOG_TREE_CHANCE = 0.6F;
 
 	/**
-	 * Les buches qui ne reposent plus sur rien s'effritent quand le feu a mange
-	 * ce qui les portait (plus de troncs qui flottent apres un incendie). Elles
-	 * disparaissent par le haut, sans animation de chute et sans rien lacher.
+	 * Un arbre se vide du haut vers le bas : quand le feu consume une buche,
+	 * c'est celle du sommet de la colonne qui disparait, meme si les flammes
+	 * sont au pied. Plus de troncs qui flottent, et l'incendie ne dure pas plus
+	 * longtemps : une buche consumee reste une buche consumee.
 	 */
-	public static final boolean BURNT_LOG_COLLAPSE = true;
-
-	/**
-	 * Taille maximale d'un amas de buches juge par l'effondrement. Au-dela, on
-	 * considere qu'il tient (une charpente de maison ne s'ecroule pas). Plus
-	 * c'est haut, plus le calcul est lourd a chaque buche brulee.
-	 */
-	public static final int BURNT_LOG_COLLAPSE_MAX_LOGS = 64;
-
-	/**
-	 * Buches effritees a chaque buche brulee, en partant du haut de l'amas.
-	 * Plus c'est bas, plus l'amas s'efface lentement, au rythme du feu.
-	 */
-	public static final int BURNT_LOG_COLLAPSE_PER_EVENT = 2;
-
-	/** Une buche qui s'effrite laisse de la cendre, comme si elle avait brule. */
-	public static final boolean BURNT_LOG_COLLAPSE_LEAVES_ASH = true;
+	public static final boolean BURNT_LOG_BURN_TOP_DOWN = true;
 
 	/** Profondeur de recherche du pied d'un tronc (hauteur maximale d'un arbre). */
 	public static final int BURNT_LOG_TRUNK_SCAN = 32;
@@ -1791,6 +1776,9 @@ public final class ArcaBalance {
 
 	/** Intervalle (ticks) des verifications : feu proche, propagation, extinction. */
 	public static final int IGNITED_BURNT_LOG_CHECK_TICKS = 20;
+
+	/** Nombre maximum de faces enflammees par verification (1 = la buche n'allume qu'un voisin a la fois). */
+	public static final int IGNITED_BURNT_LOG_IGNITE_MAX_FACES = 1;
 
 	/** Chance, a chaque verification et pour chaque bloc inflammable qui la touche, d'y mettre le feu. */
 	public static final float IGNITED_BURNT_LOG_IGNITE_CHANCE = 0.15F;
@@ -1866,9 +1854,10 @@ public final class ArcaBalance {
 
 	/**
 	 * Poids du nombre de couches d'un tas tout neuf : 1 couche, 2 couches,
-	 * 3 couches. Ici 6/3/1, soit 60 %, 30 % et 10 %.
+	 * 3 couches. Les valeurs peuvent avoir des decimales ; seul leur rapport
+	 * compte. Ici 7.5/2/0.5, soit 75 %, 20 % et 5 %.
 	 */
-	public static final int[] ASH_NEW_PILE_WEIGHTS = { 6, 3, 1 };
+	public static final float[] ASH_NEW_PILE_WEIGHTS = { 7.5F, 2.0F, 0.5F };
 
 	/** Couches ajoutees d'un coup quand un depot epaissit un tas existant. */
 	public static final int ASH_BURST_MIN = 2;
