@@ -357,6 +357,11 @@ public final class ArcaBalance {
 	 */
 	public static final int GEAR_STACK_SIZE = 16;
 
+	// Note : un outil NEUF devient empilable, et depuis 26.3 le jeu consomme
+	// un objet empilable au lieu de l'abimer quand on laboure, ecorce ou
+	// aplanit un bloc. Sans correctif, une houe neuve disparaissait a sa
+	// premiere utilisation : voir mixin/BlockTransformerToolMixin.
+
 	/**
 	 * Taille de pile des livres enchantes (seuls les livres aux enchantements
 	 * strictement identiques s'empilent). 1 = comme en vanilla. Les
@@ -2278,34 +2283,52 @@ public final class ArcaBalance {
 	}
 
 	// ---- Altimetre --------------------------------------------------------------
-	// Shift + clic droit : memorise l'altitude (Y du bloc sous les pieds).
-	// Re-shift + clic droit : l'efface.
+	// La boussole de l'axe vertical : un cadran, pas un chiffre. L'aiguille
+	// balaie la hauteur du monde et se lit dans la main, l'inventaire ou un cadre.
 
-	/** Ecart (en blocs) toleré pour considerer le joueur "a la bonne hauteur" (0 = Y exact). */
-	public static final int ALTIMETER_TOLERANCE_BLOCKS = 0;
+	/**
+	 * Nombre d'images du cadran, pour memoire : le decoupage reel vit dans
+	 * assets/arcamod/items/altimeter.json ("scale" et les seuils). Changer ce
+	 * nombre demande de regenerer ce fichier et les modeles altimeter_XX.
+	 */
+	public static final int ALTIMETER_DIAL_FRAMES = 32;
 
-	/** Taille de pile de l'altimetre. */
+	/**
+	 * true : le cadran s'adapte a la dimension (Overworld -64..319, Nether 0..255...).
+	 * false : plage fixe ALTIMETER_FIXED_MIN_Y / MAX_Y partout.
+	 */
+	public static final boolean ALTIMETER_USE_DIMENSION_RANGE = true;
+
+	/** Plage utilisee quand ALTIMETER_USE_DIMENSION_RANGE est false. */
+	public static final int ALTIMETER_FIXED_MIN_Y = -64;
+	public static final int ALTIMETER_FIXED_MAX_Y = 319;
+
+	/**
+	 * Portion du cadran parcourue par l'aiguille, en tours : START = plancher du
+	 * monde, END = plafond.
+	 *
+	 * Par defaut 0.125 -> 0.875, soit trois quarts de tour, comme une jauge.
+	 * Un tour complet (0 -> 1) est a eviter sur un cadran rond : l'aiguille
+	 * reviendrait a son point de depart et le ciel ressemblerait au bedrock.
+	 */
+	public static final float ALTIMETER_DIAL_START = 0.125F;
+	public static final float ALTIMETER_DIAL_END = 0.875F;
+
+	/**
+	 * Repartition des images sur la hauteur : 1 = lineaire, < 1 donne plus de
+	 * precision au fond du monde (zone de minage), > 1 a la surface et au ciel.
+	 */
+	public static final float ALTIMETER_DIAL_CURVE = 1.0F;
+
+	/**
+	 * Position de l'aiguille sans porteur (coffre, cadre, menu creatif) ou quand
+	 * l'interrupteur ALTIMETER est coupe. Volontairement hors du balayage
+	 * START..END : l'aiguille se met au repos au lieu de mentir sur une altitude.
+	 */
+	public static final float ALTIMETER_DIAL_IDLE = 0.0F;
+
+	/** Taille de pile de l'altimetre (l'objet est sans etat, il s'empile comme l'horloge). */
 	public static final int ALTIMETER_MAX_STACK_SIZE = 64;
-
-	/** Affiche aussi l'altitude memorisee a cote de l'altitude actuelle. */
-	public static final boolean ALTIMETER_HUD_SHOW_TARGET = true;
-
-	/** L'altitude s'affiche aussi quand l'altimetre est dans la main secondaire. */
-	public static final boolean ALTIMETER_HUD_IN_OFFHAND = true;
-
-	/** Hauteur du texte depuis le bas de l'ecran (vanilla, nom de l'objet : 59). */
-	public static final int ALTIMETER_HUD_Y_OFFSET = 59;
-
-	/** Couleurs du texte (RGB) : sans altitude memorisee, a la bonne hauteur, au-dessus, en dessous. */
-	public static final int ALTIMETER_HUD_COLOR_DEFAULT = 0xFFFFFF;
-	public static final int ALTIMETER_HUD_COLOR_LEVEL = 0x55FF55;
-	public static final int ALTIMETER_HUD_COLOR_UP = 0xFFAA55;
-	public static final int ALTIMETER_HUD_COLOR_DOWN = 0x55AAFF;
-
-	/** Volume et hauteurs du son quand on memorise / efface l'altitude. */
-	public static final float ALTIMETER_SOUND_VOLUME = 1.0F;
-	public static final float ALTIMETER_SOUND_PITCH_SET = 1.4F;
-	public static final float ALTIMETER_SOUND_PITCH_CLEAR = 0.8F;
 
 	// ---- Ceinture a outils ----------------------------------------------------
 	// Se porte dans la case au-dessus du bouclier (inventaire).
@@ -3285,6 +3308,13 @@ public final class ArcaBalance {
 	/** Puissance de l'explosion. TNT vanilla : 4.0. */
 	public static final float TNT_BARREL_EXPLOSION_POWER = 10.0F;
 
+	/**
+	 * Lumiere emise par le baril tant que sa meche brule, de 0 (aucune) a 15.
+	 * 12 = la lumiere dynamique d'une TNT amorcee (DYNAMIC_LIGHT liste dans
+	 * DynamicLightSources). (Relancer le jeu.)
+	 */
+	public static final int TNT_BARREL_LIT_LIGHT = 12;
+
 	/** Duree de la meche, en ticks (20 = 1 s). TNT vanilla : 80. */
 	public static final int TNT_BARREL_FUSE_TICKS = 80;
 
@@ -3375,6 +3405,373 @@ public final class ArcaBalance {
 	 * 1 = vanilla, 2 = deux fois plus long, 0.5 = deux fois plus rapide.
 	 */
 	public static final float FIRE_BURN_TIME_MULTIPLIER = 0.5F;
+
+
+	// ==================================================================
+	// 50. Lanterne d'eyeblossom
+	// ==================================================================
+
+	/**
+	 * Niveau de lumiere de la lanterne completement allumee (15 = lanterne
+	 * vanilla). C'est aussi le nombre d'etapes de l'allumage : la lanterne
+	 * passe de 0 a cette valeur un cran a la fois.
+	 */
+	public static final int EYEBLOSSOM_LANTERN_MAX_LIGHT = 15;
+
+	/**
+	 * Ticks entre deux crans. 1 est le PLUS PETIT possible : un bloc ne peut
+	 * pas jouer plus d'une fois par tick.
+	 */
+	public static final int EYEBLOSSOM_LANTERN_TICKS_PER_STEP = 1;
+
+	/**
+	 * Niveaux de lumiere gagnes a chaque cran. C'est le second reglage de la
+	 * vitesse, celui qui permet d'aller plus vite qu'un tick par niveau.
+	 *
+	 * Duree totale = MAX_LIGHT / LEVELS_PER_STEP x TICKS_PER_STEP ticks :
+	 *   1 niveau / 1 tick  -> 15 ticks, 0,75 s
+	 *   3 niveaux / 1 tick ->  5 ticks, 0,25 s   (reglage par defaut)
+	 *   5 niveaux / 1 tick ->  3 ticks, 0,15 s
+	 *  15 niveaux / 1 tick ->  1 tick, instantane
+	 *
+	 * Attention, c'est AUSSI le fondu de la texture : a 3 niveaux par cran,
+	 * l'image saute de trois crans a la fois (5 images sur 16 au lieu de 15).
+	 * Lumiere et apparence sont portees par la meme propriete, impossible de
+	 * les separer.
+	 */
+	public static final int EYEBLOSSOM_LANTERN_LEVELS_PER_STEP = 2;
+
+	/** Rayon (en blocs) auquel un joueur reveille la lanterne. */
+	public static final double EYEBLOSSOM_LANTERN_RADIUS = 8.0;
+
+	/** true : un joueur en creatif ou en spectateur ne reveille pas la lanterne. */
+	public static final boolean EYEBLOSSOM_LANTERN_IGNORES_CREATIVE = false;
+
+	/** true : la fleur joue son bruit d'ouverture / de fermeture aux deux bouts du fondu. */
+	public static final boolean EYEBLOSSOM_LANTERN_SOUNDS = true;
+
+	/** Nombre de nuggets de fer autour de la fleur dans la recette (informatif : la recette est dans data/). */
+	public static final int EYEBLOSSOM_LANTERN_NUGGET_COST = 8;
+
+	// ==================================================================
+	// 51. Gousse a pichet (pitcher pod) mangeable
+	// ==================================================================
+
+	/** Faim rendue. 2 = un gigot entier (le jeu compte en demi-gigots). */
+	public static final int PITCHER_POD_NUTRITION = 2;
+
+	/** Saturation (0.3 = celle d'un legume cru). */
+	public static final float PITCHER_POD_SATURATION = 0.3F;
+
+	/**
+	 * Duree de l'animation de croquage, en secondes. 1.6 = un aliment
+	 * normal, 0.8 = deux fois plus vite (comme l'algue sechee).
+	 */
+	public static final float PITCHER_POD_CONSUME_SECONDS = 0.8F;
+
+	/**
+	 * Secondes retirees a CHAQUE effet en cours sur le mangeur, par gousse
+	 * avalee. Un effet qui tombe a zero est simplement retire.
+	 */
+	public static final int PITCHER_POD_EFFECT_REDUCTION_SECONDS = 30;
+
+	/**
+	 * true : seuls les effets NEFASTES sont raccourcis (les effets utiles
+	 * gardent leur duree). false : la gousse raccourcit tout, bon ou mauvais.
+	 */
+	public static final boolean PITCHER_POD_ONLY_SHORTENS_HARMFUL = false;
+
+	/** true : mangeable meme le ventre plein (comme la pomme doree). */
+	public static final boolean PITCHER_POD_ALWAYS_EDIBLE = true;
+
+	// ==================================================================
+	// 52. Pitcher plant nourrie : engrais de zone
+	// ==================================================================
+
+	/**
+	 * Points de viande qu'il faut donner a une pitcher plant pour la remplir.
+	 * Avec les deux valeurs ci-dessous : 10 chairs putrefiees, ou 5 viandes
+	 * crues, ou un melange des deux.
+	 */
+	public static final int PITCHER_FEED_POINTS_REQUIRED = 10;
+
+	/** Points donnes par une chair putrefiee (tag arcamod:pitcher_feed_weak). */
+	public static final int PITCHER_FEED_WEAK_POINTS = 1;
+
+	/** Points donnes par une viande crue (tag arcamod:pitcher_feed_strong). */
+	public static final int PITCHER_FEED_STRONG_POINTS = 2;
+
+	/** Duree de l'effet une fois la plante pleine (12000 ticks = 10 minutes). */
+	public static final int PITCHER_BOOST_DURATION_TICKS = 12000;
+
+	/**
+	 * Hauteur de la boite de selection de la MOITIE HAUTE d'une pitcher plant,
+	 * en pixels (16 = un cube plein, comme en vanilla).
+	 *
+	 * 8 : la boite s'arrete a mi-hauteur, on vise donc le bloc derriere la
+	 * plante au lieu de s'accrocher dans le vide au-dessus de ses feuilles.
+	 * S'applique a la plante vanilla comme a celle en train de digerer.
+	 */
+	public static final double PITCHER_PLANT_TOP_SHAPE_HEIGHT = 8.0;
+
+	/** Rayon (en blocs) dans lequel les plantes poussent plus vite. */
+	public static final int PITCHER_BOOST_RADIUS = 10;
+
+	/**
+	 * Nombre de "tirages" de croissance offerts par tick dans la zone.
+	 *
+	 * Le jeu fait pousser une plante en lui envoyant des ticks aleatoires :
+	 * 3 par tick et par cube de 16x16x16 (4096 blocs). Une sphere de rayon 10
+	 * fait ~4190 blocs, donc 3 tirages supplementaires par tick DOUBLENT
+	 * exactement la vitesse de pousse. 6 = trois fois plus vite, etc.
+	 */
+	public static final int PITCHER_BOOST_TICKS_PER_TICK = 6;
+
+	/** Spores crachees par la plante pleine, par tick client (0 = aucune). */
+	public static final int PITCHER_BOOST_PARTICLES_PER_TICK = 1;
+
+	/**
+	 * Chance (0 a 1) qu'un tick client crache vraiment ses spores. Le jeu
+	 * appelle l'animation plusieurs fois par seconde et par bloc : 0.2 donne
+	 * un nuage discret, 1.0 un vrai geyser.
+	 */
+	public static final float PITCHER_BOOST_PARTICLE_CHANCE = 0.2F;
+
+	// ==================================================================
+	// 53. Lumiere des fleurs vanilla
+	// ==================================================================
+
+	/** Lumiere de la torchflower posee (14 = une torche). */
+	public static final int TORCHFLOWER_LIGHT = 14;
+
+	/** Lumiere de l'eyeblossom OUVERTE (la fermee reste noire). */
+	public static final int OPEN_EYEBLOSSOM_LIGHT = 2;
+
+	// Quelles fleurs recoivent ces deux valeurs se decide dans les tags
+	// data/arcamod/tags/block/torch_light_flowers.json et dim_light_flowers.json
+	// (les versions en pot y sont deja). Mettre 0 ici rend la nuit a la fleur.
+
+
+	// ==================================================================
+	// 54. Torchflower : pare-feu et zone hors-gel
+	// ==================================================================
+
+	/**
+	 * Rayon (en blocs) protege par une torchflower plantee.
+	 *
+	 * ATTENTION au cout : la protection est verifiee pour chaque feu qui tick
+	 * et pour chaque colonne de meteo. Le mod tient a jour la liste des
+	 * torchflowers des chunks charges (voir util/TorchflowerWard), donc le
+	 * rayon lui-meme ne coute rien ; c'est le NOMBRE de torchflowers plantees
+	 * qui compte. Quelques dizaines : aucun souci.
+	 */
+	public static final double TORCHFLOWER_WARD_RADIUS = 20.0;
+
+	/** true : le feu ne peut plus apparaitre ni se propager dans le rayon. */
+	public static final boolean TORCHFLOWER_WARD_STOPS_FIRE = true;
+
+	/**
+	 * Chance (0 a 1) qu'un feu deja allume dans le rayon s'eteigne, a chacun
+	 * de ses tours de jeu (un feu joue environ toutes les 1,5 seconde).
+	 * 0.25 = il tient quelques secondes, le temps de le voir mourir.
+	 * 1.0 = il s'eteint des le tour suivant.
+	 */
+	public static final float TORCHFLOWER_WARD_EXTINGUISH_CHANCE = 0.25F;
+
+	/** true : de la fumee et un chuintement quand un feu s'eteint. */
+	public static final boolean TORCHFLOWER_WARD_EXTINGUISH_EFFECTS = true;
+
+	/** true : l'eau ne gele plus dans le rayon. */
+	public static final boolean TORCHFLOWER_WARD_STOPS_FREEZING = true;
+
+	/** true : la neige ne se depose plus dans le rayon. */
+	public static final boolean TORCHFLOWER_WARD_STOPS_SNOW = true;
+
+	// ==================================================================
+	// 55. Allay porte-lanterne
+	// ==================================================================
+
+	/**
+	 * Distance a partir de laquelle un allay qui tient une lanterne se remet
+	 * en route vers son joueur. En dessous, il vaque a ses occupations
+	 * normales (ramasser des objets, voleter).
+	 */
+	public static final double ALLAY_LANTERN_FOLLOW_DISTANCE = 6.0;
+
+	/** Vitesse de son retour (1.0 = sa vitesse de vol normale). */
+	public static final float ALLAY_LANTERN_FOLLOW_SPEED = 1.5F;
+
+	/**
+	 * Distance a partir de laquelle il se teleporte au lieu de voler (comme
+	 * un loup apprivoise). 0 = jamais de teleportation, il rentre a la rame.
+	 */
+	public static final double ALLAY_LANTERN_TELEPORT_DISTANCE = 24.0;
+
+	/**
+	 * Rayon de recherche d'un joueur quand l'allay n'a PAS de joueur attitre
+	 * (personne ne lui a rien donne). 0 = il ne suit que le joueur qui lui a
+	 * mis la lanterne en main.
+	 */
+	public static final double ALLAY_LANTERN_ADOPT_RADIUS = 16.0;
+
+
+	// ==================================================================
+	// 56. Feu de camp : tas de buches et cendre
+	// ==================================================================
+
+	/**
+	 * Cendres rendues quand on gratte un feu de camp eteint a la pelle.
+	 * 0 = le grattage ne rapporte rien.
+	 */
+	public static final int CAMPFIRE_ASH_SCRAPED = 1;
+
+	/** Points d'usure pris a la pelle par un grattage (0 = gratuit). */
+	public static final int CAMPFIRE_SCRAPE_DURABILITY_COST = 1;
+
+	/** Points d'usure pris au briquet qui rallume un tas de buches. */
+	public static final int CAMPFIRE_RELIGHT_DURABILITY_COST = 1;
+
+	/**
+	 * true : N'IMPORTE quel projectile en feu rallume un tas de buches (une
+	 * fleche a l'enchantement Flamme, par exemple). false : seules les
+	 * fleches a hampe en baton de blaze le font.
+	 */
+	public static final boolean CAMPFIRE_LOGS_LIT_BY_ANY_FIRE_ARROW = true;
+
+	// ==================================================================
+	// 57. Montee en puissance des monstres avec les jours
+	// ==================================================================
+
+	// Un monde de trois cents jours ne doit pas se combattre comme un monde de
+	// trois jours. Le mod compte les jours et distribue des PALIERS ; chaque
+	// palier tire sur les leviers que vanilla utilise deja.
+	// Voir util/MobScaling pour le detail des quatre couches, et la commande
+	// /arcamod menace pour tout verifier en jeu sans attendre.
+
+	/** Jour du monde a partir duquel la montee commence (avant : rien). */
+	public static final long MOB_SCALING_START_DAY = 10L;
+
+	/** Nombre de jours entre deux paliers. */
+	public static final long MOB_SCALING_DAYS_PER_TIER = 15L;
+
+	/**
+	 * Dernier palier (plateau). Avec les valeurs ci-dessus : palier 1 au jour
+	 * 10, palier 8 au jour 115, et plus rien ensuite.
+	 */
+	public static final int MOB_SCALING_MAX_TIER = 8;
+
+	// ---- Attenuation par la difficulte du monde ------------------------------
+	// Multiplie TOUTE la montee. En Paisible elle vaut 0, ce n'est pas reglable.
+
+	public static final float MOB_SCALING_EASY_FACTOR = 0.5F;
+	public static final float MOB_SCALING_NORMAL_FACTOR = 1.0F;
+	public static final float MOB_SCALING_HARD_FACTOR = 1.25F;
+
+	// ---- Couche A : l'age du monde nourrit la difficulte locale --------------
+
+	/**
+	 * Jour auquel l'age du monde donne, a lui seul, le maximum de "temps
+	 * d'occupation" a la difficulte locale. Plus ce jour est lointain, plus la
+	 * montee est lente.
+	 */
+	public static final long MOB_SCALING_CLOCK_FULL_DAY = 120L;
+
+	/**
+	 * Part maximale (0 a 1) de ce temps d'occupation accordee par le
+	 * calendrier. 1 = un monde vieux est partout aussi dangereux que le coeur
+	 * d'une base habitee depuis 150 jours ; 0.5 = moitie moins.
+	 */
+	public static final float MOB_SCALING_CLOCK_MAX_SHARE = 1.0F;
+
+	/**
+	 * Le plafond de vanilla, en ticks (150 jours de presence). Ne pas y
+	 * toucher : c'est une constante du jeu, pas un reglage. Elle est ici pour
+	 * que MOB_SCALING_CLOCK_MAX_SHARE ait un sens lisible.
+	 */
+	public static final long MOB_SCALING_VANILLA_LOCAL_MAX_TICKS = 3_600_000L;
+
+	// ---- Couche B : equipement ----------------------------------------------
+
+	/**
+	 * Jets supplementaires de "montee de materiau" offerts par palier.
+	 * Vanilla en donne 3 a chaque monstre equipe ; 0.5 par palier en ajoute
+	 * 4 au palier 8. L'echelle est celle du jeu : cuir, cuivre, or, maille,
+	 * fer, diamant.
+	 */
+	public static final float MOB_SCALING_ARMOR_UPGRADE_ROLLS_PER_TIER = 0.5F;
+
+	/** Chance de reussite d'un de ces jets (0.1087 = la valeur de vanilla). */
+	public static final float MOB_SCALING_ARMOR_UPGRADE_CHANCE = 0.1087F;
+
+	/** Dernier cran de l'echelle : 5 = diamant, 4 = fer, 3 = maille. */
+	public static final int MOB_SCALING_MAX_ARMOR_TIER = 5;
+
+	/**
+	 * Seconde chance, par palier, d'equiper un monstre que vanilla a laisse
+	 * nu. 0.02 x palier 8 = 16 % au plateau. Mettre 0 pour que la montee
+	 * n'ameliore que les monstres deja equipes.
+	 */
+	public static final float MOB_SCALING_EXTRA_ARMOR_CHANCE_PER_TIER = 0.02F;
+
+	/**
+	 * Chance supplementaire, par palier, d'enchanter une piece d'equipement
+	 * que vanilla a laissee nue (arme comprise). Les enchantements tires sont
+	 * ceux du jeu de base.
+	 */
+	public static final float MOB_SCALING_ENCHANT_CHANCE_PER_TIER = 0.03F;
+
+	// ---- Couche C : attributs -----------------------------------------------
+	// Des POURCENTAGES de la valeur de base du monstre : un zombie a 20 de vie
+	// gagne 1 coeur pour 10 %, un ravageur en gagne 5. Chacun monte a son
+	// echelle. Les plafonds evitent l'eponge a fleches.
+
+	public static final float MOB_SCALING_HEALTH_PER_TIER = 0.05F;
+	public static final float MOB_SCALING_MAX_HEALTH_BONUS = 0.40F;
+
+	public static final float MOB_SCALING_DAMAGE_PER_TIER = 0.04F;
+	public static final float MOB_SCALING_MAX_DAMAGE_BONUS = 0.30F;
+
+	public static final float MOB_SCALING_SPEED_PER_TIER = 0.01F;
+	public static final float MOB_SCALING_MAX_SPEED_BONUS = 0.06F;
+
+	// ---- Couche D : effets rares --------------------------------------------
+
+	/** Palier a partir duquel un monstre peut naitre avec un effet. */
+	public static final int MOB_SCALING_EFFECT_MIN_TIER = 3;
+
+	/** Chance, par palier, qu'un monstre naisse avec un effet (0.01 = 8 % au palier 8). */
+	public static final float MOB_SCALING_EFFECT_CHANCE_PER_TIER = 0.01F;
+
+	/** Poids du tirage entre les quatre effets (0 = effet exclu). */
+	public static final int MOB_SCALING_EFFECT_WEIGHT_SPEED = 4;
+	public static final int MOB_SCALING_EFFECT_WEIGHT_STRENGTH = 3;
+	public static final int MOB_SCALING_EFFECT_WEIGHT_RESISTANCE = 2;
+	public static final int MOB_SCALING_EFFECT_WEIGHT_FIRE_RESISTANCE = 1;
+
+	/** Palier a partir duquel l'effet peut etre de niveau II. */
+	public static final int MOB_SCALING_EFFECT_AMPLIFIER_TIER = 7;
+
+	/** Chance que l'effet soit de niveau II une fois ce palier atteint. */
+	public static final float MOB_SCALING_EFFECT_AMPLIFIER_CHANCE = 0.25F;
+
+	/**
+	 * true : les particules de l'effet sont visibles. Fortement conseille,
+	 * c'est le seul signe qui previent le joueur avant le premier coup.
+	 */
+	public static final boolean MOB_SCALING_EFFECT_VISIBLE_PARTICLES = true;
+
+	// ---- Qui est concerne ----------------------------------------------------
+
+	/** true : les boss aussi (dragon, wither, warden, gardien ancien). */
+	public static final boolean MOB_SCALING_AFFECTS_BOSSES = false;
+
+	// Les apparitions naturelles, la generation des chunks et les renforts de
+	// zombie comptent toujours. Les monstres invoques, convertis, sortis d'un
+	// oeuf ou d'une commande ne comptent jamais. Le reste se decide ici.
+	public static final boolean MOB_SCALING_FROM_SPAWNERS = true;
+	public static final boolean MOB_SCALING_FROM_TRIAL_SPAWNERS = false;
+	public static final boolean MOB_SCALING_FROM_STRUCTURES = true;
+	public static final boolean MOB_SCALING_FROM_RAIDS_AND_PATROLS = true;
 
 	private ArcaBalance() {
 	}

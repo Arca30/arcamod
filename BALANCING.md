@@ -262,9 +262,11 @@ donc pas poser de bloc dans l'espace qui parait vide devant la barriere.
 | --- | --- |
 | Nombre d'oeufs par bloc | `ArcaBalance.EGGS_MIN` / `EGGS_MAX` |
 | Duree d'eclosion | `ArcaBalance.EGG_HATCH_TICKS` (2400 = 2 min) |
+| Blocs ou ils eclosent | `data/arcamod/tags/block/egg_hatching_blocks.json` |
 
-Accroupi + clic droit pour les poser. Ils n'eclosent que sur une botte de
-foin ; la couleur de l'oeuf decide de la variete de poussin.
+Accroupi + clic droit pour les poser. Ils n'eclosent que sur de la paille ou
+du chaume (bloc, escalier ou dalle, toutes les etapes du chaume comprises) ;
+la couleur de l'oeuf decide de la variete de poussin.
 
 ---
 
@@ -984,6 +986,7 @@ L'explosion fige la lave : chaque source dans un rayon de
 | --- | --- |
 | `TNT_BARREL_EXPLOSION_POWER` | 8 (TNT : 4) |
 | `TNT_BARREL_FUSE_TICKS` | 80 (4 s) |
+| `TNT_BARREL_LIT_LIGHT` | 12 (lumière pendant la mèche ; relancer le jeu) |
 | `TNT_BARREL_CHAIN_FUSE_MIN_TICKS` / `_MAX_TICKS` | 10 / 30 (allumé par une autre explosion) |
 | `TNT_BARREL_NO_DROPS` | true : aucun objet lâché par les blocs détruits (le contenu des conteneurs et l'équipement d'un joueur tué sont épargnés) |
 | `TNT_BARREL_PLAYER_DAMAGE_MULTIPLIER` | 0.5 (dégâts du souffle sur les joueurs) |
@@ -1033,3 +1036,373 @@ l'en-tête du script.
 Le rendu d'item vanilla ne sait pas faire briller un calque : les recettes
 d'encre lumineuse et d'éclat d'écho ne s'appliquent plus qu'à ce qui se porte
 (armures, élytres).
+
+
+
+---
+
+## Les générateurs de `tools/` et tes dessins
+
+**Aucun script ne remplace une texture déjà présente, même avec `--force`.**
+Les placeholders sont là pour combler un trou, pas pour écraser ton travail.
+
+| Option | Ce qu'elle refait |
+| --- | --- |
+| *(rien)* | seulement ce qui manque |
+| `--force` | les modèles, blockstates et fichiers JSON |
+| `--reset-textures` | **aussi les textures**, en écrasant tes dessins |
+
+Deux exceptions, volontaires :
+
+- les images **calculées** à partir d'une autre suivent `--force` : les 16
+  crans de fondu de la lanterne (dérivés de `eyeblossom_lantern_off/on.png`)
+  et les 756 flèches en vol (dérivées de tes 31 icônes de pièces). Les
+  redessiner à la main n'aurait pas de sens, la moindre retouche de la source
+  les refabrique ;
+- `fix_trim_palette.py` recale volontairement tes dessins sur la palette des
+  garnitures : c'est tout son travail.
+
+---
+
+## 50. Les trois fleurs (lanterne, gousse, pitcher plant)
+
+### Lanterne d'eyeblossom (`EYEBLOSSOM_LANTERN`)
+
+8 pépites de fer autour d'une eyeblossom, ouverte **ou** fermée. Posée, elle
+dort ; un joueur à moins de `EYEBLOSSOM_LANTERN_RADIUS` blocs la réveille et
+elle gagne **`EYEBLOSSOM_LANTERN_LEVELS_PER_STEP` niveaux de lumière tous les
+`EYEBLOSSOM_LANTERN_TICKS_PER_STEP` ticks** jusqu'à
+`EYEBLOSSOM_LANTERN_MAX_LIGHT`. Quand on s'éloigne, elle redescend au même
+rythme.
+
+**Deux réglages pour la vitesse, et c'est voulu** : un bloc ne peut pas jouer
+plus d'une fois par tick, donc `TICKS_PER_STEP = 1` est le plancher. Pour
+aller plus vite, il faut monter le nombre de niveaux gagnés par cran.
+
+| Réglage | Durée de l'allumage complet |
+| --- | --- |
+| 1 niveau / 1 tick | 15 ticks — 0,75 s |
+| 3 niveaux / 1 tick | 5 ticks — 0,25 s (défaut) |
+| 5 niveaux / 1 tick | 3 ticks — 0,15 s |
+| 15 niveaux / 1 tick | 1 tick — instantané |
+
+C'est **aussi** le fondu de la texture : à 3 niveaux par cran, l'image saute
+de trois crans à la fois (5 images sur 16). Lumière et apparence sont portées
+par la même propriété, impossible de les séparer.
+
+| Sujet | Où régler |
+| --- | --- |
+| Vitesse, rayon, lumière max, sons | `ArcaBalance` section 50 |
+| Recettes | `recipe/eyeblossom_lantern_from_open.json`, `..._from_closed.json` |
+| Textures | `python3 tools/gen_flower_assets.py` |
+
+Le fondu entre l'éteint et l'allumé est **calculé dans les textures** : un
+modèle de bloc ne sait pas mélanger deux images en opacité. Le script écrit
+donc les seize crans (`block/eyeblossom_lantern_0..15.png`) à partir de deux
+images de référence, `eyeblossom_lantern_off.png` et
+`eyeblossom_lantern_on.png` (animée, comme les lanternes vanilla). Redessine
+ces deux-là, relance le script avec `--force`, et le fondu se refait tout
+seul.
+
+### Gousse à pichet mangeable (`PITCHER_POD_FOOD`, redémarrage)
+
+1 gigot (`PITCHER_POD_NUTRITION = 2`, le jeu compte en demi-gigots), avalée en
+`PITCHER_POD_CONSUME_SECONDS` (0,8 s = deux fois plus vite qu'un aliment
+normal), et chaque gousse retire `PITCHER_POD_EFFECT_REDUCTION_SECONDS` à
+**tous** les effets en cours. Mettre `PITCHER_POD_ONLY_SHORTENS_HARMFUL` à
+`true` pour épargner les bons effets. Les effets infinis ne sont jamais
+touchés.
+
+L'effet de consommation est réutilisable ailleurs (aliment du mod ou
+datapack) sous le nom `arcamod:shorten_effects` :
+`{"type": "arcamod:shorten_effects", "seconds": 30, "only_harmful": false}`.
+
+### Pitcher plant carnivore (`PITCHER_PLANT_FEEDING`)
+
+Clic droit avec de la viande sur une pitcher plant. Il faut
+`PITCHER_FEED_POINTS_REQUIRED` points : chair putréfiée =
+`PITCHER_FEED_WEAK_POINTS`, viande crue = `PITCHER_FEED_STRONG_POINTS`
+(10 chairs, ou 5 viandes, ou un mélange). Pleine, elle change de texture,
+crache des spores et double la vitesse de pousse dans
+`PITCHER_BOOST_RADIUS` blocs pendant `PITCHER_BOOST_DURATION_TICKS`, puis
+redevient une pitcher plant vanilla.
+
+Tant qu'elle digère, **elle refuse la nourriture** : le clic échoue, la viande
+reste dans la main du joueur (et n'est pas mangée par mégarde en cliquant
+vite) et le compte à rebours ne se recharge pas. Il faut attendre la fin de la
+digestion pour la renourrir.
+
+La **moitié haute** d'une pitcher plant a une boîte de sélection raccourcie de
+8 px (`PITCHER_PLANT_TOP_SHAPE_HEIGHT`, 16 = le cube plein de vanilla) : on
+vise le bloc derrière la plante au lieu de s'accrocher dans le vide au-dessus
+de ses feuilles. La plante vanilla et celle qui digère ont la même boîte —
+sinon on sentirait la différence au moment où l'une remplace l'autre.
+
+| Sujet | Où régler |
+| --- | --- |
+| Coût, durée, rayon, particules, boîte | `ArcaBalance` section 52 |
+| Ce qu'elle mange | tags `arcamod:pitcher_feed_weak` et `arcamod:pitcher_feed_strong` |
+| Ce qui pousse plus vite | tag `arcamod:pitcher_boost_grows` |
+
+`PITCHER_BOOST_TICKS_PER_TICK = 3` correspond exactement à « deux fois plus
+vite » : le jeu envoie 3 ticks aléatoires par tick et par cube de 4096 blocs,
+et une sphère de rayon 10 en fait ~4190. Mettre 6 pour tripler.
+
+Le bloc `arcamod:fed_pitcher_plant` remplace la plante vanilla le temps de la
+digestion (un bloc vanilla ne peut porter ni compteur ni texture à lui) et lui
+rend sa place à la fin. Tant qu'elle se remplit, elle utilise les modèles
+vanilla : rien ne se voit.
+
+### Fleurs lumineuses (`FLOWER_LIGHT`, rechargement du monde)
+
+`TORCHFLOWER_LIGHT = 14` (une torche) et `OPEN_EYEBLOSSOM_LIGHT = 2`. Quelles
+fleurs sont concernées se décide dans les tags
+`arcamod:torch_light_flowers` et `arcamod:dim_light_flowers` (les versions en
+pot y sont déjà). Mettre 0 dans `ArcaBalance` rend la nuit à la fleur, mais
+les chunks déjà éclairés ne se recalculent qu'au rechargement du monde.
+
+
+---
+
+## 51. Torchflower protectrice et allay porte-lanterne
+
+### Torchflower protectrice (`TORCHFLOWER_WARD`)
+
+Une torchflower plantée protège `TORCHFLOWER_WARD_RADIUS` blocs à la ronde
+(20 par défaut) :
+
+- **le feu ne s'y propage plus** — rien ne peut s'y enflammer, même depuis un
+  feu situé juste en dehors ;
+- **les flammes déjà là s'éteignent lentement** — `TORCHFLOWER_WARD_EXTINGUISH_CHANCE`
+  par tour de feu (un feu joue environ toutes les 1,5 s). Elles ne vieillissent
+  plus, ne brûlent plus leurs voisins et ne sautent plus pendant ce temps ;
+- **l'eau ne gèle plus** (`TORCHFLOWER_WARD_STOPS_FREEZING`) ;
+- **la neige ne se dépose plus** (`TORCHFLOWER_WARD_STOPS_SNOW`).
+
+Le briquet marche toujours dans la zone : allumer un feu est un geste
+volontaire, c'est sa propagation qu'on arrête. La glace et la neige **déjà
+posées** ne fondent pas — la fleur empêche, elle ne nettoie pas.
+
+| Sujet | Où régler |
+| --- | --- |
+| Rayon, vitesse d'extinction, ce qui est bloqué | `ArcaBalance` section 54 |
+| Quelles fleurs protègent | tag `arcamod:torchflower_ward` (fleur + version en pot) |
+
+**Coût en performance** : chercher une fleur à 20 blocs, ce serait fouiller
+33 000 blocs à chaque flamme et à chaque flocon. Le mod tient donc à jour la
+liste des torchflowers des chunks chargés
+([TorchflowerWard.java](src/main/java/dev/arca/arcamod/util/TorchflowerWard.java)),
+remplie au chargement d'un chunk (seules les tranches dont la palette annonce
+la fleur sont lues) et à chaque pose. **Le rayon ne coûte donc rien ; c'est le
+nombre de fleurs plantées qui compte** — quelques dizaines ne se sentent pas.
+
+### Allay porte-lanterne (`ALLAY_LANTERN_FOLLOW`)
+
+Mettre une lanterne (tag `arcamod:allay_lanterns`, qui reprend
+`#minecraft:lanterns` — la lanterne d'eyeblossom en fait partie) dans la main
+d'un allay : il ne quitte plus son joueur. Au-delà de
+`ALLAY_LANTERN_FOLLOW_DISTANCE` il revient à `ALLAY_LANTERN_FOLLOW_SPEED`, et
+au-delà de `ALLAY_LANTERN_TELEPORT_DISTANCE` il se téléporte, comme un loup.
+
+Le joueur suivi est celui qui lui a donné quelque chose (mémoire
+`LIKED_PLAYER`) ; s'il n'en a pas, le plus proche dans
+`ALLAY_LANTERN_ADOPT_RADIUS` l'adopte. En dessous de la distance de retour, il
+reprend sa vie normale (ramasser des objets, voleter, danser).
+
+Avec `DYNAMIC_LIGHTS` actif, il éclaire vraiment : la lumière dynamique du mod
+prend déjà en compte ce que porte n'importe quelle créature.
+
+### Lanternes retirées de la ceinture à outils
+
+`#minecraft:lanterns` ne fait plus partie de `arcamod:tool_belt_allowed`.
+
+
+---
+
+## 52. Feu de camp gratté et mousse débordante
+
+### Feu de camp gratté (`CAMPFIRE_LOGS`, `CAMPFIRE_PLACED_UNLIT`)
+
+Un feu de camp **posé est éteint** (`CAMPFIRE_PLACED_UNLIT`) ; ceux des
+villages et des structures ne sont pas concernés, ils n'arrivent pas par la
+pose. Une **pelle sur un feu de camp éteint** en gratte la cendre : le bloc
+devient `arcamod:campfire_logs` (ou `soul_campfire_logs`), il ne reste que les
+quatre bûches, et `CAMPFIRE_ASH_SCRAPED` cendre tombe au sol. Le tas de bûches
+se casse, se ramasse et se repose, et **quatre choses le rallument** : un
+briquet, une boule de feu (tag `arcamod:campfire_igniters`), des braises en
+bouteille, et **tout projectile en feu** — une flèche à hampe en bâton de
+blaze, une flèche enflammée, une boule de feu lancée. Mettre
+`CAMPFIRE_LOGS_LIT_BY_ANY_FIRE_ARROW` à `false` réserve ce dernier privilège
+aux seules flèches en bâton de blaze.
+
+Un feu **allumé** demande donc deux coups de pelle : le premier l'éteint
+(vanilla), le second en gratte la cendre.
+
+Le tas de bûches se casse **à la hache** (tag `minecraft:mineable/axe`), et
+ce qu'il lâche dépend de l'outil : **Toucher de soie** rend le bloc lui-même,
+sinon il tombe en **3 bâtons**.
+
+| Sujet | Où régler |
+| --- | --- |
+| Cendre rendue, usure de la pelle et du briquet | `ArcaBalance` section 56 |
+| Ce qui rallume les bûches | tag `arcamod:campfire_igniters` |
+| Bâtons rendus sans Toucher de soie | `loot_table/blocks/campfire_logs.json` (et sa version des âmes) |
+| Textures et modèles | `python3 tools/gen_campfire_moss_assets.py` |
+
+Deux blocs et non un seul : gratter un feu **des âmes** donne des bûches qui
+se rallument en feu des âmes. Leurs quatre textures (`block/campfire_logs.png`
+et `block/soul_campfire_logs.png` pour le bloc, `item/…` pour l'icône) sont
+dans le dossier du mod, prêtes à être redessinées. L'icône d'inventaire est
+l'icône vanilla du feu de camp **privée de ses flammes**, les trous rebouchés
+avec le bois d'à côté. Le modèle est le modèle vanilla du
+feu éteint **relu dans le jar** puis amputé de sa planchette de braises : il
+suivra une retouche de Mojang sans rien faire.
+
+### Mousse débordante (`MOSS_CARPET_SKIRT`)
+
+Un tapis de mousse posé sur un bloc **naturel** fait couler sa mousse sur les
+quatre côtés du bloc qui le porte — l'inverse du tapis du jardin pâle, qui
+grimpe sur ses voisins.
+
+| Sujet | Où régler |
+| --- | --- |
+| Quels tapis débordent | tag `arcamod:moss_carpets` |
+| Sur quels blocs | tag `arcamod:moss_skirt_blocks` |
+| Textures | `assets/arcamod/textures/block/moss_carpet_overlay.png` et `pale_moss_carpet_overlay.png` (la mousse se lit du haut de l'image vers le bas) |
+| Écart anti-clignotement | `SKIRT_OFFSET` dans `tools/gen_campfire_moss_assets.py` |
+
+**Comment ça marche.** Le bloc du dessous n'est jamais touché : c'est le tapis
+qui dessine les quatre pans, avec un modèle qui déborde de son propre cube
+(un modèle a le droit d'aller de -16 à 32). Une propriété `moss_skirt` est
+ajoutée aux tapis vanilla ([MossSkirt.java](src/main/java/dev/arca/arcamod/util/MossSkirt.java))
+et tenue à jour à la pose et quand le bloc du dessous change. C'est une
+propriété **énumérée** (`none` / `moss`) et non un booléen : l'état par défaut
+d'un bloc prend la première valeur de chaque propriété, et le jeu compte
+`true` avant `false` — un tapis posé par la génération du monde serait donc
+moussu d'office. Avec un enum, c'est notre ordre qui décide.
+
+Elle atterrit aussi sur les tapis de laine — la liste des propriétés d'un bloc
+est figée à sa construction, impossible d'y reconnaître le tapis de mousse —
+mais elle y reste à `none` pour toujours.
+
+
+---
+
+## 53. Flèches colorées en vol (`ARROW_PART_TEXTURES`)
+
+Une flèche tirée prend l'apparence de ses pièces : elle garde ses vraies
+couleurs en vol, plantée dans un bloc et plantée dans un mob.
+
+**Pourquoi ce n'est pas le même chemin que l'inventaire.** Une flèche dans la
+main utilise son modèle d'objet, qui empile trois calques (`gen_arrow_models.py`).
+Une flèche tirée est une **entité** : le jeu lui plaque une seule image de
+32×32 sur un modèle fixe. On prépare donc une image par combinaison.
+
+| Sujet | Où régler |
+| --- | --- |
+| Les images | `python3 tools/gen_arrow_entity_textures.py --force` |
+| Le relief (quel pixel, quelle nuance) | `TONE_MASK` en tête du script |
+| Les couleurs | tes textures d'objet `textures/item/arrow/<sorte>/<id>.png` — rien d'autre à dessiner |
+
+**Comment les images sont faites.** Rien n'est redessiné : la flèche vanilla
+est repeinte pixel par pixel, avec tes couleurs telles que tu les as peintes.
+
+**Qui est quoi** : tout est dans `TONE_MASK`, une carte de 32×32 où chaque
+lettre dit deux choses — la pièce à laquelle le pixel appartient et son rang
+d'ombrage :
+
+| Pièce | Nuances, du sombre au clair |
+| --- | --- |
+| Empennage | `F` → `B` → `A` |
+| Pointe | `J` → `C` → `D` |
+| Corps | `G` → `E` → `H` → `I` |
+
+Il fallait cette carte : la pointe et l'empennage **partagent** une couleur
+vanilla (le gris 226), donc trier les pixels par teinte mélangeait les deux et
+repeignait le haut de la pointe en couleur d'empennage. L'empennage y gagne
+au passage une **troisième** nuance que la texture d'origine n'avait pas.
+
+**Quelle couleur pour quel rang :**
+
+- **silex, bâton et plume** sont les pièces de la flèche vanilla : elles
+  gardent **exactement** les couleurs de la texture d'origine. Une flèche
+  silex + bâton + plume est identique à celle du jeu, au pixel près, et un
+  bâton reste un bâton quelle que soit la pointe ;
+- pour les autres pièces, le script prend dans ton icône les **N couleurs les
+  plus présentes** (N = ce que la carte demande à cette pièce), rangées du
+  sombre au clair. Un reflet posé sur un seul pixel ne vole donc pas la place
+  d'une teinte de fond, et le contour de ton icône sert de nuance sombre.
+
+Le script s'arrête tout seul si la carte et la texture ne se recouvrent plus
+(Mojang qui redessine la flèche) ou si une lettre recouvre deux couleurs
+vanilla — c'est ce qui garantit la fidélité des pièces d'origine.
+
+Quand une icône a moins de nuances que la carte n'en demande, ce sont les
+rangs **du haut** qui se partagent la teinte la plus claire (`shaft/bamboo` et
+`shaft/sugar_cane` sont dans ce cas, 3 teintes sur 4). Ajoute une quatrième
+teinte à ces icônes pour récupérer le dégradé complet.
+
+**Un motif propre à une pièce** : `PART_MASKS` laisse une pièce redécouper
+**ses** pixels à elle, sans toucher aux autres. C'est ce qui raye le bambou
+comme une vraie tige — anneau clair, anneau sombre, puis deux pixels de
+tige — au lieu de suivre l'ombrage d'un bâton lisse. Rien d'automatique
+là-dedans, c'est un dessin : recopie le modèle pour rayer une autre pièce.
+
+756 images (18 × 7 × 6), ~280 octets chacune, soit **210 Ko**. Les textures
+d'entité ne passent pas par un atlas : chacune est chargée à sa première
+utilisation, donc rien ne coûte tant qu'une combinaison n'est pas tirée.
+
+La flèche **spectrale** garde son apparence dorée (son éclat compte plus que
+ses pièces) ; la flèche **à effet** est couverte, les deux images vanilla
+normale et à effet étant le même fichier.
+
+---
+
+## 54. Montée en puissance des monstres (`MOB_SCALING`)
+
+Tout est en Java (`ArcaBalance` section 57, `util/MobScaling`), **aucun fichier
+de données** : cette section est là pour la commande de test et pour le rappel
+de ce que fait vanilla tout seul.
+
+### Ce que vanilla fait déjà
+
+`DifficultyInstance` calcule une **difficulté locale** qui monte avec l'âge du
+monde (du jour 3 au jour 63, pour un quart du total seulement) et surtout avec
+le **temps passé dans le chunk** (150 jours de présence pour le maximum). C'est
+elle qui décide des armures, de leur matériau, des enchantements, des renforts
+de zombie, du trident des noyés. Son « multiplicateur spécial » vaut 0 tant
+qu'elle est sous 2.0 : en **Facile**, aucun monstre n'a jamais d'armure.
+
+### Ce que le mod ajoute
+
+| Couche | Interrupteur | Où |
+| --- | --- | --- |
+| A. L'âge du monde compte comme du temps d'occupation, partout | `MOB_SCALING_DIFFICULTY_CLOCK` | `ServerLevelDifficultyMixin` |
+| B. Armure qui monte l'échelle vanilla + enchantements | `MOB_SCALING_EQUIPMENT` | `MobScalingMixin` |
+| C. Bonus de vie, dégâts, vitesse (en % , plafonnés) | `MOB_SCALING_ATTRIBUTES` | `MobScalingMixin` |
+| D. Effet rare (Rapidité, Force, Résistance, Résistance au feu) | `MOB_SCALING_EFFECTS` | `MobScalingMixin` |
+
+La couche A ne dépasse **jamais** le maximum que vanilla sait produire : c'est
+la même formule, atteinte plus tôt et loin de chez toi. Les paliers arrivent
+par défaut au jour 10 puis tous les 15 jours, jusqu'au palier 8 (jour 115).
+La difficulté du monde multiplie le tout : rien en Paisible, moitié en Facile.
+
+Seuls les **monstres** sont concernés (pas les animaux, pas les villageois,
+pas les boss sauf `MOB_SCALING_AFFECTS_BOSSES`), et seulement à leur
+apparition : un monstre déjà né ne change plus.
+
+### Tester sans attendre cent nuits
+
+```
+/arcamod menace                  état ici et maintenant
+/arcamod menace avance 60        ajoute 60 jours artificiels
+/arcamod menace decalage 300     fixe le décalage total
+/arcamod menace reset            retour au monde réel
+```
+
+Les jours artificiels ne bougent **que** la montée en puissance : ni l'heure,
+ni la météo, ni les cultures. Le décalage est sauvegardé avec le monde
+(`data/arcamod/mob_scaling_clock.dat`).
+
+Il faut de **nouveaux** monstres pour voir l'effet : avance les jours, puis
+tue les monstres existants et attends une nuit.

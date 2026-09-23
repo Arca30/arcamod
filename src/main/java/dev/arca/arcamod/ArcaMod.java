@@ -1,8 +1,11 @@
 package dev.arca.arcamod;
 
 import dev.arca.arcamod.util.ElytraSlot;
+import dev.arca.arcamod.util.MobScalingClock;
 import dev.arca.arcamod.util.BurntLogs;
 import dev.arca.arcamod.util.ToolBelt;
+import dev.arca.arcamod.util.TorchflowerWard;
+import dev.arca.arcamod.command.MobScalingDebugCommand;
 import dev.arca.arcamod.command.PinkGoldDebugCommand;
 import dev.arca.arcamod.registry.ModBlockEntities;
 import dev.arca.arcamod.registry.ModBlocks;
@@ -69,15 +72,22 @@ public class ArcaMod implements ModInitializer {
 		ModExamples.init();
 		ModExampleLoot.init();
 		ModEvents.init();
+		// Liste des torchflowers des chunks charges (pare-feu et hors-gel).
+		TorchflowerWard.init();
+		// Decalage de jours de la montee en puissance des monstres (test).
+		MobScalingClock.init();
 
 		// Generation du monde : le type de feature d'abord, la modification
 		// des biomes ensuite.
 		ModFeatures.init();
 		ModWorldGen.init();
 
-		// Commandes de test (operateurs) : /arcamod pinkgold scan [rayon].
-		CommandRegistrationCallback.EVENT.register(
-				(dispatcher, buildContext, selection) -> PinkGoldDebugCommand.register(dispatcher));
+		// Commandes de test (operateurs) : /arcamod pinkgold scan [rayon]
+		// et /arcamod menace [avance|decalage|reset].
+		CommandRegistrationCallback.EVENT.register((dispatcher, buildContext, selection) -> {
+			PinkGoldDebugCommand.register(dispatcher);
+			MobScalingDebugCommand.register(dispatcher);
+		});
 
 		LOGGER.info("ArcaMod loaded");
 	}

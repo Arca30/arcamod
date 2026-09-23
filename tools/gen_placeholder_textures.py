@@ -23,6 +23,11 @@ from pathlib import Path
 # re-execution. Utilise --force si tu veux vraiment tout regenerer.
 FORCE = "--force" in sys.argv
 
+# Ecraser une texture DEJA DESSINEE ne se fait que sur demande explicite :
+# --force ne suffit pas. C'est la seule protection de ton travail, ces
+# scripts ne savent pas distinguer un placeholder d'un dessin fini.
+RESET_TEXTURES = "--reset-textures" in sys.argv
+
 ROOT = Path(__file__).resolve().parent.parent
 BLOCK_DIR = ROOT / "src/main/resources/assets/arcamod/textures/block"
 ITEM_DIR = ROOT / "src/main/resources/assets/arcamod/textures/item"
@@ -300,7 +305,7 @@ def write_png(path, pixels):
     png += chunk(b"IEND", b"")
 
     path.parent.mkdir(parents=True, exist_ok=True)
-    if path.exists() and not FORCE:
+    if path.exists() and not RESET_TEXTURES:
         print(f"conserve (existe deja) {path.relative_to(ROOT)}")
         return
     path.write_bytes(png)

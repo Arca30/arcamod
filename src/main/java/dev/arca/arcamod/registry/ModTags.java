@@ -101,6 +101,10 @@ public final class ModTags {
 			TagKey.create(Registries.ITEM, ArcaMod.id("repairs_pink_gold_armor"));
 
 	/** Blocs sur lesquels pousse le buisson de piments des ames (defaut : sable et terre des ames). */
+	/** Blocs sur lesquels les oeufs de poule eclosent (paille et chaume). */
+	public static final TagKey<Block> EGG_HATCHING_BLOCKS =
+			TagKey.create(Registries.BLOCK, ArcaMod.id("egg_hatching_blocks"));
+
 	public static final TagKey<Block> SOUL_PEPPER_PLANTABLE_ON =
 			TagKey.create(Registries.BLOCK, ArcaMod.id("soul_pepper_plantable_on"));
 
@@ -129,6 +133,74 @@ public final class ModTags {
 	 */
 	public static final TagKey<Block> BURNS_INSTANTLY =
 			TagKey.create(Registries.BLOCK, ArcaMod.id("burns_instantly"));
+
+	// ---- Pitcher plant carnivore ---------------------------------------------
+
+	/**
+	 * Ce qui vaut PITCHER_FEED_WEAK_POINTS a une pitcher plant (par defaut :
+	 * la chair putrefiee).
+	 */
+	public static final TagKey<Item> PITCHER_FEED_WEAK =
+			TagKey.create(Registries.ITEM, ArcaMod.id("pitcher_feed_weak"));
+
+	/**
+	 * Ce qui vaut PITCHER_FEED_STRONG_POINTS (par defaut : toutes les viandes
+	 * crues, poissons compris).
+	 */
+	public static final TagKey<Item> PITCHER_FEED_STRONG =
+			TagKey.create(Registries.ITEM, ArcaMod.id("pitcher_feed_strong"));
+
+	/**
+	 * Ce que la plante pleine fait pousser plus vite autour d'elle.
+	 *
+	 * Un filtre est indispensable : beaucoup de blocs "tickent" au hasard
+	 * sans etre des plantes (le feu, la neige qui fond, le cuivre). Ajouter
+	 * une plante d'un autre mod = une ligne dans le JSON, rien a recompiler.
+	 */
+	public static final TagKey<Block> PITCHER_BOOST_GROWS =
+			TagKey.create(Registries.BLOCK, ArcaMod.id("pitcher_boost_grows"));
+
+	// ---- Lumiere des fleurs ---------------------------------------------------
+
+	/** Fleurs qui eclairent comme une torche (ArcaBalance.TORCHFLOWER_LIGHT). */
+	public static final TagKey<Block> TORCH_LIGHT_FLOWERS =
+			TagKey.create(Registries.BLOCK, ArcaMod.id("torch_light_flowers"));
+
+	/** Fleurs qui eclairent faiblement (ArcaBalance.OPEN_EYEBLOSSOM_LIGHT). */
+	public static final TagKey<Block> DIM_LIGHT_FLOWERS =
+			TagKey.create(Registries.BLOCK, ArcaMod.id("dim_light_flowers"));
+
+	// ---- Torchflower protectrice et allay porte-lanterne ----------------------
+
+	/**
+	 * Les fleurs qui arretent le feu et le gel autour d'elles
+	 * (ArcaBalance section 54). Par defaut la torchflower et sa version en pot.
+	 */
+	public static final TagKey<Block> TORCHFLOWER_WARD =
+			TagKey.create(Registries.BLOCK, ArcaMod.id("torchflower_ward"));
+
+	/** Ce qu'un allay doit tenir pour devenir une lanterne volante. */
+	public static final TagKey<Item> ALLAY_LANTERNS =
+			TagKey.create(Registries.ITEM, ArcaMod.id("allay_lanterns"));
+
+	// ---- Feu de camp gratte ---------------------------------------------------
+
+	/** Ce qui rallume un tas de buches (briquet, boule de feu). */
+	public static final TagKey<Item> CAMPFIRE_IGNITERS =
+			TagKey.create(Registries.ITEM, ArcaMod.id("campfire_igniters"));
+
+	// ---- Mousse qui deborde ---------------------------------------------------
+
+	/** Les tapis dont la mousse deborde sur le bloc du dessous. */
+	public static final TagKey<Block> MOSS_CARPETS =
+			TagKey.create(Registries.BLOCK, ArcaMod.id("moss_carpets"));
+
+	/**
+	 * Les blocs NATURELS sur lesquels la mousse deborde. Poser un tapis sur
+	 * une planche ou une table de craft ne salit donc rien.
+	 */
+	public static final TagKey<Block> MOSS_SKIRT_BLOCKS =
+			TagKey.create(Registries.BLOCK, ArcaMod.id("moss_skirt_blocks"));
 
 	private ModTags() {
 	}

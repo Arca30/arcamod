@@ -20,7 +20,9 @@ import dev.arca.arcamod.block.VanillaBricks;
 import dev.arca.arcamod.util.FlintHint;
 import dev.arca.arcamod.block.AshCauldronBlock;
 import dev.arca.arcamod.block.entity.PotionCauldronBlockEntity;
+import dev.arca.arcamod.block.CampfireLogsBlock;
 import dev.arca.arcamod.config.ArcaFeature;
+import dev.arca.arcamod.util.PitcherFeeding;
 import dev.arca.arcamod.menu.FletchingMenu;
 import dev.arca.arcamod.util.AllayBucket;
 import dev.arca.arcamod.util.CampfireRest;
@@ -69,6 +71,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.entity.SignTextSlot;
 import net.minecraft.world.level.block.state.BlockState;
@@ -105,7 +108,76 @@ public final class ModEvents {
 		registerFeatherPush();
 		registerBladeInstantBreakWear();
 		registerElytraWashing();
+		registerPitcherFeeding();
+		registerCampfireScraping();
 		ServerTickEvents.END_SERVER_TICK.register(FlintHint::tick);
+	}
+
+	/**
+	 * Pelle sur un feu de camp ETEINT : on en gratte la cendre.
+	 *
+	 * Le bloc devient un tas de buches (arcamod:campfire_logs, ou sa version
+	 * des ames) et la cendre tombe au sol. Sur un feu ALLUME, rien ne change :
+	 * la pelle l'eteint d'abord, comme en vanilla. Il faut donc deux coups de
+	 * pelle pour arriver aux buches nues.
+	 */
+	private static void registerCampfireScraping() {
+		UseBlockCallback.EVENT.register((player, level, hand, hit) -> {
+			if (!ArcaFeature.CAMPFIRE_LOGS.isEnabled() || player.isSpectator()) {
+				return InteractionResult.PASS;
+			}
+
+			ItemStack stack = player.getItemInHand(hand);
+
+			if (!stack.is(ItemTags.SHOVELS)) {
+				return InteractionResult.PASS;
+			}
+
+			BlockPos pos = hit.getBlockPos();
+			BlockState state = level.getBlockState(pos);
+
+			if (!(state.getBlock() instanceof CampfireBlock) || state.getValue(CampfireBlock.LIT)) {
+				return InteractionResult.PASS;
+			}
+
+			Block logs = state.is(Blocks.SOUL_CAMPFIRE) ? ModBlocks.SOUL_CAMPFIRE_LOGS : ModBlocks.CAMPFIRE_LOGS;
+
+			if (level instanceof ServerLevel serverLevel) {
+				// Le feu de camp a un BlockEntity (ce qui cuit dessus) : le
+				// remplacement le vide tout seul, comme quand on le casse.
+				serverLevel.setBlockAndUpdate(pos, logs.defaultBlockState()
+						.setValue(CampfireLogsBlock.FACING, state.getValue(CampfireBlock.FACING))
+						.setValue(CampfireLogsBlock.WATERLOGGED, state.getValue(CampfireBlock.WATERLOGGED)));
+
+				if (ArcaBalance.CAMPFIRE_ASH_SCRAPED > 0) {
+					Block.popResource(serverLevel, pos, new ItemStack(ModItems.ASH, ArcaBalance.CAMPFIRE_ASH_SCRAPED));
+				}
+
+				serverLevel.sendParticles(ParticleTypes.ASH, pos.getX() + 0.5, pos.getY() + 0.4, pos.getZ() + 0.5,
+						12, 0.3, 0.1, 0.3, 0.0);
+				serverLevel.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+
+				if (!player.hasInfiniteMaterials()) {
+					stack.hurtAndBreak(ArcaBalance.CAMPFIRE_SCRAPE_DURABILITY_COST, player, hand);
+				}
+			}
+
+			level.playSound(player, pos, SoundEvents.SHOVEL_FLATTEN.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
+			return InteractionResult.SUCCESS;
+		});
+	}
+
+	/**
+	 * Viande crue ou chair putrefiee sur une pitcher plant : la plante
+	 * carnivore l'avale (voir util/PitcherFeeding).
+	 *
+	 * Le clic est intercepte avant le bloc lui-meme, ce qui permet de traiter
+	 * de la meme facon la plante VANILLA (premiere bouchee) et celle du mod
+	 * (les suivantes).
+	 */
+	private static void registerPitcherFeeding() {
+		UseBlockCallback.EVENT.register((player, level, hand, hit) ->
+				PitcherFeeding.feed(player, level, hand, hit.getBlockPos()));
 	}
 
 	/**

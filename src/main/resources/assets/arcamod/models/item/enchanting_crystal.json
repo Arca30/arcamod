@@ -1,6 +1,6 @@
 {
 	"parent": "minecraft:item/generated",
 	"textures": {
-		"layer0": "arcamod:block/enchanting_crystal"
+		"layer0": "arcamod:item/enchanting_crystal"
 	}
 }

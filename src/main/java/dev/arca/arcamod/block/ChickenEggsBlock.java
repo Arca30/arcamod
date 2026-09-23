@@ -1,6 +1,7 @@
 package dev.arca.arcamod.block;
 
 import dev.arca.arcamod.ArcaBalance;
+import dev.arca.arcamod.registry.ModTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -36,7 +37,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * Des oeufs de poule poses au sol, facon oeufs de tortue.
  *
  * De ArcaBalance.EGGS_MIN a EGGS_MAX sur le meme bloc, dans les trois couleurs du jeu. Ils n'eclosent
- * que sur une botte de foin, au bout de ArcaBalance.EGG_HATCH_TICKS.
+ * que sur de la paille ou du chaume (bloc, escalier ou dalle : tag
+ * arcamod:egg_hatching_blocks), au bout de ArcaBalance.EGG_HATCH_TICKS.
  *
  * L'eclosion passe par un tick programme (scheduleTick) et non par les ticks
  * aleatoires : le delai est ainsi exact et previsible, meme si le joueur
@@ -158,9 +160,10 @@ public class ChickenEggsBlock extends Block {
 
 	@Override
 	protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		// Pas de paille dessous : les oeufs restent des oeufs, on repasse
-		// plus tard au cas ou le joueur en poserait.
-		if (!level.getBlockState(pos.below()).is(Blocks.HAY_BLOCK)) {
+		// Pas de paille ni de chaume dessous (tag arcamod:egg_hatching_blocks) :
+		// les oeufs restent des oeufs, on repasse plus tard au cas ou le joueur
+		// en poserait.
+		if (!level.getBlockState(pos.below()).is(ModTags.EGG_HATCHING_BLOCKS)) {
 			level.scheduleTick(pos, this, ArcaBalance.EGG_HATCH_TICKS);
 			return;
 		}

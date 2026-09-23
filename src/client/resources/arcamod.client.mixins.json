@@ -20,7 +20,6 @@
 		"AvatarRendererElytraMixin",
 		"AbstractContainerScreenQuiverMixin",
 		"HudBookshelfNameMixin",
-		"HudAltimeterMixin",
 		"HudToolBeltMixin",
 		"MouseHandlerToolBeltMixin",
 		"SlotAccessor",
@@ -29,7 +28,10 @@
 		"SectionCompilerHiddenSignMixin",
 		"AbstractSignRendererSnapMixin",
 		"ClientLevelNoCrackMixin",
-		"LavaFogFireResistanceMixin"
+		"LavaFogFireResistanceMixin",
+		"ArrowRenderStatePartsMixin",
+		"ArrowRendererPartsMixin",
+		"TippableArrowTextureMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

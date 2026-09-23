@@ -18,6 +18,7 @@ import dev.arca.arcamod.item.PinkGoldUpgradeTemplate;
 import dev.arca.arcamod.item.QuiverItem;
 import dev.arca.arcamod.item.RopeItem;
 import dev.arca.arcamod.item.ScarecrowItem;
+import dev.arca.arcamod.item.ShortenEffectsConsumeEffect;
 import dev.arca.arcamod.item.SlingshotItem;
 import dev.arca.arcamod.item.SmokeBombItem;
 import dev.arca.arcamod.item.ToolBeltItem;
@@ -87,6 +88,21 @@ public final class ModItems {
 			// pour nommer l'item ("petite pierre") differemment du bloc
 			// ("petites pierres").
 			new Item.Properties().useItemDescriptionPrefix());
+
+	/** Le tas de buches gratte d'un feu de camp (bloc a poser). */
+	public static final Item CAMPFIRE_LOGS = register("campfire_logs",
+			properties -> new BlockItem(ModBlocks.CAMPFIRE_LOGS, properties),
+			new Item.Properties().useBlockDescriptionPrefix());
+
+	/** Celui d'un feu des ames. */
+	public static final Item SOUL_CAMPFIRE_LOGS = register("soul_campfire_logs",
+			properties -> new BlockItem(ModBlocks.SOUL_CAMPFIRE_LOGS, properties),
+			new Item.Properties().useBlockDescriptionPrefix());
+
+	/** La lanterne d'eyeblossom (bloc a poser). */
+	public static final Item EYEBLOSSOM_LANTERN = register("eyeblossom_lantern",
+			properties -> new BlockItem(ModBlocks.EYEBLOSSOM_LANTERN, properties),
+			new Item.Properties().useBlockDescriptionPrefix());
 
 	/** Le support de canne a peche (bloc a poser). */
 	public static final Item FISHING_ROD_STAND = register("fishing_rod_stand",
@@ -397,6 +413,11 @@ public final class ModItems {
 	}
 
 	public static void init() {
+		// L'effet de consommation "raccourcit les effets" (gousse a pichet).
+		// A enregistrer AVANT que les composants des items ne partent vers le
+		// client : sans son type, l'effet ne peut pas etre envoye.
+		ShortenEffectsConsumeEffect.register();
+
 		// Un distributeur charge de petites pierres ou de dagues les lance
 		// (c'est asProjectile() de chaque item qui fournit le projectile).
 		DispenserBlock.registerProjectileBehavior(PEBBLE);

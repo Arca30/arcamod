@@ -9,10 +9,13 @@ import dev.arca.arcamod.ArcaMod;
 import dev.arca.arcamod.block.AshBlock;
 import dev.arca.arcamod.block.AshCauldronBlock;
 import dev.arca.arcamod.block.BurntLogBlock;
+import dev.arca.arcamod.block.CampfireLogsBlock;
 import dev.arca.arcamod.block.ChickenEggsBlock;
 import dev.arca.arcamod.block.DisenchanterBlock;
 import dev.arca.arcamod.block.EnchantingCrystalBlock;
 import dev.arca.arcamod.block.EndermanHeadBlock;
+import dev.arca.arcamod.block.EyeblossomLanternBlock;
+import dev.arca.arcamod.block.FedPitcherPlantBlock;
 import dev.arca.arcamod.block.EndermanWallHeadBlock;
 import dev.arca.arcamod.block.FallenSticksBlock;
 import dev.arca.arcamod.block.FishingRodStandBlock;
@@ -35,6 +38,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -395,7 +399,73 @@ public final class ModBlocks {
 					.mapColor(MapColor.WOOD)
 					.strength(2.5F)
 					.instrument(NoteBlockInstrument.BASS)
+					// Meche allumee : le baril s'eclaire, comme une TNT amorcee
+					// (meme valeur que sa lumiere dynamique).
+					.lightLevel(state -> state.getValue(TntBarrelBlock.LIT) ? ArcaBalance.TNT_BARREL_LIT_LIGHT : 0)
 					.sound(SoundType.WOOD));
+
+	// ---- Les trois fleurs ------------------------------------------------------
+
+	/**
+	 * La lanterne d'eyeblossom : memes reglages que la lanterne vanilla, sauf
+	 * la lumiere, qui suit le cran d'ouverture de la fleur (0 a 15).
+	 *
+	 * Pas de requiresCorrectToolForDrops() : comme la lanterne vanilla, elle
+	 * se ramasse a la main, juste plus lentement.
+	 */
+	public static final EyeblossomLanternBlock EYEBLOSSOM_LANTERN = register("eyeblossom_lantern",
+			EyeblossomLanternBlock::new,
+			BlockBehaviour.Properties.of()
+					.mapColor(MapColor.METAL)
+					.forceSolidOn()
+					.strength(3.5F)
+					.sound(SoundType.LANTERN)
+					.lightLevel(EyeblossomLanternBlock::lightLevel)
+					.noOcclusion()
+					.pushReaction(PushReaction.POPPED));
+
+	/**
+	 * La pitcher plant en train de digerer (voir util/PitcherFeeding). Copie
+	 * conforme des reglages de la plante vanilla : elle prend sa place le
+	 * temps de la digestion et doit se comporter pareil.
+	 */
+	public static final FedPitcherPlantBlock FED_PITCHER_PLANT = register("fed_pitcher_plant",
+			FedPitcherPlantBlock::new,
+			BlockBehaviour.Properties.of()
+					.mapColor(MapColor.PLANT)
+					.noCollision()
+					.instabreak()
+					.sound(SoundType.CROP)
+					.offsetType(BlockBehaviour.OffsetType.XZ)
+					.ignitedByLava()
+					.pushReaction(PushReaction.POPPED));
+
+	// ---- Feu de camp gratte ----------------------------------------------------
+
+	/**
+	 * Le tas de buches d'un feu de camp ordinaire. Memes reglages que le feu
+	 * de camp vanilla, moins la lumiere : il est eteint par definition.
+	 */
+	public static final CampfireLogsBlock CAMPFIRE_LOGS = register("campfire_logs",
+			properties -> new CampfireLogsBlock(() -> Blocks.CAMPFIRE, properties),
+			BlockBehaviour.Properties.of()
+					.mapColor(MapColor.PODZOL)
+					.instrument(NoteBlockInstrument.BASS)
+					.strength(2.0F)
+					.sound(SoundType.WOOD)
+					.noOcclusion()
+					.ignitedByLava());
+
+	/** Celui d'un feu des ames : il se rallume en feu des ames. */
+	public static final CampfireLogsBlock SOUL_CAMPFIRE_LOGS = register("soul_campfire_logs",
+			properties -> new CampfireLogsBlock(() -> Blocks.SOUL_CAMPFIRE, properties),
+			BlockBehaviour.Properties.of()
+					.mapColor(MapColor.PODZOL)
+					.instrument(NoteBlockInstrument.BASS)
+					.strength(2.0F)
+					.sound(SoundType.WOOD)
+					.noOcclusion()
+					.ignitedByLava());
 
 	private static <T extends Block> T register(String name, Function<BlockBehaviour.Properties, T> factory,
 			BlockBehaviour.Properties properties) {

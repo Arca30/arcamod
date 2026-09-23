@@ -201,6 +201,11 @@ public final class ModCreativeTabs {
 					output.insertAfter(Items.CREEPER_HEAD, ModItems.ENDERMAN_HEAD);
 					// La corde descend la ou l'echelle monte : juste apres elle.
 					output.insertAfter(Items.LADDER, ModItems.ROPE, ModItems.ROPE_PLATE);
+					// La lanterne d'eyeblossom suit les deux lanternes vanilla.
+					output.insertAfter(Items.SOUL_LANTERN, ModItems.EYEBLOSSOM_LANTERN);
+					// Les tas de buches suivent leur feu de camp.
+					output.insertAfter(Items.CAMPFIRE, ModItems.CAMPFIRE_LOGS);
+					output.insertAfter(Items.SOUL_CAMPFIRE, ModItems.SOUL_CAMPFIRE_LOGS);
 				});
 
 		// ---- Outils et utilitaires ---------------------------------------------

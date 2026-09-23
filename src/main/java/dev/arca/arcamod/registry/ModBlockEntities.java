@@ -6,6 +6,7 @@ import dev.arca.arcamod.ArcaMod;
 import dev.arca.arcamod.block.entity.IgnitedBurntLogBlockEntity;
 import dev.arca.arcamod.block.entity.DisenchanterBlockEntity;
 import dev.arca.arcamod.block.entity.EndermanHeadBlockEntity;
+import dev.arca.arcamod.block.entity.FedPitcherPlantBlockEntity;
 import dev.arca.arcamod.block.entity.FishingRodStandBlockEntity;
 import dev.arca.arcamod.block.entity.PotionCauldronBlockEntity;
 import dev.arca.arcamod.block.entity.RopePlateBlockEntity;
@@ -62,6 +63,12 @@ public final class ModBlockEntities {
 			BuiltInRegistries.BLOCK_ENTITY_TYPE,
 			ArcaMod.id("fishing_rod_stand"),
 			new BlockEntityType<>(FishingRodStandBlockEntity::new, Set.of(ModBlocks.FISHING_ROD_STAND)));
+
+	/** Pitcher plant nourrie : ce qu'elle a avale et son compte a rebours. */
+	public static final BlockEntityType<FedPitcherPlantBlockEntity> FED_PITCHER_PLANT = Registry.register(
+			BuiltInRegistries.BLOCK_ENTITY_TYPE,
+			ArcaMod.id("fed_pitcher_plant"),
+			new BlockEntityType<>(FedPitcherPlantBlockEntity::new, Set.of(ModBlocks.FED_PITCHER_PLANT)));
 
 	public static void init() {
 	}

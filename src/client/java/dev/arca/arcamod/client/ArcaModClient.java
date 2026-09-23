@@ -49,6 +49,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.NoopRenderer;
+import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperties;
 import net.minecraft.client.renderer.item.properties.select.SelectItemModelProperties;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderers;
@@ -81,11 +82,13 @@ public class ArcaModClient implements ClientModInitializer {
 		// Propriete "arcamod:copper_oxidation" : apparence de l'equipement en
 		// cuivre oxyde (assets/minecraft/items/copper_*.json).
 		SelectItemModelProperties.ID_MAPPER.put(ArcaMod.id("copper_oxidation"), CopperOxidationModelProperty.TYPE);
-		// Propriete "arcamod:altimeter" : texture selon l'altitude memorisee.
-		SelectItemModelProperties.ID_MAPPER.put(ArcaMod.id("altimeter"), AltimeterModelProperty.TYPE);
 		// Propriete "arcamod:tool_trim" : garniture posee sur un outil ou un arc
 		// (definitions generees par tools/gen_tool_trims.py).
 		SelectItemModelProperties.ID_MAPPER.put(ArcaMod.id("tool_trim"), ToolTrimModelProperty.TYPE);
+
+		// Propriete numerique "arcamod:altitude" : position de l'aiguille de
+		// l'altimetre (assets/arcamod/items/altimeter.json), comme "minecraft:compass".
+		RangeSelectItemModelProperties.ID_MAPPER.put(ArcaMod.id("altitude"), AltimeterModelProperty.MAP_CODEC);
 
 		// Infobulles : garniture lumineuse, fleche choisie du carquois.
 		ItemTooltipCallback.EVENT.register((stack, context, flag, lines) -> {

@@ -72,7 +72,17 @@
 		"VanillaBrickWeatheringMixin",
 		"DyeRecipeElytraMixin",
 		"ContainersDropMixin",
-		"TntBarrelDamageMixin"
+		"TntBarrelDamageMixin",
+		"FireBlockWardMixin",
+		"BiomeWeatherWardMixin",
+		"AllayLanternMixin",
+		"CampfireUnlitPlacementMixin",
+		"CarpetSkirtMixin",
+		"MossyCarpetSkirtMixin",
+		"BlockTransformerToolMixin",
+		"DoublePlantPitcherShapeMixin",
+		"ServerLevelDifficultyMixin",
+		"MobScalingMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

@@ -69,6 +69,36 @@ public final class ModFoods {
 					new MobEffectInstance(MobEffects.FIRE_RESISTANCE, ArcaBalance.SOUL_PEPPER_FIRE_RESISTANCE_TICKS))))
 			.build();
 
+	// ---- gousse a pichet (pitcher pod) ----------------------------------
+
+	/**
+	 * La gousse crue : 1 gigot, avalee deux fois plus vite qu'un aliment
+	 * normal, et elle purge une partie des effets en cours (30 s par gousse).
+	 *
+	 * C'est la plante carnivore qui digere a ta place : les reglages sont
+	 * dans ArcaBalance section 51.
+	 */
+	public static final FoodProperties PITCHER_POD = buildPitcherPod();
+
+	public static final Consumable PITCHER_POD_CONSUMABLE = Consumables.defaultFood()
+			.consumeSeconds(ArcaBalance.PITCHER_POD_CONSUME_SECONDS)
+			.onConsume(new ShortenEffectsConsumeEffect(
+					ArcaBalance.PITCHER_POD_EFFECT_REDUCTION_SECONDS,
+					ArcaBalance.PITCHER_POD_ONLY_SHORTENS_HARMFUL))
+			.build();
+
+	private static FoodProperties buildPitcherPod() {
+		FoodProperties.Builder builder = new FoodProperties.Builder()
+				.nutrition(ArcaBalance.PITCHER_POD_NUTRITION)
+				.saturationModifier(ArcaBalance.PITCHER_POD_SATURATION);
+
+		if (ArcaBalance.PITCHER_POD_ALWAYS_EDIBLE) {
+			builder.alwaysEdible();
+		}
+
+		return builder.build();
+	}
+
 	private ModFoods() {
 	}
 }
