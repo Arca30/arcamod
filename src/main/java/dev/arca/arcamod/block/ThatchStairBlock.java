@@ -49,6 +49,6 @@ public class ThatchStairBlock extends StairBlock implements WeatheringThatch {
 
 	@Override
 	protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		WeatheringThatch.fade(state, level, pos, random);
+		ArcaWeathering.fade(state, level, pos, random);
 	}
 }

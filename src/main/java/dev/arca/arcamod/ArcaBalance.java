@@ -50,6 +50,11 @@ package dev.arca.arcamod;
  *   32. Piment des ames
  *   33. Garniture pulsante (echo)
  *   34. Lumiere dynamique
+ *   35. Interface du bundle
+ *   36. Cadres colles aux blocs
+ *   37. Corde
+ *   ...
+ *   49. Feuilles et feu
  */
 public final class ArcaBalance {
 
@@ -76,18 +81,53 @@ public final class ArcaBalance {
 	/** 0.70 = -30% de vitesse de minage. Vanilla : 2.0 -> 1.4. (Relancer le jeu.) */
 	public static final float WOOD_MINING_SPEED_MULTIPLIER = 0.70F;
 
-	/** Fibres recoltees par touffe d'herbe coupee a la dague. */
+	/** Fibres recoltees par touffe d'herbe coupee a la dague ou a l'epee. */
 	public static final int PLANT_FIBER_PER_GRASS = 1;
 
-	/** Probabilite d'obtenir des fibres en coupant une herbe a la dague. */
+	/** Probabilite d'obtenir des fibres en coupant une herbe a la dague ou a l'epee. */
 	public static final float PLANT_FIBER_CHANCE = 0.2F;
+
+	/**
+	 * Table de craft : lame (dague ou epee) + herbes (une par case). Fibres
+	 * donnees PAR herbe posee (tirage garanti, contrairement a la coupe).
+	 */
+	public static final int BLADE_FIBER_PER_GRASS = 1;
+
+	/** Durabilite perdue par la lame pour chaque herbe coupee a la table de craft. */
+	public static final int BLADE_FIBER_DURABILITY_COST = 1;
+
+	/**
+	 * Feuilles cassees a main nue par un joueur : chance (0 a 1) de lacher
+	 * une branche, en plus des 2 % vanilla. Evite de rester bloque sans
+	 * branches au sol (biomes froids). (Recharger le monde.)
+	 */
+	public static final float LEAVES_HAND_STICK_CHANCE = 0.2F;
+
+	/** Aide "trouve du silex" : envoyee si le joueur n'en a pas eu apres ce temps de jeu (ticks, 6000 = 5 min). */
+	public static final int FLINT_HINT_DELAY_TICKS = 6000;
+
+	// ---- Coffre bonus du point d'apparition (Recharger le monde) ----
+	// Remplace haches/pioches/buches vanilla (interrupteur
+	// STARTER_CHEST_PROGRESSION). Quantites tirees entre MIN et MAX ; MAX = 0
+	// retire l'objet du coffre.
+	public static final int STARTER_CHEST_STICKS_MIN = 3;
+	public static final int STARTER_CHEST_STICKS_MAX = 6;
+	public static final int STARTER_CHEST_PEBBLES_MIN = 2;
+	public static final int STARTER_CHEST_PEBBLES_MAX = 4;
+	public static final int STARTER_CHEST_FIBERS_MIN = 0;
+	public static final int STARTER_CHEST_FIBERS_MAX = 2;
+	/** 0 : pas de silex, il reste a trouver (c'est le debut de la progression). */
+	public static final int STARTER_CHEST_FLINT_MIN = 0;
+	public static final int STARTER_CHEST_FLINT_MAX = 0;
+	/** Tirages de nourriture (pomme, pain, saumon), comme le coffre vanilla. */
+	public static final int STARTER_CHEST_FOOD_ROLLS = 3;
 
 	// ==================================================================
 	// 3. Outil en silex (pioche + hache + pelle du debut de partie)
 	// ==================================================================
 
-	/** Durabilite. 131 = celle de la pierre. */
-	public static final int FLINT_DURABILITY = 131;
+	/** Durabilite. Repere : pierre = 131, bois vanilla = 59. */
+	public static final int FLINT_DURABILITY = 110;
 
 	/**
 	 * Vitesse de minage : celle des outils en bois du mod (vanilla 2.0 x
@@ -113,6 +153,14 @@ public final class ArcaBalance {
 
 	/** Durabilite. Volontairement plus basse que l'outil : c'est une lame. */
 	public static final int DAGGER_DURABILITY = 90;
+
+	/**
+	 * Usure d'une LAME (dague ou epee, tag arcamod:cuts_plant_fiber) sur un
+	 * bloc qui casse en un coup (herbe, fleur...). Sans ca, on recolterait des
+	 * fibres a l'infini. Les autres blocs coutent deja 2 en vanilla.
+	 * 0 = gratuit (vanilla).
+	 */
+	public static final int BLADE_INSTANT_BREAK_DURABILITY_COST = 1;
 
 	/** Enchantabilite. */
 	public static final int DAGGER_ENCHANTMENT_VALUE = 5;
@@ -478,6 +526,30 @@ public final class ArcaBalance {
 	/** Lumiere emise par un cristal charge (0-15). (Relancer le jeu.) */
 	public static final int CRYSTAL_CHARGED_LIGHT = 7;
 
+	/** Chance (0 a 1) qu'un chargement du cristal fasse pousser du sculk dessous. */
+	public static final float CRYSTAL_SCULK_CHANCE = 1.0F;
+
+	/**
+	 * Poids du tirage du nombre de blocs de sculk poses quand la chance tombe.
+	 * Plus un poids est grand, plus ce nombre sort souvent (1 est le plus
+	 * probable). Mettre un poids a 0 retire ce nombre du tirage.
+	 */
+	public static final int CRYSTAL_SCULK_WEIGHT_1_BLOCK = 6;
+	public static final int CRYSTAL_SCULK_WEIGHT_2_BLOCKS = 3;
+	public static final int CRYSTAL_SCULK_WEIGHT_3_BLOCKS = 1;
+
+	/** Distance max (en blocs) sous/autour du cristal ou le sculk peut apparaitre. */
+	public static final int CRYSTAL_SCULK_RADIUS = 3;
+
+	/** Nombre de particules d'ame du Nether emises par tick d'animation (0 = aucune). */
+	public static final int CRYSTAL_SOUL_PARTICLE_COUNT = 1;
+
+	/** Une chance sur N, par tick d'animation, d'emettre les particules d'ame. */
+	public static final int CRYSTAL_SOUL_PARTICLE_RARITY = 3;
+
+	/** Vitesse verticale des particules d'ame qui montent du cristal. */
+	public static final double CRYSTAL_SOUL_PARTICLE_SPEED = 0.03;
+
 	// ==================================================================
 	// 14. Chaudrons
 	// ==================================================================
@@ -601,6 +673,24 @@ public final class ArcaBalance {
 	public static final int STICK_PATCH_MAX_BLOCKS = 3;
 	public static final int STICK_PATCH_SPREAD = 5;
 
+	// ---- Cailloux des grottes (interrupteur WORLDGEN_CAVE_PEBBLES) ----
+
+	/** Essais de placement par chunk (chaque essai tire une position au hasard). 0 = aucun. */
+	public static final int CAVE_PEBBLE_ATTEMPTS = 12;
+
+	/** Nombre maximum de tas de cailloux poses par chunk sous terre. */
+	public static final int CAVE_PEBBLE_MAX_PER_CHUNK = 3;
+
+	/** Altitudes ou l'on cherche des grottes (deepslate comprise). */
+	public static final int CAVE_PEBBLE_MIN_Y = -56;
+	public static final int CAVE_PEBBLE_MAX_Y = 60;
+
+	/** Profondeur minimale sous la surface : evite les creux a ciel ouvert. */
+	public static final int CAVE_PEBBLE_MIN_DEPTH = 8;
+
+	/** Distance maximale parcourue vers le bas pour trouver le sol de la grotte. */
+	public static final int CAVE_PEBBLE_FLOOR_SEARCH = 16;
+
 	/** Ecart vertical tolere entre le centre de l'amas et chaque bloc. */
 	public static final int PATCH_VERTICAL_SPREAD = 3;
 
@@ -621,24 +711,52 @@ public final class ArcaBalance {
 	/** Chauve-souris tuee par un joueur : aile de chauve-souris. */
 	public static final float BAT_WING_DROP_CHANCE = 0.70F;
 
-	/** Nautile : coquille, en plus de la chance vanilla (5 a 6%). */
-	public static final float NAUTILUS_SHELL_DROP_CHANCE = 0.50F;
+	/**
+	 * Nautile tue par un joueur : coquille, en plus de la chance vanilla
+	 * (5 a 6%). Reste genereux sans rendre le conduit gratuit.
+	 */
+	public static final float NAUTILUS_SHELL_DROP_CHANCE = 0.15F;
+
+	/**
+	 * Bonus de l'enchantement Butin sur les butins de mob ajoutes par le mod :
+	 * de 0 a N objets supplementaires PAR NIVEAU de Butin (comme la barre de
+	 * blaze vanilla). 0 = l'enchantement ne change rien a ce butin.
+	 */
+	public static final float BAT_WING_LOOTING_BONUS = 0.0F;
+	public static final float NAUTILUS_SHELL_LOOTING_BONUS = 1.0F;
+	public static final float SULFUR_CUBE_LOOTING_BONUS = 1.0F;
+
+	/** Cube de soufre tue : poudre de soufre lachee (tiree entre MIN et MAX inclus). */
+	public static final int SULFUR_CUBE_POWDER_MIN = 0;
+	public static final int SULFUR_CUBE_POWDER_MAX = 2;
+
+	/** Chance (0 a 1) que le cube de soufre lache de la poudre de soufre. */
+	public static final float SULFUR_CUBE_POWDER_CHANCE = 1.0F;
+
+	/** Vrai : seul un cube de soufre tue par un joueur lache de la poudre. */
+	public static final boolean SULFUR_CUBE_REQUIRES_PLAYER_KILL = true;
 
 	/** Noye equipe d'un trident : chance de le lacher. Vanilla : 0.085. (Immediat.) */
 	public static final float DROWNED_TRIDENT_DROP_CHANCE = 0.1F;
 
+	/**
+	 * Oeuf de renifleur : chance (0 a 1) qu'un bloc de sable ou gravier
+	 * suspect (n'importe lequel) le donne a la place de son objet. S'ajoute
+	 * aux 1/15 vanilla des ruines oceaniques chaudes. (Immediat.)
+	 */
+	public static final float SNIFFER_EGG_ARCHAEOLOGY_CHANCE = 0.05F;
+
 	/** Fouille du renifleur : baie d'XP. */
 	public static final float SNIFFER_XP_BERRY_CHANCE = 0.20F;
 
-	/** Zombie tue par un joueur : petite pierre. */
-	public static final float ZOMBIE_PEBBLE_CHANCE = 0.0F;
-
-	/** Gravier casse a la pelle en fer : fibre vegetale. */
-	public static final float GRAVEL_FIBER_CHANCE = 0.0F;
-
-	/** Cailloux ajoutes dans les coffres des maisons de village (plaines). */
-	public static final float VILLAGE_CHEST_PEBBLES_MIN = 2.0F;
-	public static final float VILLAGE_CHEST_PEBBLES_MAX = 5.0F;
+	/**
+	 * Cailloux ajoutes dans les coffres des maisons de village (plaines).
+	 *
+	 * En nombre entier depuis 26.3 : les quantites de butin ne passent plus
+	 * par des flottants.
+	 */
+	public static final int VILLAGE_CHEST_PEBBLES_MIN = 2;
+	public static final int VILLAGE_CHEST_PEBBLES_MAX = 5;
 
 	// ==================================================================
 	// 21. Table d'archerie et fleches composees
@@ -708,7 +826,12 @@ public final class ArcaBalance {
 	/** Creatures traversees en plus. 1 = comme Perforation I. */
 	public static final int ARROW_IRON_PIERCE_LEVEL = 1;
 
-	/** Eclat de prismarine : ignore la friction de l'eau. */
+	/**
+	 * Eclat de prismarine : degats bonus contre les creatures aquatiques
+	 * (tag data/arcamod/tags/entity_type/arrow_prismarine_targets.json) et
+	 * contre toute creature qui se trouve dans l'eau.
+	 * (L'ancien vol parfait sous l'eau est passe a l'ecaille de tortue.)
+	 */
 	public static final int ARROW_PRISMARINE_YIELD = 4;
 	public static final double ARROW_PRISMARINE_DAMAGE = 1.0;
 	public static final float ARROW_PRISMARINE_SPEED = 1.0F;
@@ -716,8 +839,10 @@ public final class ArcaBalance {
 	public static final float ARROW_PRISMARINE_INACCURACY = 1.0F;
 	public static final float ARROW_PRISMARINE_KNOCKBACK = 1.0F;
 	public static final float ARROW_PRISMARINE_DRAW_SPEED = 1.0F;
-	/** Vitesse conservee par tick dans l'eau. Vanilla 0.6 ; 0.99 = comme dans l'air. */
-	public static final float ARROW_PRISMARINE_WATER_INERTIA = 0.99F;
+	/** Multiplicateur de degats contre une cible aquatique ou dans l'eau. */
+	public static final float ARROW_PRISMARINE_AQUATIC_DAMAGE_MULTIPLIER = 2.0F;
+	/** true : toute creature DANS l'eau prend le bonus (pas seulement les aquatiques). */
+	public static final boolean ARROW_PRISMARINE_BONUS_IN_WATER = true;
 
 	/** Boule de slime : rebondit, ralentit la cible. */
 	public static final int ARROW_SLIME_YIELD = 4;
@@ -782,6 +907,192 @@ public final class ArcaBalance {
 	public static final float ARROW_RESIN_DRAW_SPEED = 1.0F;
 	/** Degats fixes, en points (1 = un demi-coeur). Mettre -1 pour garder le calcul normal. */
 	public static final float ARROW_RESIN_FIXED_DAMAGE = 1.0F;
+
+	/*
+	 * Fruit de chorus : teleporte la cible au hasard (comme manger un chorus).
+	 * Seul projectile qui touche les endermen. Sans effet sur les creatures du
+	 * tag data/arcamod/tags/entity_type/arrow_chorus_immune.json (boss).
+	 */
+	public static final int ARROW_CHORUS_YIELD = 4;
+	public static final double ARROW_CHORUS_DAMAGE = 0.25;
+	public static final float ARROW_CHORUS_SPEED = 1.0F;
+	public static final float ARROW_CHORUS_RANGE = 1.0F;
+	public static final float ARROW_CHORUS_INACCURACY = 1.0F;
+	public static final float ARROW_CHORUS_KNOCKBACK = 0.0F;
+	public static final float ARROW_CHORUS_DRAW_SPEED = 1.0F;
+	/** Rayon de teleportation, en blocs (chorus vanilla : 8). */
+	public static final double ARROW_CHORUS_TELEPORT_RADIUS = 8.0;
+	/** Nombre d'essais pour trouver un point d'arrivee sur (vanilla : 16). */
+	public static final int ARROW_CHORUS_TELEPORT_ATTEMPTS = 16;
+	/** false : les joueurs touches ne sont pas teleportes (PvP). */
+	public static final boolean ARROW_CHORUS_TELEPORTS_PLAYERS = true;
+	/** true : la fleche touche les endermen au lieu qu'ils l'esquivent. */
+	public static final boolean ARROW_CHORUS_HITS_ENDERMEN = true;
+
+	/*
+	 * Debris de netherite : degats eleves, desactive le bouclier, et la fleche
+	 * ne se perd jamais (pas de disparition au sol, retombe en objet apres
+	 * avoir touche une creature).
+	 */
+	public static final int ARROW_NETHERITE_YIELD = 4;
+	public static final double ARROW_NETHERITE_DAMAGE = 1.5;
+	public static final float ARROW_NETHERITE_SPEED = 0.9F;
+	public static final float ARROW_NETHERITE_RANGE = 0.8F;
+	public static final float ARROW_NETHERITE_INACCURACY = 1.0F;
+	public static final float ARROW_NETHERITE_KNOCKBACK = 1.0F;
+	public static final float ARROW_NETHERITE_DRAW_SPEED = 0.85F;
+	/** Duree de desactivation du bouclier touche, en secondes (hache vanilla : 5). 0 = aucun effet. */
+	public static final float ARROW_NETHERITE_SHIELD_DISABLE_SECONDS = 5.0F;
+	/** true : plantee dans un bloc, la fleche ne disparait jamais (vanilla : 60 s). */
+	public static final boolean ARROW_NETHERITE_NEVER_DESPAWNS = true;
+	/** true : apres avoir touche une creature, la fleche tombe au sol en objet ramassable. */
+	public static final boolean ARROW_NETHERITE_DROPS_ON_ENTITY_HIT = true;
+
+	/*
+	 * Eclat d'echo : leurre sonore. Vol silencieux, et les vibrations de la
+	 * fleche (tir et impact) n'ont plus de source : le Warden et les capteurs
+	 * sculk vont voir l'impact sans remonter jusqu'au tireur, et les hurleurs
+	 * sculk (qui ne repondent qu'aux joueurs) ne se declenchent pas.
+	 */
+	public static final int ARROW_ECHO_YIELD = 4;
+	public static final double ARROW_ECHO_DAMAGE = 0.8;
+	public static final float ARROW_ECHO_SPEED = 1.0F;
+	public static final float ARROW_ECHO_RANGE = 1.0F;
+	public static final float ARROW_ECHO_INACCURACY = 1.0F;
+	public static final float ARROW_ECHO_KNOCKBACK = 1.0F;
+	public static final float ARROW_ECHO_DRAW_SPEED = 1.0F;
+	/** Multiplicateur de degats contre le Warden (s'applique apres ARROW_ECHO_DAMAGE). */
+	public static final float ARROW_ECHO_WARDEN_DAMAGE_MULTIPLIER = 3.0F;
+	/** true : touche par cette fleche, le Warden oublie sa colere contre le tireur. */
+	public static final boolean ARROW_ECHO_WARDEN_FORGETS_SHOOTER = true;
+
+	/** Pointe de soufre : toxique, use l'armure. */
+	public static final int ARROW_SULFUR_YIELD = 4;
+	public static final double ARROW_SULFUR_DAMAGE = 0.8;
+	public static final float ARROW_SULFUR_SPEED = 1.0F;
+	public static final float ARROW_SULFUR_RANGE = 1.0F;
+	public static final float ARROW_SULFUR_INACCURACY = 1.0F;
+	public static final float ARROW_SULFUR_KNOCKBACK = 1.0F;
+	public static final float ARROW_SULFUR_DRAW_SPEED = 1.0F;
+	/** Nausee : duree en ticks (20 = 1 s), 0 = aucune. */
+	public static final int ARROW_SULFUR_NAUSEA_TICKS = 100;
+	/** Poison : duree en ticks et niveau (0 = Poison I). */
+	public static final int ARROW_SULFUR_POISON_TICKS = 60;
+	public static final int ARROW_SULFUR_POISON_AMPLIFIER = 0;
+	/** Usure EN PLUS infligee a chaque piece d'armure portee, par fleche. 0 = aucune. */
+	public static final int ARROW_SULFUR_ARMOR_WEAR = 4;
+
+	/*
+	 * Stalactite pointue : plus la fleche tombe vite, plus elle fait mal.
+	 * Vitesses en blocs par tick (une fleche d'arc bande a fond part a ~3).
+	 */
+	public static final int ARROW_DRIPSTONE_YIELD = 4;
+	public static final double ARROW_DRIPSTONE_DAMAGE = 1.0;
+	public static final float ARROW_DRIPSTONE_SPEED = 1.0F;
+	public static final float ARROW_DRIPSTONE_RANGE = 0.8F;
+	public static final float ARROW_DRIPSTONE_INACCURACY = 1.0F;
+	public static final float ARROW_DRIPSTONE_KNOCKBACK = 0.5F;
+	public static final float ARROW_DRIPSTONE_DRAW_SPEED = 1.0F;
+	/** Vitesse de chute a partir de laquelle le bonus commence. */
+	public static final double ARROW_DRIPSTONE_MIN_FALL_SPEED = 0.6;
+	/** Vitesse de chute qui donne le bonus maximal. */
+	public static final double ARROW_DRIPSTONE_FULL_FALL_SPEED = 2.0;
+	/** Multiplicateur de degats au bonus maximal (entre les deux : progressif). */
+	public static final float ARROW_DRIPSTONE_MAX_DAMAGE_MULTIPLIER = 2.0F;
+
+	/** Pepite d'or : butin bonus, les piglins ne se vexent pas. */
+	public static final int ARROW_GOLD_YIELD = 4;
+	public static final double ARROW_GOLD_DAMAGE = 0.8;
+	public static final float ARROW_GOLD_SPEED = 1.0F;
+	public static final float ARROW_GOLD_RANGE = 1.0F;
+	public static final float ARROW_GOLD_INACCURACY = 1.0F;
+	public static final float ARROW_GOLD_KNOCKBACK = 1.0F;
+	public static final float ARROW_GOLD_DRAW_SPEED = 1.0F;
+	/** Chance (0 a 1) qu'une creature tuee lache son butin une deuxieme fois. */
+	public static final float ARROW_GOLD_EXTRA_LOOT_CHANCE = 0.5F;
+	/** true : le butin bonus demande que le tireur soit un joueur. */
+	public static final boolean ARROW_GOLD_EXTRA_LOOT_REQUIRES_PLAYER = true;
+	/**
+	 * true : un piglin touche par une pointe en or s'enerve contre le tireur,
+	 * mais n'alerte PAS les autres piglins. false : reaction vanilla complete
+	 * (tout le groupe attaque).
+	 */
+	public static final boolean ARROW_GOLD_PIGLIN_ANGER_ONLY_TARGET = true;
+
+	/** Pepite de cuivre : conductrice. */
+	public static final int ARROW_COPPER_YIELD = 8;
+	public static final double ARROW_COPPER_DAMAGE = 1.0;
+	public static final float ARROW_COPPER_SPEED = 1.0F;
+	public static final float ARROW_COPPER_RANGE = 0.95F;
+	public static final float ARROW_COPPER_INACCURACY = 1.0F;
+	public static final float ARROW_COPPER_KNOCKBACK = 1.0F;
+	public static final float ARROW_COPPER_DRAW_SPEED = 1.0F;
+	/** Multiplicateur de degats contre une cible mouillee (dans l'eau ou sous la pluie). */
+	public static final float ARROW_COPPER_WET_DAMAGE_MULTIPLIER = 1.5F;
+	/** Chance (0 a 1) d'appeler la foudre sur la cible touchee a ciel ouvert. */
+	public static final float ARROW_COPPER_LIGHTNING_CHANCE = 1.0F;
+	/** true : la foudre demande un orage (comme Canalisation). false : la pluie suffit. */
+	public static final boolean ARROW_COPPER_LIGHTNING_NEEDS_THUNDER = true;
+
+	/** Pepite d'or rose : amplifie l'arc enchante. */
+	public static final int ARROW_PINK_GOLD_YIELD = 4;
+	public static final double ARROW_PINK_GOLD_DAMAGE = 1.0;
+	public static final float ARROW_PINK_GOLD_SPEED = 1.2F;
+	public static final float ARROW_PINK_GOLD_RANGE = 1.44F;
+	public static final float ARROW_PINK_GOLD_INACCURACY = 1.0F;
+	public static final float ARROW_PINK_GOLD_KNOCKBACK = 1.0F;
+	public static final float ARROW_PINK_GOLD_DRAW_SPEED = 1.15F;
+	/**
+	 * Degats en plus par niveau d'enchantement porte par l'arc (tous
+	 * enchantements confondus : Puissance III + Flamme I = 4 niveaux).
+	 * 0.08 = +8% par niveau.
+	 */
+	public static final float ARROW_PINK_GOLD_DAMAGE_PER_ENCHANT_LEVEL = 0.08F;
+	/** Bonus maximal (0.4 = +40%). */
+	public static final float ARROW_PINK_GOLD_MAX_BONUS = 0.4F;
+
+	/** Quartz : toujours critique, se brise a l'impact. */
+	public static final int ARROW_QUARTZ_YIELD = 8;
+	public static final double ARROW_QUARTZ_DAMAGE = 1.25;
+	public static final float ARROW_QUARTZ_SPEED = 1.0F;
+	public static final float ARROW_QUARTZ_RANGE = 1.0F;
+	public static final float ARROW_QUARTZ_INACCURACY = 1.0F;
+	public static final float ARROW_QUARTZ_KNOCKBACK = 1.0F;
+	public static final float ARROW_QUARTZ_DRAW_SPEED = 1.0F;
+	/** true : toujours un coup critique (degats aleatoires en plus, comme un arc bande a fond). */
+	public static final boolean ARROW_QUARTZ_ALWAYS_CRIT = true;
+	/** Multiplicateur de degats contre une cible qui porte de l'armure (points d'armure > 0). */
+	public static final float ARROW_QUARTZ_ARMORED_DAMAGE_MULTIPLIER = 0.7F;
+	/** true : la fleche se brise en touchant un bloc (jamais recuperable). */
+	public static final boolean ARROW_QUARTZ_SHATTERS = true;
+
+	/*
+	 * Charge de vent : la fleche se comporte comme une charge de vent lancee
+	 * a la main. A l'impact (creature ou bloc), elle eclate en rafale : meme
+	 * explosion de vent, meme recul (le tireur peut s'en servir pour sauter),
+	 * et 1 degat fixe sur la creature touchee directement. Elle rend aussi un
+	 * peu d'air a la creature touchee.
+	 */
+	/** Recharge d'une charge de vent lancee a la main, en ticks (vanilla : 10 = 0.5 s). */
+	public static final int WIND_CHARGE_COOLDOWN_TICKS = 10;
+	public static final int ARROW_WIND_CHARGE_YIELD = 4;
+	public static final double ARROW_WIND_CHARGE_DAMAGE = 1.0;
+	public static final float ARROW_WIND_CHARGE_SPEED = 1.0F;
+	public static final float ARROW_WIND_CHARGE_RANGE = 1.0F;
+	public static final float ARROW_WIND_CHARGE_INACCURACY = 1.0F;
+	/** 0 : le recul vient uniquement de la rafale, comme la charge vanilla. */
+	public static final float ARROW_WIND_CHARGE_KNOCKBACK = 0.0F;
+	/**
+	 * L'arc est bande a fond en autant de temps que la recharge d'une charge
+	 * de vent : 20 ticks (arc vanilla) / 10 = x2.
+	 */
+	public static final float ARROW_WIND_CHARGE_DRAW_SPEED = 20.0F / WIND_CHARGE_COOLDOWN_TICKS;
+	/** Degats fixes du coup direct (charge de vent vanilla : 1). -1 = calcul normal. */
+	public static final float ARROW_WIND_CHARGE_FIXED_DAMAGE = 1.0F;
+	/** Air rendu a la creature touchee, en ticks (300 = jauge pleine, 30 = une bulle). */
+	public static final int ARROW_WIND_CHARGE_AIR_GIVEN = 90;
+	/** true : seuls les joueurs recoivent de l'air. */
+	public static final boolean ARROW_WIND_CHARGE_AIR_PLAYERS_ONLY = false;
 
 	// ---- Corps --------------------------------------------------------------
 
@@ -849,6 +1160,26 @@ public final class ArcaBalance {
 	// Blocs traverses : tag data/arcamod/tags/block/bone_arrow_passes_through.json
 	// Blocs brises   : tag data/arcamod/tags/block/bone_arrow_breaks.json
 
+	/** Canne a sucre : legere, pour tirer vite. Aucun effet special. */
+	public static final int ARROW_SUGAR_CANE_YIELD = 8;
+	public static final double ARROW_SUGAR_CANE_DAMAGE = 0.85;
+	public static final float ARROW_SUGAR_CANE_SPEED = 1.0F;
+	public static final float ARROW_SUGAR_CANE_RANGE = 1.0F;
+	public static final float ARROW_SUGAR_CANE_INACCURACY = 1.0F;
+	public static final float ARROW_SUGAR_CANE_KNOCKBACK = 0.5F;
+	public static final float ARROW_SUGAR_CANE_DRAW_SPEED = 1.25F;
+
+	/** Baton de l'End : lumineux en vol et une fois plante (lumieres dynamiques). */
+	public static final int ARROW_END_ROD_YIELD = 4;
+	public static final double ARROW_END_ROD_DAMAGE = 1.0;
+	public static final float ARROW_END_ROD_SPEED = 1.0F;
+	public static final float ARROW_END_ROD_RANGE = 1.0F;
+	public static final float ARROW_END_ROD_INACCURACY = 1.0F;
+	public static final float ARROW_END_ROD_KNOCKBACK = 1.0F;
+	public static final float ARROW_END_ROD_DRAW_SPEED = 1.0F;
+	/** Lumiere emise (0 a 15). Demande l'interrupteur des lumieres dynamiques. */
+	public static final float ARROW_END_ROD_LIGHT = 12.0F;
+
 	// ---- Empennages ---------------------------------------------------------
 
 	/** Plume : fleche normale. */
@@ -860,14 +1191,21 @@ public final class ArcaBalance {
 	public static final float ARROW_FEATHER_KNOCKBACK = 1.0F;
 	public static final float ARROW_FEATHER_DRAW_SPEED = 1.0F;
 
-	/** Membrane de phantom : +35% de portee, -10% de degats. */
+	/**
+	 * Membrane de phantom : +35% de portee, et anti-aerien : degats bonus
+	 * contre les creatures volantes (tag
+	 * data/arcamod/tags/entity_type/arrow_anti_air_targets.json) et les
+	 * joueurs en vol plane.
+	 */
 	public static final int ARROW_PHANTOM_MEMBRANE_YIELD = 4;
-	public static final double ARROW_PHANTOM_MEMBRANE_DAMAGE = 0.9;
+	public static final double ARROW_PHANTOM_MEMBRANE_DAMAGE = 1.0;
 	public static final float ARROW_PHANTOM_MEMBRANE_SPEED = 1.0F;
 	public static final float ARROW_PHANTOM_MEMBRANE_RANGE = 1.35F;
 	public static final float ARROW_PHANTOM_MEMBRANE_INACCURACY = 1.0F;
 	public static final float ARROW_PHANTOM_MEMBRANE_KNOCKBACK = 1.0F;
 	public static final float ARROW_PHANTOM_MEMBRANE_DRAW_SPEED = 1.0F;
+	/** Multiplicateur de degats contre une cible volante. */
+	public static final float ARROW_PHANTOM_MEMBRANE_AIR_DAMAGE_MULTIPLIER = 1.5F;
 
 	/** Ecaille de tatou : +20% de vitesse, arc charge 20% plus vite, legere dispersion. */
 	public static final int ARROW_ARMADILLO_SCUTE_YIELD = 4;
@@ -879,6 +1217,53 @@ public final class ArcaBalance {
 	public static final float ARROW_ARMADILLO_SCUTE_INACCURACY = 1.75F;
 	public static final float ARROW_ARMADILLO_SCUTE_KNOCKBACK = 1.0F;
 	public static final float ARROW_ARMADILLO_SCUTE_DRAW_SPEED = 1.2F;
+
+	/** Ecaille de tortue : hydrodynamique, vol parfait sous l'eau. Un peu lourde en l'air. */
+	public static final int ARROW_TURTLE_SCUTE_YIELD = 4;
+	public static final double ARROW_TURTLE_SCUTE_DAMAGE = 1.0;
+	public static final float ARROW_TURTLE_SCUTE_SPEED = 1.0F;
+	public static final float ARROW_TURTLE_SCUTE_RANGE = 0.9F;
+	public static final float ARROW_TURTLE_SCUTE_INACCURACY = 1.0F;
+	public static final float ARROW_TURTLE_SCUTE_KNOCKBACK = 1.0F;
+	public static final float ARROW_TURTLE_SCUTE_DRAW_SPEED = 1.0F;
+	/** Vitesse conservee par tick dans l'eau. Vanilla 0.6 ; 0.99 = comme dans l'air. */
+	public static final float ARROW_TURTLE_SCUTE_WATER_INERTIA = 0.99F;
+
+	/**
+	 * Algue : entravante. Une creature touchee DANS l'eau recoit l'effet
+	 * "Entrave" (arcamod:entangled) : elle est tiree vers le fond et ne peut
+	 * plus remonter. L'effet s'arrete des qu'elle sort de l'eau.
+	 */
+	public static final int ARROW_KELP_YIELD = 8;
+	public static final double ARROW_KELP_DAMAGE = 1.0;
+	public static final float ARROW_KELP_SPEED = 1.0F;
+	public static final float ARROW_KELP_RANGE = 1.0F;
+	public static final float ARROW_KELP_INACCURACY = 1.0F;
+	public static final float ARROW_KELP_KNOCKBACK = 1.0F;
+	public static final float ARROW_KELP_DRAW_SPEED = 1.0F;
+	/** Duree de l'entrave, en ticks (20 = 1 s). */
+	public static final int ARROW_KELP_ENTANGLE_TICKS = 80;
+	/** Vitesse de descente imposee, en blocs par tick (nage vers le bas vanilla : ~0.04). */
+	public static final double ARROW_KELP_PULL_SPEED = 0.06;
+	/** Couleur de l'effet Entrave (particules). */
+	public static final int ENTANGLED_EFFECT_COLOR = 0x3E7A2E;
+
+	/**
+	 * Aile de chauve-souris : nocturne. Degats bonus si le point d'impact est
+	 * sombre : la nuit dehors, ou dans une grotte. On lit la lumiere "brute"
+	 * du bloc (0 a 15), qui tient compte du soleil couche.
+	 */
+	public static final int ARROW_BAT_WING_YIELD = 4;
+	public static final double ARROW_BAT_WING_DAMAGE = 1.0;
+	public static final float ARROW_BAT_WING_SPEED = 1.0F;
+	public static final float ARROW_BAT_WING_RANGE = 1.0F;
+	public static final float ARROW_BAT_WING_INACCURACY = 1.0F;
+	public static final float ARROW_BAT_WING_KNOCKBACK = 1.0F;
+	public static final float ARROW_BAT_WING_DRAW_SPEED = 1.0F;
+	/** Lumiere maximale au point d'impact pour avoir le bonus (0 a 15). Nuit sans torche : ~4. */
+	public static final int ARROW_BAT_WING_MAX_LIGHT = 7;
+	/** Multiplicateur de degats dans le noir. */
+	public static final float ARROW_BAT_WING_DARK_DAMAGE_MULTIPLIER = 1.4F;
 
 	// ==================================================================
 	// 22. Feu de camp (repos assis)
@@ -901,12 +1286,6 @@ public final class ArcaBalance {
 
 	/** Saturation rendue (multiplicateur vanilla : 0.1 pain sec, 0.8 steak). */
 	public static final float CAMPFIRE_REST_SATURATION_MODIFIER = 0.0F;
-
-	/**
-	 * Hauteur du joueur assis, en blocs, par rapport au dessus du siege.
-	 * A ajuster a l'oeil : plus bas = le joueur s'enfonce dans le siege.
-	 */
-	public static final double CAMPFIRE_SEAT_HEIGHT_OFFSET = -0.15;
 
 	// ==================================================================
 	// 23. Banniere de camp
@@ -949,6 +1328,14 @@ public final class ArcaBalance {
 	 * fideles au combat reel ; false pour voir chaque coup, meme spamme.
 	 */
 	public static final boolean SCARECROW_USE_INVULNERABILITY_FRAMES = true;
+
+	/**
+	 * Duree des images d'invulnerabilite, en ticks (20 = une demi-seconde).
+	 *
+	 * C'etait la constante vanilla LivingEntity.INVULNERABLE_DURATION, retiree
+	 * en 26.3 : on la garde ici, reglable.
+	 */
+	public static final int SCARECROW_INVULNERABILITY_DURATION = 20;
 
 	/**
 	 * Fabrication : clic droit avec une botte de foin sur un porte-armure
@@ -1106,8 +1493,18 @@ public final class ArcaBalance {
 	/** Puissance : degats AJOUTES par niveau, en points (1 = un demi-coeur). */
 	public static final float SLINGSHOT_POWER_DAMAGE_PER_LEVEL = 0.5F;
 
-	/** Recul de base inflige (0 = aucun ; 0.5 = recul d'un coup de poing). */
-	public static final float SLINGSHOT_BASE_KNOCKBACK = 0.1F;
+	/**
+	 * Recul de base inflige (0 = aucun ; 0.5 = recul d'un coup de poing).
+	 * L'enchantement Recul ajoute toujours SLINGSHOT_KNOCKBACK_PER_LEVEL.
+	 */
+	public static final float SLINGSHOT_BASE_KNOCKBACK = 0.0F;
+
+	/**
+	 * false : le petit recul que le jeu applique a TOUT projectile qui touche
+	 * est annule (la cible ne bouge pas, sauf enchantement Recul).
+	 * true : recul vanilla d'un projectile (comme une boule de neige).
+	 */
+	public static final boolean SLINGSHOT_VANILLA_HIT_KNOCKBACK = false;
 
 	/** Recul : force AJOUTEE par niveau d'enchantement Recul. */
 	public static final float SLINGSHOT_KNOCKBACK_PER_LEVEL = 0.5F;
@@ -1487,6 +1884,27 @@ public final class ArcaBalance {
 	public static final int SOUL_PEPPER_BUSH_LIGHT_LAST_STAGE = 8;
 
 	// ==================================================================
+	// 34. Seau a allay
+	// ==================================================================
+
+	/**
+	 * Vrai : il faut etre accroupi pour attraper un allay au seau. Faux : un
+	 * simple clic droit suffit (mais on ne peut plus lui donner d'objet a la
+	 * main sans viser a cote).
+	 */
+	public static final boolean ALLAY_BUCKET_REQUIRES_SNEAK = true;
+
+	/** Vrai : relacher l'allay rend le seau vide. Faux : le seau disparait. */
+	public static final boolean ALLAY_BUCKET_RETURNS_EMPTY_BUCKET = true;
+
+	/**
+	 * Vrai : l'allay sorti du seau ne disparait plus jamais tout seul
+	 * (setPersistenceRequired). C'est ce que fait le jeu pour un mob sorti
+	 * d'un seau.
+	 */
+	public static final boolean ALLAY_BUCKET_PERSISTENT = true;
+
+	// ==================================================================
 	// 33. Garniture pulsante (eclat d'echo)
 	// ==================================================================
 
@@ -1498,12 +1916,48 @@ public final class ArcaBalance {
 	public static final int ECHO_TRIM_LIGHT_MAX = 5;
 
 	/**
-	 * Opacite de la garniture au creux de la pulsation (1.0 = toujours
-	 * opaque, 0.0 = disparait completement). La lumiere seule ne se voit pas
-	 * quand l'endroit est deja eclaire (plein jour) : c'est cette variation
-	 * d'opacite qui garde la pulsation visible partout.
+	 * Garniture a la fois LUMINEUSE (poche d'encre lumineuse) et PULSANTE
+	 * (eclat d'echo) : lumiere au creux de la pulsation. Le sommet, lui, est
+	 * GLOWING_TRIM_LIGHT.
+	 */
+	public static final int ECHO_GLOWING_TRIM_LIGHT_MIN = 4;
+
+	/**
+	 * Meme cas : opacite au creux de la pulsation.
+	 *
+	 * En plein jour, une variation de lumiere ne se voit pas (l'endroit est
+	 * deja eclaire au maximum) : sans ce leger fondu, une garniture lumineuse
+	 * et pulsante paraitrait immobile de jour. Plus haut que le fondu normal
+	 * (ECHO_TRIM_MIN_OPACITY) pour qu'une garniture lumineuse reste franche.
+	 */
+	public static final float ECHO_GLOWING_TRIM_MIN_OPACITY = 0.55F;
+
+	/**
+	 * Vrai : la garniture s'efface et revient (variation d'OPACITE). Elle est
+	 * alors dessinee avec le type de rendu des fissures d'armure de loup, le
+	 * seul type vanilla qui melange la transparence AU FORMAT des couches
+	 * d'armure.
+	 *
+	 * Faux : la garniture garde le rendu vanilla et c'est son ECLAT qui varie
+	 * (elle s'assombrit). Repli sur.
+	 */
+	public static final boolean ECHO_TRIM_FADE = true;
+
+	/**
+	 * ECHO_TRIM_FADE = true : opacite de la garniture au creux de la
+	 * pulsation (1.0 = toujours opaque, 0.0 = invisible).
+	 *
+	 * A ne pas descendre sous ~0.15 : le rendu coupe net les pixels trop
+	 * transparents (ALPHA_CUTOUT), la garniture disparaitrait d'un coup au
+	 * lieu de s'effacer en douceur.
 	 */
 	public static final float ECHO_TRIM_MIN_OPACITY = 0.30F;
+
+	/**
+	 * ECHO_TRIM_FADE = false : eclat de la garniture au creux de la pulsation
+	 * (1.0 = pleine couleur, 0.0 = noire).
+	 */
+	public static final float ECHO_TRIM_MIN_BRIGHTNESS = 0.55F;
 
 	// ==================================================================
 	// 33 bis. Plastron a elytres (table de craft)
@@ -1643,6 +2097,181 @@ public final class ArcaBalance {
 	/** Emplacements par ligne dans l'interface (9 = largeur d'un coffre). */
 	public static final int BUNDLE_INTERFACE_COLUMNS = 9;
 
+	// ==================================================================
+	// 36. Cadres colles aux blocs
+	// ==================================================================
+	// Un cadre pose sur une barriere, un muret, une vitre ou un poteau vient
+	// se plaquer contre la forme reelle du bloc au lieu de flotter au bord de
+	// son cube. Code : util/SupportSnapping + mixin/ItemFrameSnapMixin.
+	// Interrupteur : ArcaFeature.ITEM_FRAME_SNAPPING.
+
+	/**
+	 * Profondeur maximale dont un cadre peut reculer vers son support, en
+	 * blocs (1.0 = un bloc entier, 0.0625 = 1 pixel).
+	 *
+	 * Quelques distances a couvrir : muret 0.25, barriere 0.375, vitre et
+	 * chaine 0.4375, dessus d'une dalle basse 0.5. 0.75 les prend toutes avec
+	 * de la marge.
+	 *
+	 * Au-dela de cette limite on considere qu'il n'y a rien sur quoi
+	 * s'appuyer : le cadre garde alors sa place vanilla plutot que de flotter
+	 * au milieu de nulle part (cas d'un tapis ou d'une couche de neige).
+	 */
+	public static final double ITEM_FRAME_SNAP_MAX_DEPTH = 0.75;
+
+	/**
+	 * Espace laisse entre le dos du cadre et la surface du bloc, en blocs.
+	 * Une valeur tres petite mais non nulle evite le clignotement des deux
+	 * faces collees (0.001 = 1/64e de pixel, invisible a l'oeil).
+	 */
+	public static final double ITEM_FRAME_SNAP_GAP = 0.001;
+
+	/**
+	 * Suivre la boite de SELECTION quand le bloc n'a aucune collision
+	 * (torche, bougie, pot de fleur, plante...). false : ces blocs sont
+	 * ignores et le cadre garde sa position vanilla.
+	 */
+	public static final boolean ITEM_FRAME_SNAP_USE_MODEL_SHAPE = true;
+
+	/**
+	 * Autoriser la POSE sur les blocs fins que vanilla refuse : baton de
+	 * l'End couche, chaine, lanterne, catalyseur... tout ce qui a une
+	 * COLLISION, meme minuscule.
+	 *
+	 * La collision est justement ce qui separe un support d'un decor : une
+	 * touffe d'herbe, une fleur, une torche ou un pot de fleur n'en ont pas,
+	 * on ne peut donc pas y accrocher un cadre (c'etait le bug de la version
+	 * precedente, qui se contentait d'un modele).
+	 *
+	 * false : regles de pose strictement vanilla.
+	 */
+	public static final boolean ITEM_FRAME_SNAP_ALLOW_MODEL_SUPPORTS = true;
+
+	/**
+	 * Ne pas compter la collision du bloc SUPPORT quand le jeu verifie qu'un
+	 * cadre a la place de se poser.
+	 *
+	 * Sans ca, impossible de poser un cadre sur le dessus d'une barriere ou
+	 * d'un muret : leur collision monte a 1,5 bloc et deborde dans le cube du
+	 * dessus, qui parait pourtant libre. Un cadre etant fait pour se coller a
+	 * son support, sa forme n'a pas a lui interdire la pose.
+	 *
+	 * La collision de tous les AUTRES blocs continue d'interdire la pose.
+	 */
+	public static final boolean ITEM_FRAME_SNAP_IGNORES_SUPPORT_COLLISION = true;
+
+	/**
+	 * TRACE DE SECOURS : ecrit dans le journal, au plus 10 fois, pourquoi un
+	 * cadre accepte ou refuse de tenir la ou on le pose. A mettre a true
+	 * seulement si une pose refusee reste inexpliquee.
+	 */
+	public static final boolean ITEM_FRAME_SURVIVES_DEBUG = false;
+
+	/**
+	 * Recul supplementaire, en blocs, devant les blocs du tag
+	 * data/arcamod/tags/block/item_frame_extra_clearance.json (par defaut les
+	 * coffres).
+	 *
+	 * Sert aux blocs dont le MODELE depasse de leur hitbox : le corps d'un
+	 * coffre s'arrete a 1 pixel du bord du cube, mais son loquet, lui, va
+	 * jusqu'au bord. Sans ce pixel de rattrapage, le cadre se collerait au
+	 * corps du coffre et le loquet le traverserait.
+	 */
+	public static final double ITEM_FRAME_SNAP_EXTRA_CLEARANCE = 0.0625;
+
+	// ---- Cadre invisible (membrane de phantom) --------------------------------
+
+	/**
+	 * Cadre invisible : de combien de PIXELS avancer l'objet vers le joueur.
+	 *
+	 * 0 = comportement vanilla. Vanilla fait reculer l'objet d'un pixel des que
+	 * le cadre devient invisible (l'objet prend la place de la planche), et ce
+	 * recul est bien d'un seul pixel.
+	 *
+	 * Ce qui donne l'impression d'un recul plus grand est ailleurs : un objet
+	 * qui est un BLOC n'est pas plat. Son modele est un cube reduit de moitie,
+	 * soit 8 pixels d'epaisseur, centre sur ce point : la moitie arriere se
+	 * retrouve donc dans le bloc, cadre visible ou non. C'est encore plus
+	 * visible depuis que les cadres se collent a leur support.
+	 *
+	 * Monter cette valeur ressort l'objet du mur : 4 sort completement la
+	 * moitie enterree d'un objet-bloc, au prix d'un objet plat qui flotte un
+	 * peu.
+	 */
+	public static final double ITEM_FRAME_INVISIBLE_ITEM_FORWARD_PIXELS = 0.2;
+
+	/**
+	 * Les clics traversent un cadre invisible : on peut ouvrir le coffre
+	 * derriere lui, et les projectiles ne l'accrochent plus.
+	 *
+	 * Consequence : un cadre invisible ne se casse plus et ne se vide plus au
+	 * clic. Pour le recuperer, on le rend d'abord visible (poudre d'os
+	 * ci-dessous) ou on casse le bloc qui le porte.
+	 */
+	public static final boolean ITEM_FRAME_INVISIBLE_CLICK_THROUGH = true;
+
+	/**
+	 * La poudre d'os rend un cadre invisible de nouveau visible. Le clic
+	 * fonctionne aussi bien sur le cadre que sur le bloc a travers lui (cas
+	 * d'un cadre devenu intangible).
+	 */
+	public static final boolean ITEM_FRAME_BONE_MEAL_REVEALS = true;
+
+	/** Nombre de particules vertes quand un cadre redevient visible. */
+	public static final int ITEM_FRAME_REVEAL_PARTICLES = 12;
+
+	// ---- Panneaux -------------------------------------------------------------
+	// Memes reglages de collage que les cadres ci-dessus (profondeur, espace,
+	// dalles...) : un panneau mural pose sur une barriere vient toucher le
+	// poteau. Interrupteur : ArcaFeature.SIGN_SNAPPING.
+
+	/**
+	 * TRACE TEMPORAIRE (a remettre a false une fois le probleme regle) : ecrit
+	 * dans le journal, au plus 20 lignes, ce que chaque etape calcule pour un
+	 * panneau mural. Sert a savoir si la greffe du rendu de la planche est
+	 * bien appelee, et avec quel decalage.
+	 */
+	public static final boolean SIGN_SNAP_DEBUG = false;
+
+	/**
+	 * Exiger qu'un panneau porte du texte pour accepter de le rendre
+	 * invisible. false : on peut faire disparaitre un panneau vierge, qui
+	 * devient alors un bloc invisible difficile a retrouver.
+	 */
+	public static final boolean SIGN_HIDING_REQUIRES_TEXT = true;
+
+	/**
+	 * La FORME d'un panneau colle (contour blanc, ce qu'on vise) suit-elle son
+	 * image ?
+	 *
+	 * true : on clique ce qu'on voit, mais le cube d'origine du panneau parait
+	 * vide alors qu'il est toujours occupe : impossible d'y poser un bloc, sans
+	 * que rien ne l'explique a l'ecran.
+	 *
+	 * false : la forme reste dans le cube du panneau. Le contour apparait alors
+	 * dans le vide devant la barriere, ce qui est moins joli mais montre
+	 * pourquoi la place est prise.
+	 *
+	 * Dans les deux cas le panneau occupe son cube : c'est le comportement de
+	 * vanilla, et aucun reglage ne peut y changer quoi que ce soit.
+	 */
+	public static final boolean SIGN_SNAP_MOVES_SHAPE = true;
+
+
+	/**
+	 * Appliquer aussi le collage aux cadres poses au sol ou au plafond
+	 * (cadre sur une dalle basse : il descend se poser dessus).
+	 */
+	public static final boolean ITEM_FRAME_SNAP_VERTICAL = true;
+
+	/**
+	 * Intervalle (en ticks) entre deux recalculs de la position d'un cadre.
+	 * Sert quand le support change sous lui (barriere qui se connecte, bloc
+	 * remplace) et quand on change l'interrupteur en jeu. 0 = jamais
+	 * recalculer (la position est alors figee a la creation du cadre).
+	 */
+	public static final int ITEM_FRAME_SNAP_REFRESH_TICKS = 20;
+
 	/** Secondes -> ticks. */
 	public static int seconds(int seconds) {
 		return seconds * 20;
@@ -1701,11 +2330,19 @@ public final class ArcaBalance {
 	public static final boolean TOOL_BELT_STASH_OTHER_ITEMS = true;
 
 	/**
-	 * Accroupi (Shift) + molette, un objet rangeable en main : fait tourner
-	 * l'objet en main avec les outils de la ceinture. Main vide ou autre
-	 * objet : la molette garde son comportement normal.
+	 * Touche "faire tourner les outils" (Alt gauche par defaut, modifiable
+	 * dans Options > Commandes) + molette, un objet rangeable en main : fait
+	 * tourner l'objet en main avec les outils de la ceinture. Main vide ou
+	 * autre objet : la molette garde son comportement normal.
 	 */
 	public static final boolean TOOL_BELT_SNEAK_SCROLL_ROLL = true;
+
+	/**
+	 * true : touche de la ceinture maintenue + molette pour choisir, puis au
+	 * RELACHEMENT l'outil choisi arrive en main. false : ancien comportement
+	 * (il fallait rappuyer brievement sur la touche pour l'echanger).
+	 */
+	public static final boolean TOOL_BELT_SWAP_ON_RELEASE_AFTER_SCROLL = true;
 
 	/** Affiche la colonne de la ceinture a droite de la barre d'objets tant que la touche est maintenue. */
 	public static final boolean TOOL_BELT_HUD = true;
@@ -1737,6 +2374,12 @@ public final class ArcaBalance {
 	 * longtemps : une buche consumee reste une buche consumee.
 	 */
 	public static final boolean BURNT_LOG_BURN_TOP_DOWN = true;
+
+	/**
+	 * Les couvertures au sol du tag arcamod:burns_instantly brulent d'un coup :
+	 * le feu remplace le bloc au lieu de s'allumer dessus.
+	 */
+	public static final boolean INSTANT_BURN_GROUND_COVER = true;
 
 	/** Profondeur de recherche du pied d'un tronc (hauteur maximale d'un arbre). */
 	public static final int BURNT_LOG_TRUNK_SCAN = 32;
@@ -1776,6 +2419,12 @@ public final class ArcaBalance {
 
 	/** Intervalle (ticks) des verifications : feu proche, propagation, extinction. */
 	public static final int IGNITED_BURNT_LOG_CHECK_TICKS = 20;
+
+	/**
+	 * La buche peut-elle allumer un feu SOUS un bloc inflammable ? Le feu monte
+	 * et lecher les cotes : du feu par-dessous est rare en vanilla et rend mal.
+	 */
+	public static final boolean IGNITED_BURNT_LOG_FIRE_BELOW = false;
 
 	/** Nombre maximum de faces enflammees par verification (1 = la buche n'allume qu'un voisin a la fois). */
 	public static final int IGNITED_BURNT_LOG_IGNITE_MAX_FACES = 1;
@@ -1825,6 +2474,14 @@ public final class ArcaBalance {
 
 	/** Combustible au four : buche brulee et incandescente = autant de charbons de bois. */
 	public static final int BURNT_LOG_FUEL_CHARCOAL = 6;
+
+	/**
+	 * Duree d'une cuisson au four, en ticks (valeur vanilla : 200).
+	 *
+	 * Depuis 26.3 le combustible est un component pose sur l'objet : la duree
+	 * de base n'est plus fournie par le jeu, on la garde ici.
+	 */
+	public static final int BASE_SMELT_TIME_TICKS = 200;
 
 	/** Lumiere des braises en bouteille tenues en main (lumiere dynamique, 0 a 15). */
 	public static final float HOT_COAL_IN_A_BOTTLE_LIGHT = 6.0F;
@@ -1894,11 +2551,691 @@ public final class ArcaBalance {
 	/** Intervalle (ticks) auquel une buche brulee eteinte cherche un feu proche. */
 	public static final int BURNT_LOG_REIGNITE_CHECK_TICKS = 40;
 
+	// ---- Usages de la cendre --------------------------------------------------
+
+	/** Objets laves par niveau d'eau dans un chaudron de lessive (chaudron d'eau : x1). */
+	public static final int ASH_CAULDRON_WASH_MULTIPLIER = 3;
+
+	/** Couleur de la lessive (ARGB opaque : l'alpha compte, voir AshCauldronTint). */
+	public static final int ASH_CAULDRON_COLOUR = 0xFF8C8C86;
+
+	/** Particules quand la cendre grise l'eau du chaudron. */
+	public static final int ASH_LYE_PARTICLES = 12;
+
+	/**
+	 * Chance qu'une pincee de cendre fasse pousser la plante (poudre d'os : 1.0).
+	 * A 0.25, la cendre est quatre fois moins efficace : elle est consommee a
+	 * chaque fois, mais souvent sans effet.
+	 */
+	public static final float ASH_FERTILIZER_CHANCE = 0.25F;
+
+	/**
+	 * Rayon de l'effet sur les blocs qui font pousser autour d'eux (herbe,
+	 * mousse). La poudre d'os porte a 3 blocs : a 1, la cendre fait donc une
+	 * tache trois fois plus petite. ASH_AREA_HEIGHT fait pareil en hauteur.
+	 */
+	public static final int ASH_AREA_RADIUS = 1;
+	public static final int ASH_AREA_HEIGHT = 1;
+
+	/**
+	 * Zone photographiee avant la pousse pour effacer ce qui depasse. Doit
+	 * couvrir toute la portee de la pousse d'origine ; monter ces valeurs coute
+	 * un peu de calcul a chaque pincee.
+	 */
+	public static final int ASH_AREA_SCAN_RADIUS = 4;
+	public static final int ASH_AREA_SCAN_HEIGHT = 2;
+
+	/**
+	 * true : l'engrais ne marche que sur ce qui pousse sur place (cultures,
+	 * pousses d'arbre). L'herbe et la mousse recoivent alors simplement la
+	 * couche de cendre au clic droit.
+	 * false : l'herbe et la mousse repondent aussi a l'engrais ; il faut
+	 * s'accroupir pour poser la cendre dessus.
+	 */
+	public static final boolean ASH_FERTILIZER_ONLY_GROWERS = true;
+
+	/** Particules d'une pincee perdue. */
+	public static final int ASH_FERTILIZER_FAIL_PARTICLES = 4;
+
+	// ---- Bombe fumigene -------------------------------------------------------
+	// Cendre + soufre. Outil de fuite : aucun degat, mais les creatures prises
+	// dans le nuage perdent leur cible tant qu'elles y sont.
+
+	/** Puissance du lancer (boule de neige : 1.5, donc deux fois moins loin). */
+	public static final float SMOKE_BOMB_THROW_POWER = 0.75F;
+
+	/** Dispersion du lancer (boule de neige : 1.0). */
+	public static final float SMOKE_BOMB_THROW_INACCURACY = 1.0F;
+
+	/** Delai avant de pouvoir en relancer une. */
+	public static final int SMOKE_BOMB_COOLDOWN_TICKS = 30;
+
+	/** Duree du nuage (80 = 4 s). */
+	public static final int SMOKE_BOMB_DURATION_TICKS = 80;
+
+	/** Rayon du nuage, en blocs. */
+	public static final double SMOKE_BOMB_RADIUS = 3.0;
+
+	/** Particules de l'eclatement. */
+	public static final int SMOKE_BOMB_BURST_PARTICLES = 12;
+
+	/**
+	 * Densite de la fumee : quelques bouffees toutes les N ticks, sans vitesse
+	 * ou presque. Monter PUFFS_PER_TICK ou baisser PUFF_INTERVAL_TICKS epaissit
+	 * le nuage ; PUFF_SPEED au-dela de 0.01 le rend nerveux et laid.
+	 */
+	public static final int SMOKE_BOMB_PUFF_INTERVAL_TICKS = 2;
+	public static final int SMOKE_BOMB_PUFFS_PER_TICK = 8;
+	public static final double SMOKE_BOMB_PUFF_SPEED = 0.005;
+
+	/**
+	 * Concentration : 1 = fumee repartie uniformement, 2 = serree au centre et
+	 * clairsemee sur les bords, 3 = coeur tres dense.
+	 */
+	public static final double SMOKE_BOMB_PUFF_CONCENTRATION = 2.0;
+
+	/** Epaisseur verticale du nuage, en fraction du rayon. */
+	public static final double SMOKE_BOMB_PUFF_HEIGHT_RATIO = 0.7;
+
+	/** Intervalle auquel les creatures du nuage perdent leur cible et sont aveuglees. */
+	public static final int SMOKE_BOMB_BLIND_INTERVAL_TICKS = 5;
+
+	/**
+	 * Niveau de lenteur donne aux creatures du nuage (0 = Lenteur I,
+	 * 1 = Lenteur II, -1 = aucune). Les joueurs ne sont jamais ralentis.
+	 */
+	public static final int SMOKE_BOMB_SLOWNESS_AMPLIFIER = 1;
+
+	/**
+	 * Chance, a chaque verification, qu'une creature du nuage oublie son chemin
+	 * et regarde ailleurs. A 1.0 elle tatonne en permanence, a 0 elle garde son
+	 * cap malgre la fumee.
+	 */
+	public static final float SMOKE_BOMB_STUMBLE_CHANCE = 0.75F;
+
+	/**
+	 * Rayon dans lequel un joueur est aveugle, plus petit que celui du nuage :
+	 * il faut avoir la tete dedans, alors que les creatures sont genees des
+	 * qu'elles entrent dans la fumee.
+	 */
+	public static final double SMOKE_BOMB_PLAYER_RADIUS = 2.2;
+
+	/** Les joueurs aussi sont aveugles dans le nuage (le lanceur compris). */
+	public static final boolean SMOKE_BOMB_BLINDS_PLAYERS = true;
+
+	/**
+	 * Duree de la cecite, renouvelee tant qu'on reste dans le nuage.
+	 *
+	 * Le brouillard de la cecite se retire progressivement pendant ses 20
+	 * derniers ticks : si la duree restante repasse sous 20 a chaque
+	 * renouvellement, l'ecran "pompe". Il faut donc garder
+	 * BLINDNESS_TICKS - BLIND_INTERVAL_TICKS >= 20. Ici 25 - 5 = 20 : dans le
+	 * nuage la vue reste stable, et en sortant il reste une seconde qui se
+	 * dissipe en douceur.
+	 */
+	public static final int SMOKE_BOMB_BLINDNESS_TICKS = 25;
+
+	/**
+	 * Freinage dans la cendre : la vitesse horizontale est multipliee par cette
+	 * valeur a chaque tick (1.0 = aucun freinage, 0.9 = leger, 0.7 = lourd).
+	 * THIN s'applique a une seule couche, THICK aux 16 couches ; les epaisseurs
+	 * intermediaires se repartissent regulierement entre les deux.
+	 *
+	 * L'elan et le saut sont conserves, contrairement a la neige poudreuse, et
+	 * la cendre n'a aucune collision : on la traverse, meme a 16 couches.
+	 */
+	public static final double ASH_WALK_SLOWDOWN_THIN = 0.8;
+	public static final double ASH_WALK_SLOWDOWN_THICK = 0.6;
+
+	/** Durete du bloc de cendre compactee (bloc de neige : 0.1, sable : 0.5). */
+	public static final float PACKED_ASH_HARDNESS = 0.1F;
+
+	/**
+	 * Epaisseur (en couches) a partir de laquelle la cendre bouche la vue quand
+	 * on a la tete dedans : l'ecran se couvre de sa texture au lieu de laisser
+	 * voir au travers. Au-dessus de 16, la cendre ne bouche jamais la vue.
+	 */
+	public static final int ASH_VIEW_BLOCKING_LAYERS = 6;
+
 	/** Durete de la cendre (neige fine : 0.1). */
 	public static final float ASH_HARDNESS = 0.1F;
 
 	/** Durete de la buche brulee (buche vanilla : 2.0). Le charbon obtenu a l'etabli est dans les recettes JSON. */
 	public static final float BURNT_LOG_HARDNESS = 1.5F;
+
+	// ==================================================================
+	// 37. Corde
+	// ==================================================================
+	// Une corde qui se pose sous un bloc ou contre un mur et qui s'allonge
+	// TOUJOURS par le bas. On y descend comme a l'echelle ; a plusieurs
+	// dessus, elle finit par arracher son point d'accroche.
+	// Code : block/RopeBlock + item/RopeItem.
+	// Interrupteur : ArcaFeature.ROPE.
+
+	/** Largeur de la corde en pixels, le long de sa face (16 = toute la face). Boite de selection uniquement, la corde n'a pas de collision. */
+	public static final double ROPE_HITBOX_WIDTH = 4.0;
+
+	/**
+	 * Epaisseur, en pixels, de la boite de selection de la corde (echelle : 3).
+	 *
+	 * La corde court TOUJOURS le long d'un des quatre cotes du bloc, meme en
+	 * plein vide : c'est ce qui lui donne sa continuite quand elle quitte une
+	 * paroi. Sa boite est donc plaquee contre ce cote, comme une echelle, et
+	 * ROPE_HITBOX_WIDTH en donne la largeur.
+	 */
+	public static final double ROPE_WALL_THICKNESS = 3.0;
+
+	/**
+	 * Peut-on REMONTER a la corde ?
+	 *
+	 * false (par defaut) : la corde ne sert qu'a descendre, toute poussee vers
+	 * le haut est annulee tant qu'on est dedans.
+	 * true : la corde se comporte comme une echelle, on monte et on descend.
+	 */
+	public static final boolean ROPE_ALLOW_CLIMB_UP = true;
+
+	/**
+	 * Vitesse de descente maximale, en blocs par tick (0.15 = vitesse d'une
+	 * echelle vanilla).
+	 *
+	 * Le jeu bride deja la descente a 0.15 : une valeur PLUS PETITE ralentit
+	 * la descente, une valeur plus grande ne change rien.
+	 */
+	public static final double ROPE_DESCENT_SPEED = 0.15;
+
+	/** Longueur maximale d'une corde, en blocs. Garde-fou : borne toutes les boucles qui remontent ou descendent la corde. */
+	public static final int ROPE_MAX_LENGTH = 169;
+
+	/** Nombre maximal de cordes posees d'un coup en accroupi + clic droit (deroulage). */
+	public static final int ROPE_UNROLL_MAX = 169;
+
+	/**
+	 * Le deroulage pioche aussi dans les AUTRES piles de corde de l'inventaire
+	 * quand la main est vide. false : seule la pile en main est utilisee.
+	 */
+	public static final boolean ROPE_UNROLL_USES_INVENTORY = true;
+
+	/** Delai entre deux verifications d'usure quand un grimpeur est pendu a la corde, en ticks (20 = 1 seconde). */
+	public static final int ROPE_STRESS_CHECK_TICKS = 20;
+
+	/**
+	 * La chance, par verification, qui fait ceder un amarrage "dans les deux
+	 * secondes".
+	 *
+	 * Le premier tirage passe neuf fois sur dix, et il faut encore compter la
+	 * seconde de craquement : a ce taux, l'amarrage a lache en deux secondes
+	 * dans l'immense majorite des cas.
+	 *
+	 * C'est la derniere case de chacun des trois tableaux ci-dessous : elle
+	 * marque le nombre de grimpeurs de TROP pour cet amarrage (3 a nu, 5 avec
+	 * une plaquette, 8 avec deux). Au-dela, cette meme valeur est reutilisee :
+	 * rien ne casse "net", tout passe par le craquement.
+	 */
+	public static final float ROPE_BREAKING_CHANCE = 0.90F;
+
+	/**
+	 * Chance, a chaque verification, que le BLOC D'ACCROCHE de la corde se
+	 * brise, selon le nombre de joueurs pendus dessus.
+	 *
+	 * Case 0 = 1 grimpeur, case 1 = 2 grimpeurs, case 2 = 3 grimpeurs... Au-dela
+	 * du tableau, la derniere case est reutilisee.
+	 *
+	 * Le tirage a lieu toutes les ROPE_STRESS_CHECK_TICKS : 0.02 a un
+	 * grimpeur, c'est une chance sur cinquante PAR SECONDE passee pendu. Aucune
+	 * case n'est a zero : meme seul, on n'est jamais completement a l'abri.
+	 *
+	 * La DERNIERE case vaut ROPE_BREAKING_CHANCE : c'est le seuil ou la corde
+	 * cede "dans les deux secondes" (tirage, puis craquement d'une seconde).
+	 * Ici, trois grimpeurs sur une corde nue.
+	 */
+	public static final float[] ROPE_STRESS_CHANCES = { 0.02F, 0.15F, ROPE_BREAKING_CHANCE };
+
+	/**
+	 * Durete maximale d'un bloc d'accroche arrachable (pierre : 1.5, fer : 5,
+	 * obsidienne : 50). Au-dela, et pour tout bloc incassable (bedrock), la
+	 * corde tient et l'usure est simplement reportee.
+	 */
+	public static final float ROPE_ANCHOR_MAX_HARDNESS = 50.0F;
+
+	/**
+	 * Autoriser l'accroche sur le COTE d'un bloc (mur) en plus du dessous.
+	 *
+	 * false (par defaut) : la corde ne tient qu'a ce qu'elle a au-dessus.
+	 * Sinon un mur voisin la retient quand son plafond se brise, et la corde
+	 * reste pendue dans le vide au lieu de tomber.
+	 */
+	public static final boolean ROPE_WALL_ANCHOR = false;
+
+	/**
+	 * Temps de casse d'un maillon, en ticks (20 = 1 seconde).
+	 *
+	 * Ce delai est INCOMPRESSIBLE : la corde ignore l'outil tenu, l'efficacite
+	 * et la celerite (getDestroyProgress est calcule a part). C'est lui qui
+	 * empeche de vider une corde entiere en un clic.
+	 *
+	 * Le jeu ajoute ~5 ticks entre deux blocs quand on garde le clic enfonce.
+	 */
+	public static final int ROPE_BREAK_TICKS = 3;
+
+	/** Une cisaille coupe la corde a l'endroit du clic : le maillon vise et tout ce qui pend en dessous tombent en objets. */
+	public static final boolean ROPE_SHEARS_CUT = true;
+
+	/** Degats infliges a la cisaille par coupe. */
+	public static final int ROPE_SHEARS_DAMAGE = 1;
+
+	/** Une fleche qui traverse la corde la coupe a l'endroit touche (la section touchee tombe aussi). */
+	public static final boolean ROPE_ARROWS_CUT = true;
+
+	/**
+	 * Vitesse minimale d'une fleche pour couper, au carre (0.01 = 0.1 bloc par
+	 * tick). Sans ce seuil, une fleche deja plantee dans un bloc voisin
+	 * couperait la corde en la frolant.
+	 */
+	public static final double ROPE_ARROW_MIN_SPEED_SQR = 0.01;
+
+	/**
+	 * Les creatures qui poursuivent une cible suivent la corde (montee et
+	 * descente) tant qu'elles sont dedans.
+	 *
+	 * Le calcul de chemin du jeu ne sait pas grimper a une corde : on se
+	 * contente donc de pousser la creature vers sa cible pendant qu'elle est
+	 * DANS la corde, et de la recentrer dessus. Elle y entre en poursuivant le
+	 * joueur normalement.
+	 */
+	public static final boolean ROPE_MOBS_FOLLOW = true;
+
+	/**
+	 * Vitesse REELLE de montee d'un joueur a la corde (comme a l'echelle), en
+	 * blocs par tick : 0.2 de poussee moins la gravite = ~0.118 (2.35 blocs/s).
+	 * Sert de reference pour les creatures.
+	 */
+	public static final double ROPE_PLAYER_CLIMB_SPEED = 0.1176;
+
+	/**
+	 * Vitesse des creatures a la corde par rapport au joueur (montee ET
+	 * descente). 0.85 = 15% plus lentes : on peut les distancer.
+	 */
+	public static final double ROPE_MOB_SPEED_FACTOR = 0.85;
+
+	/** Vitesse de montee d'une creature a la corde, en blocs par tick. */
+	public static final double ROPE_MOB_CLIMB_SPEED = ROPE_PLAYER_CLIMB_SPEED * ROPE_MOB_SPEED_FACTOR;
+
+	/** Force de recentrage sur la corde (0 = aucun, 1 = colle d'un coup). Sans ca, la creature glisse hors de la corde en grimpant. */
+	public static final double ROPE_MOB_CENTERING = 0.2;
+
+	/** Difference d'altitude, en blocs, a partir de laquelle une creature se met a grimper ou a descendre. */
+	public static final double ROPE_MOB_FOLLOW_MIN_DELTA = 0.5;
+
+	// ---- Plaquettes et amarrage (spelelogie) --------------------------------
+	// Une corde nue tient a un seul point : c'est dangereux, et c'est voulu.
+	// Une PLAQUETTE (bloc rope_plate, vissee sous un bloc) reprend la charge a
+	// la place du plafond, et DEUX plaquettes cote a cote font un vrai
+	// amarrage reparti : la corde devient sure jusqu'a
+	// ROPE_RIG_STRESS_CHANCES.length joueurs ou creatures.
+
+	/**
+	 * Chances d'arrachement quand la corde pend a UNE plaquette, selon le
+	 * nombre de grimpeurs (case 0 = 1 grimpeur). Au-dela du tableau, la
+	 * derniere case est reutilisee. C'est la PLAQUETTE qui lache : elle
+	 * s'arrache et tombe en objet avec la corde.
+	 */
+	public static final float[] ROPE_PLATE_STRESS_CHANCES =
+			{ 0.002F, 0.01F, 0.05F, 0.25F, ROPE_BREAKING_CHANCE };
+
+	/**
+	 * Idem avec DEUX plaquettes (amarrage reparti) : c'est la SECONDE plaquette
+	 * qui s'arrache, et l'amarrage retombe alors a une seule plaquette. Les
+	 * premieres cases sont minuscules sans etre nulles : un amarrage reparti
+	 * est tres sur, jamais garanti.
+	 */
+	public static final float[] ROPE_RIG_STRESS_CHANCES =
+			{ 0.0005F, 0.001F, 0.003F, 0.01F, 0.03F, 0.10F, 0.35F, ROPE_BREAKING_CHANCE };
+
+	/**
+	 * Une plaquette arrachee tombe-t-elle en objet ?
+	 *
+	 * false (par defaut) : elle est perdue. Une rupture coute donc son
+	 * amarrage au joueur, seule la corde se ramasse.
+	 */
+	public static final boolean ROPE_PLATE_DROPS_WHEN_RIPPED = false;
+
+	/**
+	 * Le bloc d'accroche arrache tombe-t-il en objet ?
+	 *
+	 * false (par defaut) : il part en fumee, comme la plaquette. Seule la
+	 * corde retombe au sol.
+	 */
+	public static final boolean ROPE_ANCHOR_DROPS_WHEN_BROKEN = false;
+
+	/** Les creatures pendues a la corde comptent dans la charge, comme les joueurs. */
+	public static final boolean ROPE_MOBS_COUNT_AS_LOAD = true;
+
+	/**
+	 * Delai, en ticks, entre le craquement d'alerte et la rupture (20 = 1
+	 * seconde). Une fois le craquement parti, la rupture est certaine : c'est
+	 * un avertissement trop tardif, pas une seconde chance.
+	 */
+	public static final int ROPE_WARNING_TICKS = 20;
+
+	/**
+	 * Hauteur de la plaquette, en pixels, quand RIEN n'y pend : un petit
+	 * maillon colle au bloc.
+	 */
+	public static final double ROPE_PLATE_HEIGHT = 5.0;
+
+	/**
+	 * Hauteur de la BOITE de la plaquette quand une corde y pend : tout le
+	 * bloc.
+	 *
+	 * Le raccord entre le maillon et la corde est dessine dans ce vide : sans
+	 * cette boite, il n'y aurait rien a viser et les clics passeraient au
+	 * travers.
+	 */
+	public static final double ROPE_PLATE_ROPED_HEIGHT = 16.0;
+
+	/**
+	 * Miner une plaquette qui porte une corde recupere la corde (par le bas,
+	 * comme si on minait la corde elle-meme) au lieu de devisser la plaquette.
+	 *
+	 * C'est ce qui evite le piege : la boite de la plaquette couvre le raccord,
+	 * qui ressemble a de la corde ; un joueur qui tape dedans doit obtenir ce
+	 * qu'il croit miner. Pour devisser pour de bon, il faut s'accroupir (ou
+	 * retirer toute la corde).
+	 *
+	 * false : miner la plaquette la devisse toujours, corde ou pas.
+	 */
+	public static final boolean ROPE_PLATE_MINING_HARVESTS_ROPE = true;
+
+	/** Durete de la plaquette (fer : 5.0, echelle : 0.4). */
+	public static final float ROPE_PLATE_HARDNESS = 1.0F;
+
+	// ==================================================================
+	// 38. Trident (degats)
+	// ==================================================================
+
+	/**
+	 * Multiplicateur applique aux degats du trident, au corps a corps comme
+	 * au lancer. 1.0 = vanilla, 1.30 = +30%.
+	 *
+	 * Vanilla : 9 de degats en main (8 d'item + 1 du joueur) et 8 au lancer.
+	 * A 1.30 : 11.4 en main et 10.4 au lancer.
+	 *
+	 * Le corps a corps est fige au demarrage du jeu (les composants de l'item
+	 * sont lus une seule fois) : relancer le jeu apres un changement.
+	 */
+	public static final float TRIDENT_DAMAGE_MULTIPLIER = 1.30F;
+
+	/**
+	 * Reparation du trident a l'enclume (interrupteur TRIDENT_PRISMARINE_REPAIR).
+	 *
+	 * L'item qui repare. Chaque unite rend 25% de la durabilite max (regle
+	 * vanilla de l'enclume, comme un lingot sur un outil en fer).
+	 * Fige au demarrage du jeu : relancer apres un changement.
+	 */
+	public static final net.minecraft.world.item.Item TRIDENT_REPAIR_ITEM =
+			net.minecraft.world.item.Items.PRISMARINE_SHARD;
+
+	// ==================================================================
+	// 39. Ecaille de tortue au pinceau
+	// ==================================================================
+
+	/**
+	 * Materiau qui repare le pinceau a l'enclume (interrupteur
+	 * BRUSH_FEATHER_REPAIR). Fige au demarrage du jeu : relancer apres un
+	 * changement. Un pinceau casse (outils casses conserves) brosse toujours
+	 * tatous et tortues.
+	 */
+	public static final net.minecraft.world.item.Item BRUSH_REPAIR_ITEM =
+			net.minecraft.world.item.Items.FEATHER;
+
+	/** Chance (0 a 1) qu'un coup de pinceau sur une tortue donne une ecaille. */
+	public static final float TURTLE_BRUSH_SCUTE_CHANCE = 0.35F;
+
+	/** Nombre d'ecailles rendues quand le tirage reussit. */
+	public static final int TURTLE_BRUSH_SCUTE_COUNT = 1;
+
+	/**
+	 * Temps d'attente du pinceau apres un brossage, en ticks (20 = 1 s).
+	 *
+	 * C'est ce qui empeche de brosser une tortue en boucle : le pinceau est
+	 * grise dans la barre d'objets, echec du tirage compris.
+	 */
+	public static final int TURTLE_BRUSH_COOLDOWN_TICKS = 67;
+
+	/** Usure du pinceau par brossage (l'armadillo vanilla coute 16). */
+	public static final int TURTLE_BRUSH_TOOL_DAMAGE = 16;
+
+	/** false : les bebes tortues donnent aussi des ecailles. */
+	public static final boolean TURTLE_BRUSH_ADULTS_ONLY = true;
+
+	// ==================================================================
+	// 40. Butin de la chevre (Recharger le monde)
+	// ==================================================================
+
+	/** Chance (0 a 1) qu'une chevre morte lache de la laine. */
+	public static final float GOAT_WOOL_DROP_CHANCE = 0.65F;
+
+	/**
+	 * Couleur de la laine lachee par la chevre. Toutes les teintes du jeu
+	 * marchent : DyeColor.WHITE, DyeColor.BROWN, DyeColor.LIGHT_GRAY...
+	 */
+	public static final net.minecraft.world.item.DyeColor GOAT_WOOL_COLOR =
+			net.minecraft.world.item.DyeColor.WHITE;
+
+	/** Quantite de laine lachee quand le tirage reussit. */
+	public static final int GOAT_WOOL_MIN = 1;
+	public static final int GOAT_WOOL_MAX = 1;
+
+	/** Chance (0 a 1) qu'une chevre morte lache une corne (instrument tire au hasard). */
+	public static final float GOAT_HORN_DROP_CHANCE = 0.05F;
+
+	/** Bonus de l'enchantement Butin sur la laine de chevre (0 = aucun effet). */
+	public static final float GOAT_WOOL_LOOTING_BONUS = 1.0F;
+
+	/** true : seule une chevre tuee par un joueur lache laine et corne. */
+	public static final boolean GOAT_DROPS_REQUIRE_PLAYER_KILL = true;
+
+	// ==================================================================
+	// 41. Casque de tortue : minage sous l'eau
+	// ==================================================================
+
+	/**
+	 * Multiplicateur de vitesse de minage sous l'eau apporte par le casque de
+	 * tortue porte sur la tete.
+	 *
+	 * Sans rien, miner la tete sous l'eau va 5 fois moins vite (attribut
+	 * submerged_mining_speed = 0.2). A 5.0 la penalite disparait
+	 * completement, exactement comme Affinite aquatique ; 2.5 n'en enleverait
+	 * que la moitie.
+	 *
+	 * Fige au demarrage du jeu : relancer apres un changement.
+	 */
+	public static final float TURTLE_HELMET_SUBMERGED_MINING_MULTIPLIER = 5.0F;
+
+	// ==================================================================
+	// 42. Bibliotheques de la table d'enchantement
+	// ==================================================================
+
+	/**
+	 * Distance maximale (en blocs, en croix comme en diagonale) entre la table
+	 * et une bibliotheque qui compte encore. Vanilla : 2.
+	 */
+	public static final int BOOKSHELF_MAX_DISTANCE = 10;
+
+	/**
+	 * Distance jusqu'a laquelle une bibliotheque compte pour une entiere
+	 * (c'est l'anneau vanilla). Au-dela, son poids baisse progressivement.
+	 */
+	public static final int BOOKSHELF_FULL_POWER_DISTANCE = 2;
+
+	/**
+	 * Puissance necessaire pour atteindre le niveau 30 : c'est le plafond du
+	 * jeu, 15 bibliotheques collees a la table.
+	 */
+	public static final int BOOKSHELF_POWER_FOR_MAX_LEVEL = 15;
+
+	/**
+	 * Nombre de bibliotheques a poser A LA DISTANCE MAXIMALE pour atteindre
+	 * quand meme le niveau 30.
+	 *
+	 * C'est ce chiffre qui fixe la penalite d'eloignement : a 10 blocs il en
+	 * faut 60 au lieu de 15, donc chacune ne pese plus que 15/60 = 0.25. Entre
+	 * les deux distances, le poids descend en ligne droite.
+	 */
+	public static final int BOOKSHELF_SHELVES_AT_MAX_DISTANCE = 60;
+
+	/**
+	 * Hauteurs fouillees, par rapport au bloc de la table (vanilla : 0 et 1).
+	 * Elargir coute du temps de calcul a chaque changement d'objet dans la
+	 * table.
+	 */
+	public static final int BOOKSHELF_MIN_HEIGHT = 0;
+	public static final int BOOKSHELF_MAX_HEIGHT = 1;
+
+	/**
+	 * true : il faut un chemin degage (air, vitres... tout ce qui porte le tag
+	 * enchantment_power_transmitter) entre la table et la bibliotheque, comme
+	 * en vanilla. false : les murs ne bloquent plus rien.
+	 */
+	public static final boolean BOOKSHELF_NEEDS_CLEAR_PATH = true;
+
+	/**
+	 * Chance, par tick d'animation et par bibliotheque eloignee, d'envoyer une
+	 * particule vers la table. 0 = plus de particules pour les lointaines.
+	 */
+	public static final float BOOKSHELF_FAR_PARTICLE_CHANCE = 0.01F;
+
+	// ==================================================================
+	// 43. Briques qui vieillissent
+	// ==================================================================
+
+	/**
+	 * Probabilite qu'un tick aleatoire fasse vieillir une brique d'une etape
+	 * (meme mecanique que le chaume). 0.05 = environ une etape toutes les sept
+	 * minutes ; les briques etant de la construction, on va bien plus lentement.
+	 *
+	 * 5 aspects : brique vanilla -> delavee -> usee -> patinee -> fendillee.
+	 * La brique vanilla (bloc, escalier, dalle, muret) vieillit elle aussi,
+	 * comme le cuivre. Une touffe de resine la fige (brique ciree).
+	 */
+	public static final float BRICK_FADE_CHANCE = 0.01F;
+
+	// ==================================================================
+	// 44. Support de canne a peche
+	// ==================================================================
+	//
+	// Le support peche tout seul : on y pose une canne, la ligne part dans
+	// l'eau voisine, et apres une attente aleatoire quelque chose mord. Il n'y
+	// a AUCUN timing a respecter : la prise attend qu'on releve la canne (clic
+	// droit, ou impulsion de redstone).
+
+	/**
+	 * Attente avant qu'un poisson morde, en ticks (20 = 1 s). Tiree au hasard
+	 * entre les deux bornes a chaque lancer. 1200-2400 = 1 a 2 minutes.
+	 */
+	public static final int FISHING_STAND_MIN_WAIT_TICKS = 1200;
+	public static final int FISHING_STAND_MAX_WAIT_TICKS = 2400;
+
+	/**
+	 * Chance (0 a 1) que relever une canne qui a mordu donne vraiment du
+	 * butin. 0.85 = 85%, le reste c'est le poisson qui se decroche.
+	 */
+	public static final float FISHING_STAND_CATCH_CHANCE = 0.85F;
+
+	/**
+	 * Ticks gagnes par niveau d'Appat (Lure) sur la canne posee.
+	 * Vanilla : 100 ticks (5 s) par niveau.
+	 */
+	public static final int FISHING_STAND_LURE_TICKS_PER_LEVEL = 100;
+
+	/**
+	 * Chance ajoutee au tirage du butin par niveau de Chance de la mer
+	 * (Luck of the Sea). Vanilla : 1 par niveau.
+	 */
+	public static final float FISHING_STAND_LUCK_PER_LEVEL = 1.0F;
+
+	/**
+	 * Multiplicateur d'attente quand il pleut sur la ligne (vanilla peche
+	 * plus vite sous la pluie). 1.0 = la pluie ne change rien.
+	 */
+	public static final float FISHING_STAND_RAIN_WAIT_MULTIPLIER = 0.75F;
+
+	/** Usure de la canne par prise reussie (vanilla : 1 par poisson). */
+	public static final int FISHING_STAND_ROD_DAMAGE_PER_CATCH = 1;
+
+	/** Usure de la canne quand la prise rate (0 = rater ne coute rien). */
+	public static final int FISHING_STAND_ROD_DAMAGE_ON_MISS = 0;
+
+	/**
+	 * Experience lachee par prise reussie, tiree entre les deux bornes.
+	 * Vanilla : 1 a 6 par objet peche. 0 et 0 = plus d'experience du tout.
+	 */
+	public static final int FISHING_STAND_XP_MIN = 1;
+	public static final int FISHING_STAND_XP_MAX = 6;
+
+	/**
+	 * Distance de lancer, en blocs : le flotteur tombe a une distance tiree
+	 * au hasard entre ces deux bornes (distance horizontale, support exclu).
+	 *
+	 * A chaque lancer le support tire une longueur voulue, puis prend la
+	 * surface d'eau libre qui s'en approche le plus.
+	 */
+	public static final int FISHING_STAND_MIN_CAST_DISTANCE = 3;
+	public static final int FISHING_STAND_MAX_CAST_DISTANCE = 8;
+
+	/** Hauteurs fouillees pour trouver l'eau, relatives au support. */
+	public static final int FISHING_STAND_WATER_MIN_HEIGHT = -3;
+	public static final int FISHING_STAND_WATER_MAX_HEIGHT = 1;
+
+	/**
+	 * true : le flotteur ne part que du cote ou regarde le support (celui ou
+	 * penche la canne). false : n'importe quelle direction fait l'affaire.
+	 */
+	public static final boolean FISHING_STAND_CAST_IN_FACING_DIRECTION = true;
+
+	/**
+	 * true : faute d'eau dans la fourchette de lancer, le support se rabat
+	 * sur l'eau la plus proche (pratique sur un petit bassin). false : le
+	 * lancer echoue, et la distance voulue est donc toujours respectee.
+	 */
+	public static final boolean FISHING_STAND_FALLBACK_TO_NEAREST_WATER = false;
+
+	/**
+	 * true : le bouchon doit etre en eau LIBRE (rien de solide au-dessus).
+	 * false : n'importe quel bloc d'eau fait l'affaire, meme sous un plancher.
+	 */
+	public static final boolean FISHING_STAND_NEEDS_OPEN_WATER = true;
+
+	/**
+	 * Temps, en ticks, pendant lequel la prise attend qu'on releve la canne.
+	 * 0 = elle attend indefiniment (le but du support : aucun timing). Mettre
+	 * par exemple 600 pour que le poisson finisse par se decrocher.
+	 */
+	public static final int FISHING_STAND_BITE_TIMEOUT_TICKS = 0;
+
+	/**
+	 * Intervalle entre deux bouffees de particules sur le bouchon, en ticks.
+	 * 0 = plus aucune particule.
+	 */
+	public static final int FISHING_STAND_PARTICLE_INTERVAL_TICKS = 20;
+
+	/**
+	 * true : poser une canne sur le support la lance aussitot. false : il
+	 * faut une impulsion de redstone (ou un clic accroupi) pour lancer.
+	 */
+	public static final boolean FISHING_STAND_AUTO_CAST_ON_PLACE = true;
+
+	/** Hauteur (en blocs, depuis le support) ou apparait le butin peche. */
+	public static final double FISHING_STAND_LOOT_DROP_HEIGHT = 1.0;
+
+	/**
+	 * Signal renvoye a un comparateur, selon l'etat du support. Le 15 sur
+	 * "ca mord" permet de declencher tout seul le releve de la canne.
+	 */
+	public static final int FISHING_STAND_SIGNAL_EMPTY = 0;
+	public static final int FISHING_STAND_SIGNAL_IDLE = 1;
+	public static final int FISHING_STAND_SIGNAL_FISHING = 5;
+	public static final int FISHING_STAND_SIGNAL_BITE = 15;
 
 	/**
 	 * Convertit des degats "affiches en jeu" en valeur a passer au jeu.
@@ -1920,6 +3257,124 @@ public final class ArcaBalance {
 		float swordRate = PLAYER_BASE_ATTACK_SPEED + SWORD_ATTACK_SPEED;
 		return swordRate / DAGGER_COOLDOWN_MULTIPLIER - PLAYER_BASE_ATTACK_SPEED;
 	}
+
+	// ==================================================================
+	// 45. Resistance au feu : vision dans la lave
+	// ==================================================================
+
+	/*
+	 * Distances du brouillard de lave quand la camera a Resistance au feu
+	 * (interrupteur FIRE_RESISTANCE_LAVA_VISION). Le brouillard commence a
+	 * START blocs et devient opaque a END blocs.
+	 *
+	 * Vanilla : 0 -> 5 avec Resistance au feu, 0.25 -> 1 sans.
+	 */
+	public static final float FIRE_RESISTANCE_LAVA_FOG_START = 0.0F;
+	public static final float FIRE_RESISTANCE_LAVA_FOG_END = 16.0F;
+
+	// ==================================================================
+	// 46. Baril de TNT
+	// ==================================================================
+
+	/**
+	 * Degats du souffle sur les JOUEURS, en part des degats normaux
+	 * (1.0 = comme les autres creatures, 0.5 = moitie moins).
+	 */
+	public static final float TNT_BARREL_PLAYER_DAMAGE_MULTIPLIER = 0.5F;
+
+	/** Puissance de l'explosion. TNT vanilla : 4.0. */
+	public static final float TNT_BARREL_EXPLOSION_POWER = 10.0F;
+
+	/** Duree de la meche, en ticks (20 = 1 s). TNT vanilla : 80. */
+	public static final int TNT_BARREL_FUSE_TICKS = 80;
+
+	/**
+	 * Meche quand le baril est allume par une AUTRE explosion : tiree au
+	 * hasard entre MIN et MAX (TNT vanilla : 10 a 30 ticks).
+	 */
+	public static final int TNT_BARREL_CHAIN_FUSE_MIN_TICKS = 2;
+	public static final int TNT_BARREL_CHAIN_FUSE_MAX_TICKS = 5;
+
+	/** true : l'explosion met le feu autour d'elle. */
+	public static final boolean TNT_BARREL_CAUSES_FIRE = false;
+
+	/**
+	 * true : les blocs detruits ne lachent aucun objet.
+	 *
+	 * Ce qui est EPARGNE dans tous les cas : le contenu des coffres et autres
+	 * conteneurs, et l'equipement des joueurs tues par l'explosion.
+	 */
+	public static final boolean TNT_BARREL_NO_DROPS = true;
+
+	/** Poudre de blaze a mettre dans un tonneau pour le transformer (clic droit avec une TNT). */
+	public static final int TNT_BARREL_CONVERT_BLAZE_POWDER = 3;
+
+	/** Obsidienne pleureuse a mettre dans le tonneau en plus (comme la recette). */
+	public static final int TNT_BARREL_CONVERT_CRYING_OBSIDIAN = 1;
+
+	/**
+	 * Rayon (en blocs) autour du baril ou l'explosion fige la lave. 0 = la
+	 * lave n'est pas touchee. Repere : l'explosion casse jusqu'a ~1.3 x la
+	 * puissance en blocs dans le meilleur des cas.
+	 */
+	public static final float TNT_BARREL_LAVA_RADIUS = 10.0F;
+
+	/**
+	 * Chance (0 a 1) qu'une source de lave figee devienne de l'obsidienne
+	 * pleureuse ; sinon du basalte. Attention : la recette en demande une,
+	 * une valeur haute permet d'en produire en masse dans un lac de lave.
+	 */
+	public static final float TNT_BARREL_LAVA_CRYING_OBSIDIAN_CHANCE = 0.04F;
+
+	/** TNT consommees par la transformation d'un tonneau. */
+	public static final int TNT_BARREL_CONVERT_TNT = 1;
+
+	// ==================================================================
+	// 47. Plume : pousser les creatures
+	// ==================================================================
+
+	/**
+	 * Force du recul d'un coup de plume (0.4 = coup de poing vanilla, 0.9 =
+	 * Recul I en plus). Le coup ne fait aucun degat et ne met pas en colere.
+	 * Multiplie par la charge de l'attaque (clic spamme = poussee faible).
+	 */
+	public static final float FEATHER_PUSH_STRENGTH = 0.6F;
+
+	/** Petite poussee vers le haut en plus, en blocs par tick (0 = aucune). */
+	public static final double FEATHER_PUSH_UPWARD = 0.1;
+
+	/** true : la plume pousse aussi les joueurs (PvP). */
+	public static final boolean FEATHER_PUSH_AFFECTS_PLAYERS = true;
+
+	// ==================================================================
+	// 48. Chute amortie : cultures protegees
+	// ==================================================================
+
+	/** Niveau de Chute amortie minimal sur les bottes pour ne plus pietiner la terre labouree. */
+	public static final int FEATHER_FALLING_NO_TRAMPLE_MIN_LEVEL = 1;
+
+	// ==================================================================
+	// 49. Feuilles et feu
+	// ==================================================================
+
+	/**
+	 * Vitesse de chute des feuilles d'un arbre coupe (interrupteur
+	 * FASTER_LEAF_DECAY). 1 = vanilla (~68 s en moyenne par feuille), 4 = 4x
+	 * plus vite (~17 s).
+	 */
+	public static final float LEAF_DECAY_SPEED_MULTIPLIER = 4.0F;
+
+	/**
+	 * Propagation du feu (interrupteur FIRE_TWEAKS) : chance que le feu
+	 * saute sur une case voisine. 1 = vanilla, 2 = deux fois plus souvent.
+	 */
+	public static final float FIRE_SPREAD_MULTIPLIER = 2.0F;
+
+	/**
+	 * Temps que met un bloc a se consumer (interrupteur FIRE_TWEAKS).
+	 * 1 = vanilla, 2 = deux fois plus long, 0.5 = deux fois plus rapide.
+	 */
+	public static final float FIRE_BURN_TIME_MULTIPLIER = 0.5F;
 
 	private ArcaBalance() {
 	}

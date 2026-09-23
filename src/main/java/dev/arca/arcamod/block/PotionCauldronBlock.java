@@ -1,7 +1,5 @@
 package dev.arca.arcamod.block;
 
-import com.mojang.serialization.MapCodec;
-
 import dev.arca.arcamod.ArcaBalance;
 import dev.arca.arcamod.block.entity.PotionCauldronBlockEntity;
 import dev.arca.arcamod.config.ArcaFeature;
@@ -42,8 +40,6 @@ import org.jspecify.annotations.Nullable;
  */
 public class PotionCauldronBlock extends Block implements net.minecraft.world.level.block.EntityBlock {
 
-	public static final MapCodec<PotionCauldronBlock> CODEC = simpleCodec(PotionCauldronBlock::new);
-
 	/** Meme propriete que le chaudron vanilla : 1, 2 ou 3. */
 	public static final IntegerProperty LEVEL = LayeredCauldronBlock.LEVEL;
 
@@ -59,11 +55,6 @@ public class PotionCauldronBlock extends Block implements net.minecraft.world.le
 	public PotionCauldronBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.stateDefinition.any().setValue(LEVEL, 1));
-	}
-
-	@Override
-	protected MapCodec<PotionCauldronBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

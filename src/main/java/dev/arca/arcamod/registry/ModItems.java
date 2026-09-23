@@ -4,7 +4,9 @@ import java.util.function.Function;
 
 import dev.arca.arcamod.ArcaBalance;
 import dev.arca.arcamod.ArcaMod;
+import dev.arca.arcamod.item.AllayBucketItem;
 import dev.arca.arcamod.item.AltimeterItem;
+import dev.arca.arcamod.item.AshItem;
 import dev.arca.arcamod.item.ChargedEnchantingCrystalItem;
 import dev.arca.arcamod.item.FlintDaggerItem;
 import dev.arca.arcamod.item.HotCoalBottleItem;
@@ -14,8 +16,10 @@ import dev.arca.arcamod.item.ModToolMaterials;
 import dev.arca.arcamod.item.PebbleItem;
 import dev.arca.arcamod.item.PinkGoldUpgradeTemplate;
 import dev.arca.arcamod.item.QuiverItem;
+import dev.arca.arcamod.item.RopeItem;
 import dev.arca.arcamod.item.ScarecrowItem;
 import dev.arca.arcamod.item.SlingshotItem;
+import dev.arca.arcamod.item.SmokeBombItem;
 import dev.arca.arcamod.item.ToolBeltItem;
 import dev.arca.arcamod.item.XpBerryItem;
 
@@ -26,13 +30,13 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.HoeItem;
+import net.minecraft.world.item.component.CookingFuel;
+import net.minecraft.world.level.storage.loot.providers.number.floats.ResolvableFloat;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ResolvableInt;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.equipment.EquipmentAssets;
@@ -84,9 +88,29 @@ public final class ModItems {
 			// ("petites pierres").
 			new Item.Properties().useItemDescriptionPrefix());
 
+	/** Le support de canne a peche (bloc a poser). */
+	public static final Item FISHING_ROD_STAND = register("fishing_rod_stand",
+			properties -> new BlockItem(ModBlocks.FISHING_ROD_STAND, properties),
+			new Item.Properties().useBlockDescriptionPrefix());
+
 	/** Les branches au sol. Casser le bloc donne des batons vanilla. */
 	public static final Item FALLEN_STICKS = register("fallen_sticks",
 			properties -> new BlockItem(ModBlocks.FALLEN_STICKS, properties),
+			new Item.Properties().useBlockDescriptionPrefix());
+
+	/**
+	 * La corde : elle se pose par le bas et se deroule d'un coup en accroupi
+	 * (voir RopeItem).
+	 */
+	public static final Item ROPE = register("rope",
+			properties -> new RopeItem(ModBlocks.ROPE, properties),
+			new Item.Properties().useBlockDescriptionPrefix());
+
+	/**
+	 * La plaquette : le point d'amarrage de la corde, a poser sous un bloc.
+	 */
+	public static final Item ROPE_PLATE = register("rope_plate",
+			properties -> new BlockItem(ModBlocks.ROPE_PLATE, properties),
 			new Item.Properties().useBlockDescriptionPrefix());
 
 	/** Fibre vegetale : recoltee en coupant les herbes a la dague. */
@@ -258,6 +282,9 @@ public final class ModItems {
 			properties -> new BlockItem(ModBlocks.RAW_PINK_GOLD_BLOCK, properties),
 			new Item.Properties().useBlockDescriptionPrefix());
 
+	public static final Item TNT_BARREL = register("tnt_barrel",
+			properties -> new BlockItem(ModBlocks.TNT_BARREL, properties), new Item.Properties().useBlockDescriptionPrefix());
+
 	public static final Item PINK_GOLD_BLOCK = register("pink_gold_block",
 			properties -> new BlockItem(ModBlocks.PINK_GOLD_BLOCK, properties),
 			new Item.Properties().useBlockDescriptionPrefix());
@@ -266,24 +293,21 @@ public final class ModItems {
 			new Item.Properties().sword(ModToolMaterials.PINK_GOLD,
 					ArcaBalance.PINK_GOLD_SWORD_DAMAGE, ArcaBalance.PINK_GOLD_SWORD_SPEED));
 
-	public static final Item PINK_GOLD_SHOVEL = register("pink_gold_shovel",
-			properties -> new ShovelItem(ModToolMaterials.PINK_GOLD,
-					ArcaBalance.PINK_GOLD_SHOVEL_DAMAGE, ArcaBalance.PINK_GOLD_SHOVEL_SPEED, properties),
-			new Item.Properties());
+	public static final Item PINK_GOLD_SHOVEL = register("pink_gold_shovel", Item::new,
+			new Item.Properties().shovel(ModToolMaterials.PINK_GOLD,
+					ArcaBalance.PINK_GOLD_SHOVEL_DAMAGE, ArcaBalance.PINK_GOLD_SHOVEL_SPEED));
 
 	public static final Item PINK_GOLD_PICKAXE = register("pink_gold_pickaxe", Item::new,
 			new Item.Properties().pickaxe(ModToolMaterials.PINK_GOLD,
 					ArcaBalance.PINK_GOLD_PICKAXE_DAMAGE, ArcaBalance.PINK_GOLD_PICKAXE_SPEED));
 
-	public static final Item PINK_GOLD_AXE = register("pink_gold_axe",
-			properties -> new AxeItem(ModToolMaterials.PINK_GOLD,
-					ArcaBalance.PINK_GOLD_AXE_DAMAGE, ArcaBalance.PINK_GOLD_AXE_SPEED, properties),
-			new Item.Properties());
+	public static final Item PINK_GOLD_AXE = register("pink_gold_axe", Item::new,
+			new Item.Properties().axe(ModToolMaterials.PINK_GOLD,
+					ArcaBalance.PINK_GOLD_AXE_DAMAGE, ArcaBalance.PINK_GOLD_AXE_SPEED));
 
-	public static final Item PINK_GOLD_HOE = register("pink_gold_hoe",
-			properties -> new HoeItem(ModToolMaterials.PINK_GOLD,
-					ArcaBalance.PINK_GOLD_HOE_DAMAGE, ArcaBalance.PINK_GOLD_HOE_SPEED, properties),
-			new Item.Properties());
+	public static final Item PINK_GOLD_HOE = register("pink_gold_hoe", Item::new,
+			new Item.Properties().hoe(ModToolMaterials.PINK_GOLD,
+					ArcaBalance.PINK_GOLD_HOE_DAMAGE, ArcaBalance.PINK_GOLD_HOE_SPEED));
 
 	/** La lance : les 7 derniers parametres (timings de charge) sont ceux de la lance en fer. */
 	public static final Item PINK_GOLD_SPEAR = register("pink_gold_spear", Item::new,
@@ -307,17 +331,36 @@ public final class ModItems {
 	public static final Item ALTIMETER = register("altimeter", AltimeterItem::new,
 			new Item.Properties().stacksTo(ArcaBalance.ALTIMETER_MAX_STACK_SIZE));
 
+	/**
+	 * Seau a allay : un allay range dedans, avec l'objet qu'il tient. Il ne se
+	 * fabrique pas, il s'obtient en attrapant un allay avec un seau vide.
+	 */
+	public static final Item ALLAY_BUCKET = register("allay_bucket", AllayBucketItem::new,
+			new Item.Properties().stacksTo(1));
+
 	/** Ceinture a outils : se porte dans la case au-dessus du bouclier (voir ToolBelt). */
 	public static final Item TOOL_BELT = register("tool_belt", ToolBeltItem::new,
 			new Item.Properties().stacksTo(1));
 
+	/**
+	 * Buche brulee : combustible au four. Depuis 26.3 la duree de combustion
+	 * est un component de l'objet (il n'y a plus d'evenement Fabric pour ca).
+	 */
 	public static final Item BURNT_LOG = register("burnt_log",
 			properties -> new BlockItem(ModBlocks.BURNT_LOG, properties),
-			new Item.Properties().useBlockDescriptionPrefix());
+			new Item.Properties().useBlockDescriptionPrefix()
+					.component(DataComponents.COOKING_FUEL, burntLogFuel()));
 
 	public static final Item IGNITED_BURNT_LOG = register("ignited_burnt_log",
 			properties -> new BlockItem(ModBlocks.IGNITED_BURNT_LOG, properties),
-			new Item.Properties().useBlockDescriptionPrefix());
+			new Item.Properties().useBlockDescriptionPrefix()
+					.component(DataComponents.COOKING_FUEL, burntLogFuel()));
+
+	/** Un charbon de bois = 8 cuissons ; la vitesse de cuisson reste normale. */
+	private static CookingFuel burntLogFuel() {
+		int ticks = ArcaBalance.BURNT_LOG_FUEL_CHARCOAL * 8 * ArcaBalance.BASE_SMELT_TIME_TICKS;
+		return new CookingFuel(new ResolvableInt.Constant(ticks), new ResolvableFloat.Constant(1.0F));
+	}
 
 	/** Braises en bouteille : allument un feu de camp ou un bloc tres inflammable. */
 	public static final Item HOT_COAL_IN_A_BOTTLE = register("hot_coal_in_a_bottle", HotCoalBottleItem::new,
@@ -325,8 +368,16 @@ public final class ModItems {
 
 	/** Cendre : se pose et s'empile couche par couche, comme la neige fine. */
 	public static final Item ASH = register("ash",
-			properties -> new BlockItem(ModBlocks.ASH, properties),
+			properties -> new AshItem(ModBlocks.ASH, properties),
 			new Item.Properties().useBlockDescriptionPrefix());
+
+	public static final Item PACKED_ASH = register("packed_ash",
+			properties -> new BlockItem(ModBlocks.PACKED_ASH, properties),
+			new Item.Properties().useBlockDescriptionPrefix());
+
+	/** Bombe fumigene : cendre + soufre, pour se degager d'un combat. */
+	public static final Item SMOKE_BOMB = register("smoke_bomb", SmokeBombItem::new,
+			new Item.Properties().stacksTo(16));
 
 	public static final Item BURNT_WOOD = register("burnt_wood",
 			properties -> new BlockItem(ModBlocks.BURNT_WOOD, properties),

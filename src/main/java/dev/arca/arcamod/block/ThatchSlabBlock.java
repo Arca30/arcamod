@@ -48,6 +48,6 @@ public class ThatchSlabBlock extends SlabBlock implements WeatheringThatch {
 
 	@Override
 	protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		WeatheringThatch.fade(state, level, pos, random);
+		ArcaWeathering.fade(state, level, pos, random);
 	}
 }

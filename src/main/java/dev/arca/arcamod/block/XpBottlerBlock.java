@@ -1,7 +1,5 @@
 package dev.arca.arcamod.block;
 
-import com.mojang.serialization.MapCodec;
-
 import dev.arca.arcamod.block.entity.XpBottlerBlockEntity;
 import dev.arca.arcamod.registry.ModBlockEntities;
 
@@ -36,8 +34,6 @@ import org.jspecify.annotations.Nullable;
  */
 public class XpBottlerBlock extends BaseEntityBlock {
 
-	public static final MapCodec<XpBottlerBlock> CODEC = simpleCodec(XpBottlerBlock::new);
-
 	/**
 	 * 12 px de cote, 8 px de haut, centre sur le bloc : de (2,0,2) a (14,8,14).
 	 * Doit rester coherent avec le modele JSON, sinon la boite de selection ne
@@ -63,11 +59,6 @@ public class XpBottlerBlock extends BaseEntityBlock {
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(FRAME);
-	}
-
-	@Override
-	public MapCodec<XpBottlerBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

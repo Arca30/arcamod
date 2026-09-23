@@ -2,126 +2,122 @@
 	"type": "minecraft:block",
 	"pools": [
 		{
-			"rolls": 1.0,
+			"rolls": 1,
 			"entries": [
 				{
 					"type": "minecraft:item",
 					"name": "arcamod:pebble",
-					"functions": [
+					"modifier": [
 						{
-							"function": "minecraft:set_count",
-							"count": 1.0,
-							"conditions": [
-								{
-									"condition": "minecraft:block_state_property",
-									"block": "arcamod:pebbles",
-									"properties": {
-										"pebbles": "1"
-									}
+							"type": "minecraft:set_count",
+							"count": 1,
+							"condition": {
+								"type": "minecraft:match_block",
+								"blocks": "arcamod:pebbles",
+								"state": {
+									"pebbles": "1"
 								}
-							]
+							}
 						},
 						{
-							"function": "minecraft:set_count",
-							"count": 2.0,
-							"conditions": [
-								{
-									"condition": "minecraft:block_state_property",
-									"block": "arcamod:pebbles",
-									"properties": {
-										"pebbles": "2"
-									}
+							"type": "minecraft:set_count",
+							"count": 2,
+							"condition": {
+								"type": "minecraft:match_block",
+								"blocks": "arcamod:pebbles",
+								"state": {
+									"pebbles": "2"
 								}
-							]
+							}
 						},
 						{
-							"function": "minecraft:set_count",
-							"count": 3.0,
-							"conditions": [
-								{
-									"condition": "minecraft:block_state_property",
-									"block": "arcamod:pebbles",
-									"properties": {
-										"pebbles": "3"
-									}
+							"type": "minecraft:set_count",
+							"count": 3,
+							"condition": {
+								"type": "minecraft:match_block",
+								"blocks": "arcamod:pebbles",
+								"state": {
+									"pebbles": "3"
 								}
-							]
+							}
 						},
 						{
-							"function": "minecraft:set_count",
-							"count": 4.0,
-							"conditions": [
-								{
-									"condition": "minecraft:block_state_property",
-									"block": "arcamod:pebbles",
-									"properties": {
-										"pebbles": "4"
-									}
+							"type": "minecraft:set_count",
+							"count": 4,
+							"condition": {
+								"type": "minecraft:match_block",
+								"blocks": "arcamod:pebbles",
+								"state": {
+									"pebbles": "4"
 								}
-							]
+							}
 						},
 						{
-							"function": "minecraft:set_count",
-							"count": 5.0,
-							"conditions": [
-								{
-									"condition": "minecraft:block_state_property",
-									"block": "arcamod:pebbles",
-									"properties": {
-										"pebbles": "5"
-									}
+							"type": "minecraft:set_count",
+							"count": 5,
+							"condition": {
+								"type": "minecraft:match_block",
+								"blocks": "arcamod:pebbles",
+								"state": {
+									"pebbles": "5"
 								}
-							]
+							}
 						},
 						{
-							"function": "minecraft:explosion_decay"
+							"type": "minecraft:explosion_decay"
 						}
 					]
 				}
 			]
 		},
 		{
-			"rolls": 1.0,
-			"conditions": [
-				{
-					"condition": "minecraft:block_state_property",
-					"block": "arcamod:pebbles",
-					"properties": {
-						"natural": "true"
+			"rolls": 1,
+			"condition": {
+				"type": "minecraft:all_of",
+				"terms": [
+					{
+						"type": "minecraft:match_block",
+						"blocks": "arcamod:pebbles",
+						"state": {
+							"natural": "true"
+						}
+					},
+					{
+						"type": "minecraft:random_chance",
+						"chance": 0.2
 					}
-				},
-				{
-					"condition": "minecraft:random_chance",
-					"chance": 0.2
-				}
-			],
+				]
+			},
 			"entries": [
 				{
 					"type": "minecraft:item",
 					"name": "minecraft:flint"
 				}
 			],
-			"functions": [
+			"modifier": [
 				{
-					"function": "minecraft:explosion_decay"
+					"type": "minecraft:explosion_decay"
 				}
 			]
 		},
 		{
-			"rolls": 1.0,
-			"conditions": [
-				{
-					"condition": "minecraft:block_state_property",
-					"block": "arcamod:pebbles",
-					"properties": {
-						"natural": "true"
+			"rolls": 1,
+			"condition": {
+				"type": "minecraft:all_of",
+				"terms": [
+					{
+						"type": "minecraft:match_block",
+						"blocks": "arcamod:pebbles",
+						"state": {
+							"natural": "true"
+						}
+					},
+					{
+						"type": "minecraft:random_chance",
+						"chance": 0.06
 					}
-				},
-				{
-					"condition": "minecraft:random_chance",
-					"chance": 0.06
-				}
-			],
+				]
+			},
 			"entries": [
 				{
 					"type": "minecraft:item",
@@ -144,9 +140,9 @@
 					"weight": 1
 				}
 			],
-			"functions": [
+			"modifier": [
 				{
-					"function": "minecraft:explosion_decay"
+					"type": "minecraft:explosion_decay"
 				}
 			]
 		}

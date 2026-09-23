@@ -3,6 +3,9 @@ package dev.arca.arcamod.registry;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
@@ -12,17 +15,27 @@ import dev.arca.arcamod.entity.Scarecrow;
 import dev.arca.arcamod.block.ChickenEggsBlock;
 import dev.arca.arcamod.block.EnchantingCrystalBlock;
 import dev.arca.arcamod.block.PotionCauldronBlock;
-import dev.arca.arcamod.block.WeatheringThatch;
+import dev.arca.arcamod.block.ArcaWeathering;
+import dev.arca.arcamod.block.VanillaBricks;
+import dev.arca.arcamod.util.FlintHint;
+import dev.arca.arcamod.block.AshCauldronBlock;
 import dev.arca.arcamod.block.entity.PotionCauldronBlockEntity;
 import dev.arca.arcamod.config.ArcaFeature;
-import dev.arca.arcamod.entity.CampfireSeat;
 import dev.arca.arcamod.menu.FletchingMenu;
+import dev.arca.arcamod.util.AllayBucket;
+import dev.arca.arcamod.util.CampfireRest;
 import dev.arca.arcamod.util.CauldronWashing;
 import dev.arca.arcamod.util.CopperOxidation;
+import dev.arca.arcamod.util.HideableSign;
+import dev.arca.arcamod.util.Hints;
+import dev.arca.arcamod.util.TntBarrels;
 
+import net.minecraft.util.Mth;
+import net.minecraft.util.Prediction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.inventory.ContainerLevelAccess;
@@ -37,9 +50,12 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.animal.allay.Allay;
+import net.minecraft.world.entity.animal.turtle.Turtle;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.monster.zombie.Drowned;
 import net.minecraft.world.entity.projectile.hurtingprojectile.LargeFireball;
@@ -49,9 +65,12 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
+import net.minecraft.world.level.block.entity.SignTextSlot;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -62,12 +81,14 @@ public final class ModEvents {
 		registerStickPlacing();
 		registerEggPlacing();
 		registerItemFrameHiding();
+		registerItemFrameReveal();
+		registerSignHiding();
 		registerScarecrowConversion();
-		registerThatchScraping();
+		registerScraping();
 		registerCrystalCharging();
 		registerPotionPouring();
 		registerCauldronWashing();
-		registerThatchWaxing();
+		registerWaxing();
 		registerDrownedTridentDropChance();
 		registerFireChargeThrowing();
 		registerFletchingTable();
@@ -75,6 +96,253 @@ public final class ModEvents {
 		registerCampfireResting();
 		registerFieryStrikes();
 		registerCopperOxidation();
+		registerBareHandLogHint();
+		registerAllayBucketing();
+		// Avant registerTurtleBrushing : les evenements passent dans l'ordre.
+		registerBrokenBrush();
+		registerTurtleBrushing();
+		registerTntBarrelConversion();
+		registerFeatherPush();
+		registerBladeInstantBreakWear();
+		registerElytraWashing();
+		ServerTickEvents.END_SERVER_TICK.register(FlintHint::tick);
+	}
+
+	/**
+	 * Les LAMES (dague, epees : tag arcamod:cuts_plant_fiber) s'usent aussi
+	 * sur les blocs qui cassent en un coup (herbes, fleurs, pousses...).
+	 * Sans ca, recolter des fibres ne couterait rien. Sur les autres blocs,
+	 * c'est deja le cas en vanilla (composant "tool" : 2 points par bloc).
+	 */
+	private static void registerBladeInstantBreakWear() {
+		PlayerBlockBreakEvents.AFTER.register((level, player, pos, state, blockEntity) -> {
+			if (ArcaBalance.BLADE_INSTANT_BREAK_DURABILITY_COST <= 0 || player.isSpectator()) {
+				return;
+			}
+
+			ItemStack stack = player.getMainHandItem();
+
+			if (!stack.is(ModTags.CUTS_PLANT_FIBER) || state.getDestroySpeed(level, pos) != 0.0F) {
+				return;
+			}
+
+			stack.hurtAndBreak(ArcaBalance.BLADE_INSTANT_BREAK_DURABILITY_COST, player, EquipmentSlot.MAINHAND);
+		});
+	}
+
+	private static void registerElytraWashing() {
+		UseBlockCallback.EVENT.register((player, level, hand, hit) -> {
+			ItemStack stack = player.getItemInHand(hand);
+
+			if (!ArcaFeature.ELYTRA_DYEING.isEnabled() || player.isSpectator()
+					|| !stack.has(DataComponents.GLIDER) || !stack.has(DataComponents.DYED_COLOR)) {
+				return InteractionResult.PASS;
+			}
+
+			BlockPos pos = hit.getBlockPos();
+			BlockState state = level.getBlockState(pos);
+			boolean lye = state.is(ModBlocks.ASH_CAULDRON);
+
+			if (!state.is(Blocks.WATER_CAULDRON) && !lye) {
+				return InteractionResult.PASS;
+			}
+
+			if (level.isClientSide()) {
+				return InteractionResult.SUCCESS;
+			}
+
+			stack.remove(DataComponents.DYED_COLOR);
+
+			if (lye) {
+				AshCauldronBlock.lowerFillLevel(state, level, pos);
+			} else {
+				LayeredCauldronBlock.lowerFillLevel(state, level, pos);
+			}
+
+			level.playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 0.6F, 1.4F);
+			player.awardStat(Stats.CLEAN_ARMOR);
+			return InteractionResult.SUCCESS;
+		});
+	}
+
+	/**
+	 * Clic droit avec une TNT sur un tonneau contenant de la poudre de blaze :
+	 * il devient un baril de TNT (voir TntBarrels).
+	 */
+	private static void registerTntBarrelConversion() {
+		UseBlockCallback.EVENT.register((player, level, hand, hit) -> {
+			if (!ArcaFeature.TNT_BARREL.isEnabled() || player.isSpectator()
+					|| !player.getItemInHand(hand).is(Items.TNT)
+					|| !level.getBlockState(hit.getBlockPos()).is(Blocks.BARREL)) {
+				return InteractionResult.PASS;
+			}
+
+			// Le client ne connait pas le contenu du tonneau : il laisse le
+			// serveur decider (et ouvrir le tonneau si ca ne marche pas).
+			if (!(level instanceof ServerLevel serverLevel)) {
+				return InteractionResult.PASS;
+			}
+
+			return TntBarrels.tryConvert(serverLevel, hit.getBlockPos(), player, player.getItemInHand(hand))
+					? InteractionResult.SUCCESS
+					: InteractionResult.PASS;
+		});
+	}
+
+	/**
+	 * Frapper une creature avec une plume en main : aucun degat, aucune
+	 * colere, juste une poussee. Pratique pour guider les animaux.
+	 */
+	private static void registerFeatherPush() {
+		AttackEntityCallback.EVENT.register((player, level, hand, entity, hit) -> {
+			if (!ArcaFeature.FEATHER_PUSH.isEnabled() || player.isSpectator()
+					|| !player.getItemInHand(hand).is(Items.FEATHER)
+					|| !(entity instanceof LivingEntity living)
+					|| living instanceof Player && !ArcaBalance.FEATHER_PUSH_AFFECTS_PLAYERS) {
+				return InteractionResult.PASS;
+			}
+
+			if (level instanceof ServerLevel serverLevel) {
+				float charge = player.getAttackStrengthScale(0.5F);
+				float yaw = player.getYRot() * Mth.DEG_TO_RAD;
+				living.knockback(ArcaBalance.FEATHER_PUSH_STRENGTH * charge, Mth.sin(yaw), -Mth.cos(yaw),
+						player.damageSources().playerAttack(player), 0.0F);
+
+				if (ArcaBalance.FEATHER_PUSH_UPWARD > 0.0) {
+					living.setDeltaMovement(living.getDeltaMovement().add(0.0, ArcaBalance.FEATHER_PUSH_UPWARD * charge, 0.0));
+				}
+
+				living.needsSync = true;
+				serverLevel.playSound(null, living.getX(), living.getY(), living.getZ(), SoundEvents.PLAYER_ATTACK_NODAMAGE,
+						player.getSoundSource(), 1.0F, 1.2F);
+			}
+
+			player.resetAttackStrengthTicker();
+			return InteractionResult.SUCCESS;
+		});
+	}
+
+	/**
+	 * Pinceau casse (outils casses conserves) : il ne brosse plus rien, ni
+	 * tatou (interaction vanilla de la creature, que ItemStackMixin ne voit
+	 * pas) ni tortue. Il faut le reparer (plume a l'enclume).
+	 */
+	private static void registerBrokenBrush() {
+		UseEntityCallback.EVENT.register((player, level, hand, entity, hit) -> {
+			ItemStack stack = player.getItemInHand(hand);
+
+			if (ArcaFeature.BROKEN_TOOLS_KEPT.isEnabled() && stack.is(Items.BRUSH)
+					&& stack.getCount() == 1 && stack.isBroken()) {
+				return InteractionResult.FAIL;
+			}
+
+			return InteractionResult.PASS;
+		});
+	}
+
+	/**
+	 * Brosser une tortue adulte : une chance d'en detacher une ecaille.
+	 *
+	 * Meme geste que le tatou vanilla, avec deux garde-fous pour que ca ne
+	 * devienne pas une usine a ecailles : un tirage au sort
+	 * (ArcaBalance.TURTLE_BRUSH_SCUTE_CHANCE) et un temps de recharge sur le
+	 * pinceau, applique meme quand le tirage rate.
+	 */
+	private static void registerTurtleBrushing() {
+		UseEntityCallback.EVENT.register((player, level, hand, entity, hit) -> {
+			if (!ArcaFeature.TURTLE_BRUSHING.isEnabled() || player.isSpectator()
+					|| !(entity instanceof Turtle turtle)) {
+				return InteractionResult.PASS;
+			}
+
+			ItemStack stack = player.getItemInHand(hand);
+
+			if (!stack.is(Items.BRUSH) || player.getCooldowns().isOnCooldown(stack)) {
+				return InteractionResult.PASS;
+			}
+
+			if (ArcaBalance.TURTLE_BRUSH_ADULTS_ONLY && turtle.isBaby()) {
+				return InteractionResult.PASS;
+			}
+
+			if (!(level instanceof ServerLevel serverLevel)) {
+				return InteractionResult.SUCCESS;
+			}
+
+			player.getCooldowns().addCooldown(stack, ArcaBalance.TURTLE_BRUSH_COOLDOWN_TICKS);
+			turtle.playSound(SoundEvents.BRUSH_GENERIC);
+			turtle.gameEvent(GameEvent.ENTITY_INTERACT);
+			stack.hurtAndBreak(ArcaBalance.TURTLE_BRUSH_TOOL_DAMAGE, player, hand.asEquipmentSlot());
+
+			if (serverLevel.getRandom().nextFloat() < ArcaBalance.TURTLE_BRUSH_SCUTE_CHANCE) {
+				turtle.spawnAtLocation(serverLevel,
+						new ItemStack(Items.TURTLE_SCUTE, ArcaBalance.TURTLE_BRUSH_SCUTE_COUNT));
+			}
+
+			return InteractionResult.SUCCESS;
+		});
+	}
+
+	/**
+	 * Seau vide sur un allay : l'allay est range dans le seau, avec ce qu'il
+	 * tient (voir AllayBucket). Le seau plein se vide d'un clic droit sur un
+	 * bloc (AllayBucketItem).
+	 */
+	private static void registerAllayBucketing() {
+		UseEntityCallback.EVENT.register((player, level, hand, entity, hit) -> {
+			if (!ArcaFeature.ALLAY_BUCKET.isEnabled() || player.isSpectator()
+					|| !(entity instanceof Allay allay)) {
+				return InteractionResult.PASS;
+			}
+
+			ItemStack stack = player.getItemInHand(hand);
+
+			// Seau vide uniquement, et accroupi si le reglage l'exige : sinon
+			// on ne pourrait plus donner un seau a porter a l'allay.
+			if (!stack.is(Items.BUCKET) || (ArcaBalance.ALLAY_BUCKET_REQUIRES_SNEAK && !player.isShiftKeyDown())) {
+				return InteractionResult.PASS;
+			}
+
+			if (!(level instanceof ServerLevel serverLevel)) {
+				return InteractionResult.SUCCESS;
+			}
+
+			ItemStack filled = AllayBucket.fill(serverLevel, allay);
+
+			if (filled == null) {
+				return InteractionResult.PASS;
+			}
+
+			// Meme mecanique que les seaux a poisson : le seau vide est
+			// consomme (sauf en creatif) et le seau plein prend sa place, ou
+			// part dans l'inventaire si la main en tenait plusieurs.
+			player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, filled));
+			return InteractionResult.SUCCESS;
+		});
+	}
+
+	/**
+	 * Premiere fois qu'un joueur tape du bois sans l'outil qu'il faut : une
+	 * ligne d'explication, une seule fois dans la partie (voir Hints). Sans
+	 * ca, la regle LOGS_REQUIRE_TOOL n'est visible nulle part.
+	 */
+	private static void registerBareHandLogHint() {
+		AttackBlockCallback.EVENT.register((player, level, hand, pos, direction) -> {
+			if (!ArcaFeature.LOGS_REQUIRE_TOOL.isEnabled() || level.isClientSide()
+					|| !(player instanceof ServerPlayer serverPlayer) || player.isCreative()) {
+				return InteractionResult.PASS;
+			}
+
+			BlockState state = level.getBlockState(pos);
+
+			// Le bon outil en main : le joueur a compris, on se tait.
+			if (state.is(ModTags.REQUIRES_TOOL_FOR_DROPS) && !player.hasCorrectToolForDrops(state)) {
+				Hints.showOnce(serverPlayer, "logs_require_tool");
+			}
+
+			// On n'empeche jamais le coup : le bloc casse, il ne donne juste rien.
+			return InteractionResult.PASS;
+		});
 	}
 
 	/**
@@ -182,12 +450,12 @@ public final class ModEvents {
 			tipped.set(DataComponents.POTION_CONTENTS, contents);
 
 			if (player.hasInfiniteMaterials()) {
-				player.getInventory().placeItemBackInInventory(tipped);
+				player.getInventory().placeItemBackInInventory(tipped, Prediction.SERVER_ONLY);
 			} else if (count >= stack.getCount()) {
 				player.setItemInHand(hand, tipped);
 			} else {
 				stack.shrink(count);
-				player.getInventory().placeItemBackInInventory(tipped);
+				player.getInventory().placeItemBackInInventory(tipped, Prediction.SERVER_ONLY);
 			}
 
 			if (cauldron.filled() <= 0) {
@@ -205,53 +473,16 @@ public final class ModEvents {
 	}
 
 	/**
-	 * S'asseoir pres d'un feu de camp : main vide, clic droit sur le dessus
-	 * d'un bloc du tag arcamod:campfire_seats (buches, dalles, escaliers,
-	 * tapis...) avec un feu de camp allume a portee. Le repos lui-meme est
-	 * gere par CampfireSeat ; on se releve en s'accroupissant.
+	 * Repos au coin du feu : le bonus s'applique au joueur assis sur un
+	 * COUSSIN (entite vanilla depuis 26.3) avec un feu de camp allume a
+	 * portee. Voir CampfireRest.
+	 *
+	 * Avant 26.3, le mod posait un siege invisible pour pouvoir s'asseoir sur
+	 * n'importe quelle buche ou dalle : le coussin vanilla fait ce travail,
+	 * donc ce siege a ete retire.
 	 */
 	private static void registerCampfireResting() {
-		UseBlockCallback.EVENT.register((player, level, hand, hit) -> {
-			if (!ArcaFeature.CAMPFIRE_RESTING.isEnabled() || hand != InteractionHand.MAIN_HAND
-					|| !player.getMainHandItem().isEmpty() || player.isSecondaryUseActive()
-					|| player.isSpectator() || player.isPassenger() || hit.getDirection() != Direction.UP) {
-				return InteractionResult.PASS;
-			}
-
-			BlockPos pos = hit.getBlockPos();
-			BlockState state = level.getBlockState(pos);
-
-			if (!state.is(ModTags.CAMPFIRE_SEATS)) {
-				return InteractionResult.PASS;
-			}
-
-			// La hauteur du point clique : sur un escalier, la marche basse ou
-			// la marche haute selon l'endroit vise.
-			double seatY = hit.getLocation().y;
-			BlockPos seatBlock = BlockPos.containing(pos.getX() + 0.5, seatY, pos.getZ() + 0.5);
-
-			if (!CampfireSeat.hasLitCampfireNearby(level, seatBlock)) {
-				return InteractionResult.PASS;
-			}
-
-			// Deja un siege occupe a cet endroit.
-			AABB area = new AABB(pos.getX(), seatY - 0.1, pos.getZ(), pos.getX() + 1.0, seatY + 0.1, pos.getZ() + 1.0);
-
-			if (!level.getEntitiesOfClass(CampfireSeat.class, area).isEmpty()) {
-				return InteractionResult.PASS;
-			}
-
-			if (!level.isClientSide()) {
-				CampfireSeat seat = CampfireSeat.create(level, pos, seatY);
-				level.addFreshEntity(seat);
-
-				if (!player.startRiding(seat)) {
-					seat.discard();
-				}
-			}
-
-			return InteractionResult.SUCCESS;
-		});
+		ServerTickEvents.END_LEVEL_TICK.register(CampfireRest::tickLevel);
 	}
 
 	/**
@@ -276,7 +507,9 @@ public final class ModEvents {
 			BlockPos pos = hit.getBlockPos();
 			BlockState state = level.getBlockState(pos);
 
-			if (!state.is(Blocks.WATER_CAULDRON)) {
+			boolean lye = state.is(ModBlocks.ASH_CAULDRON);
+
+			if (!state.is(Blocks.WATER_CAULDRON) && !lye) {
 				return InteractionResult.PASS;
 			}
 
@@ -290,20 +523,27 @@ public final class ModEvents {
 				return InteractionResult.SUCCESS;
 			}
 
-			int count = Math.min(stack.getCount(), Math.max(1, ArcaBalance.CAULDRON_WASH_ITEMS_PER_LEVEL));
+			// La lessive lave bien plus d'objets par niveau que l'eau claire.
+			int perLevel = Math.max(1, ArcaBalance.CAULDRON_WASH_ITEMS_PER_LEVEL)
+					* (lye ? Math.max(1, ArcaBalance.ASH_CAULDRON_WASH_MULTIPLIER) : 1);
+			int count = Math.min(stack.getCount(), perLevel);
 			// transmuteCopy garde les donnees de l'objet (nom, contenu d'un sac...).
 			ItemStack washed = stack.transmuteCopy(undyed.get(), count);
 
 			if (player.hasInfiniteMaterials()) {
-				player.getInventory().placeItemBackInInventory(washed);
+				player.getInventory().placeItemBackInInventory(washed, Prediction.SERVER_ONLY);
 			} else if (count >= stack.getCount()) {
 				player.setItemInHand(hand, washed);
 			} else {
 				stack.shrink(count);
-				player.getInventory().placeItemBackInInventory(washed);
+				player.getInventory().placeItemBackInInventory(washed, Prediction.SERVER_ONLY);
 			}
 
-			LayeredCauldronBlock.lowerFillLevel(state, level, pos);
+			if (lye) {
+				AshCauldronBlock.lowerFillLevel(state, level, pos);
+			} else {
+				LayeredCauldronBlock.lowerFillLevel(state, level, pos);
+			}
 			level.playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 0.6F, 1.4F);
 			player.awardStat(Stats.USE_CAULDRON);
 			return InteractionResult.SUCCESS;
@@ -377,22 +617,26 @@ public final class ModEvents {
 	}
 
 	/**
-	 * Un rayon de miel sur du chaume (bloc, escalier ou dalle) le fige dans
-	 * son etat : il ne vieillira plus. Un coup de hache enleve la cire.
+	 * Une touffe de resine sur un bloc qui vieillit (chaume ou brique, bloc
+	 * plein, escalier ou dalle) le fige dans son etat : il ne vieillira plus.
+	 * Un coup de hache enleve la cire.
+	 *
+	 * La resine remplace ici le rayon de miel, qui reste reserve au cuivre.
 	 */
-	private static void registerThatchWaxing() {
+	private static void registerWaxing() {
 		UseBlockCallback.EVENT.register((player, level, hand, hit) -> {
-			if (!ArcaFeature.THATCH.isEnabled()) {
-				return InteractionResult.PASS;
-			}
-
 			ItemStack stack = player.getItemInHand(hand);
 
-			if (!stack.is(Items.HONEYCOMB) || player.isSpectator()) {
+			if (!stack.is(Items.RESIN_CLUMP) || player.isSpectator()) {
 				return InteractionResult.PASS;
 			}
 
-			if (!WeatheringThatch.applyWax(level, hit.getBlockPos(), level.getBlockState(hit.getBlockPos()))) {
+			// applyWax verifie lui-meme l'interrupteur de la famille visee
+			// (chaume ou brique). La brique vanilla a son propre cirage.
+			BlockState target = level.getBlockState(hit.getBlockPos());
+
+			if (!VanillaBricks.applyWax(level, hit.getBlockPos(), target)
+					&& !ArcaWeathering.applyWax(level, hit.getBlockPos(), target)) {
 				return InteractionResult.PASS;
 			}
 
@@ -542,11 +786,8 @@ public final class ModEvents {
 		return null;
 	}
 
-	private static void registerThatchScraping() {
+	private static void registerScraping() {
 		UseBlockCallback.EVENT.register((player, level, hand, hit) -> {
-			if (!ArcaFeature.THATCH.isEnabled()) {
-				return InteractionResult.PASS;
-			}
 
 			ItemStack stack = player.getItemInHand(hand);
 
@@ -557,16 +798,18 @@ public final class ModEvents {
 			BlockPos pos = hit.getBlockPos();
 			BlockState state = level.getBlockState(pos);
 			BlockState result;
-			Block thatch = thatchFromHay(state);
+			Block thatch = ArcaFeature.THATCH.isEnabled() ? thatchFromHay(state) : null;
 
 			if (thatch != null) {
 				// withPropertiesOf garde l'orientation et la moitie : un
 				// escalier de foin donne le meme escalier en chaume.
 				result = thatch.withPropertiesOf(state);
 			} else {
-				// Sur du chaume : la hache enleve la cire, ou rajeunit d'une
+				// Sur une brique ciree : elle redevient vanilla. Sinon (chaume,
+				// brique du mod) : la hache enleve la cire, ou rajeunit d'une
 				// etape s'il n'y en a pas.
-				result = WeatheringThatch.scrape(state);
+				BlockState unwaxed = VanillaBricks.unwax(state);
+				result = unwaxed != null ? unwaxed : ArcaWeathering.scrape(state);
 			}
 
 			if (result == null) {
@@ -575,7 +818,7 @@ public final class ModEvents {
 
 			if (!level.isClientSide()) {
 				level.setBlockAndUpdate(pos, result);
-				level.playSound(null, pos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
+				level.playSound(null, pos, SoundEvents.AXE_SCRAPE.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
 				level.levelEvent(null, 3005, pos, 0);
 
 				if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
@@ -714,6 +957,156 @@ public final class ModEvents {
 
 			return InteractionResult.SUCCESS;
 		});
+	}
+
+	/**
+	 * La poudre d'os rend un cadre invisible de nouveau visible.
+	 *
+	 * Deux chemins, parce qu'un cadre invisible est intangible
+	 * (BlockAttachedEntityPickMixin) : le clic vise alors le BLOC derriere
+	 * lui, jamais le cadre. On ecoute donc les deux.
+	 *
+	 * L'autre facon de faire reapparaitre un cadre reste de lui reprendre son
+	 * objet (ItemFrameMixin).
+	 */
+	private static void registerItemFrameReveal() {
+		// Clic direct sur le cadre : sert quand la traversee des clics est
+		// coupee (ArcaBalance.ITEM_FRAME_INVISIBLE_CLICK_THROUGH).
+		UseEntityCallback.EVENT.register((player, level, hand, entity, hit) -> {
+			if (!(entity instanceof ItemFrame frame)) {
+				return InteractionResult.PASS;
+			}
+
+			return revealItemFrame(player, level, hand, frame);
+		});
+
+		// Clic sur le bloc, a travers le cadre devenu intangible.
+		UseBlockCallback.EVENT.register((player, level, hand, hit) -> {
+			ItemFrame frame = invisibleFrameOn(player, level, hit.getBlockPos(), hit.getDirection());
+
+			if (frame == null) {
+				return InteractionResult.PASS;
+			}
+
+			return revealItemFrame(player, level, hand, frame);
+		});
+	}
+
+	/** Le cadre invisible accroche a cette face, s'il y en a un. */
+	private static ItemFrame invisibleFrameOn(Player player, Level level, BlockPos supportPos, Direction face) {
+		if (!canRevealItemFrames(player)) {
+			return null;
+		}
+
+		BlockPos framePos = supportPos.relative(face);
+
+		// La boite d'un cadre colle a son bloc deborde sur le cube du
+		// support : on cherche large, puis on trie sur le bloc et la face.
+		for (ItemFrame frame : level.getEntitiesOfClass(ItemFrame.class, new AABB(supportPos).inflate(1.0))) {
+			if (frame.isInvisible() && frame.getDirection() == face && framePos.equals(frame.getPos())) {
+				return frame;
+			}
+		}
+
+		return null;
+	}
+
+	private static boolean canRevealItemFrames(Player player) {
+		return ArcaFeature.ITEM_FRAME_HIDING.isEnabled()
+				&& ArcaBalance.ITEM_FRAME_BONE_MEAL_REVEALS
+				&& !player.isSpectator();
+	}
+
+	private static InteractionResult revealItemFrame(Player player, Level level, InteractionHand hand, ItemFrame frame) {
+		if (!canRevealItemFrames(player) || !frame.isInvisible()) {
+			return InteractionResult.PASS;
+		}
+
+		ItemStack stack = player.getItemInHand(hand);
+
+		if (!stack.is(Items.BONE_MEAL)) {
+			return InteractionResult.PASS;
+		}
+
+		if (level instanceof ServerLevel serverLevel) {
+			frame.setInvisible(false);
+
+			serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
+					frame.getX(), frame.getY(), frame.getZ(),
+					ArcaBalance.ITEM_FRAME_REVEAL_PARTICLES, 0.2, 0.2, 0.2, 0.0);
+			level.playSound(null, frame.blockPosition(), SoundEvents.BONE_MEAL_USE,
+					SoundSource.BLOCKS, 1.0F, 1.0F);
+
+			if (!player.hasInfiniteMaterials()) {
+				stack.shrink(1);
+			}
+		}
+
+		return InteractionResult.SUCCESS;
+	}
+
+	/**
+	 * Membrane de phantom sur un panneau ecrit : la planche disparait, seul ce
+	 * qui est ecrit reste. Poudre d'os : la planche revient.
+	 *
+	 * Le panneau garde sa forme et son contour : on peut toujours le viser, le
+	 * casser et le modifier, contrairement au cadre invisible qui devient
+	 * intangible.
+	 */
+	private static void registerSignHiding() {
+		UseBlockCallback.EVENT.register((player, level, hand, hit) -> {
+			if (!ArcaFeature.SIGN_HIDING.isEnabled() || player.isSpectator()) {
+				return InteractionResult.PASS;
+			}
+
+			BlockPos pos = hit.getBlockPos();
+
+			if (!(level.getBlockEntity(pos) instanceof SignBlockEntity sign)
+					|| !(sign instanceof HideableSign hideable)) {
+				return InteractionResult.PASS;
+			}
+
+			ItemStack stack = player.getItemInHand(hand);
+			boolean hide = stack.is(Items.PHANTOM_MEMBRANE) && !hideable.arcamod$isHidden();
+			boolean reveal = stack.is(Items.BONE_MEAL) && hideable.arcamod$isHidden();
+
+			if (!hide && !reveal) {
+				return InteractionResult.PASS;
+			}
+
+			// Un panneau vierge deviendrait un bloc fantome introuvable : on
+			// exige du texte.
+			if (hide && ArcaBalance.SIGN_HIDING_REQUIRES_TEXT && !signHasText(sign)) {
+				return InteractionResult.PASS;
+			}
+
+			if (level instanceof ServerLevel serverLevel) {
+				hideable.arcamod$setHidden(hide);
+
+				serverLevel.sendParticles(hide ? ParticleTypes.POOF : ParticleTypes.HAPPY_VILLAGER,
+						pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+						ArcaBalance.ITEM_FRAME_REVEAL_PARTICLES, 0.25, 0.25, 0.25, 0.0);
+				level.playSound(null, pos, hide ? SoundEvents.PHANTOM_FLAP : SoundEvents.BONE_MEAL_USE,
+						SoundSource.BLOCKS, 0.8F, hide ? 1.2F : 1.0F);
+
+				if (!player.hasInfiniteMaterials()) {
+					stack.shrink(1);
+				}
+			}
+
+			return InteractionResult.SUCCESS;
+		});
+	}
+
+	/** Le panneau porte-t-il au moins un mot, sur l'une ou l'autre face ? */
+	private static boolean signHasText(SignBlockEntity sign) {
+		for (SignTextSlot slot : SignTextSlot.values()) {
+			if (sign.getText(slot).hasMessage(false)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**

@@ -76,7 +76,7 @@ public final class ModExamples {
 					// La lumiere depend de l'etat : eteint 0, allume 12.
 					.lightLevel(state -> state.getValue(ExampleBlock.ACTIVE) ? 12 : 0)
 					.sound(SoundType.AMETHYST)
-					.pushReaction(PushReaction.NORMAL));
+					.pushReaction(PushReaction.PUSH_PULL));
 
 	// =====================================================================
 	// 2. LES ITEMS

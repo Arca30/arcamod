@@ -78,13 +78,13 @@ public class ThrownDaggerRenderer extends EntityRenderer<ThrownDagger, ThrownDag
 		poseStack.pushPose();
 
 		// Meme enchainement que la fleche et le trident : lacet puis tangage.
-		poseStack.mulPose(Axis.YP.rotationDegrees(state.yRot - 90.0F));
-		poseStack.mulPose(Axis.ZP.rotationDegrees(state.xRot));
+		poseStack.rotateDegrees(Axis.YP, state.yRot - 90.0F);
+		poseStack.rotateDegrees(Axis.ZP, state.xRot);
 
 		// On recule la dague pour que sa pointe tombe pile sur l'origine
 		// (= la position de l'entite), puis on redresse la diagonale.
 		poseStack.translate(TIP_EXTRA_OFFSET - TIP_DISTANCE * SCALE, 0.0F, 0.0F);
-		poseStack.mulPose(Axis.ZP.rotationDegrees(BLADE_ANGLE));
+		poseStack.rotateDegrees(Axis.ZP, BLADE_ANGLE);
 		poseStack.scale(SCALE, SCALE, SCALE);
 
 		state.item.submit(poseStack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor);

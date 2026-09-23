@@ -24,7 +24,7 @@
 		"has_the_recipe": {
 			"trigger": "minecraft:recipe_unlocked",
 			"conditions": {
-				"recipe": "arcamod:xp_berry"
+				"recipes": "arcamod:xp_berry"
 			}
 		}
 	},

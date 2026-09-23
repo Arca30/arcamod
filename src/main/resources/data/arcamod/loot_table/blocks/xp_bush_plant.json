@@ -2,16 +2,14 @@
 	"type": "minecraft:block",
 	"pools": [
 		{
-			"rolls": 1.0,
-			"conditions": [
-				{
-					"condition": "minecraft:block_state_property",
-					"block": "arcamod:xp_bush_plant",
-					"properties": {
-						"berries": "true"
-					}
+			"rolls": 1,
+			"condition": {
+				"type": "minecraft:match_block",
+				"blocks": "arcamod:xp_bush_plant",
+				"state": {
+					"berries": "true"
 				}
-			],
+			},
 			"entries": [
 				{
 					"type": "minecraft:item",

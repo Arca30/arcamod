@@ -2,14 +2,14 @@
 	"type": "minecraft:block",
 	"pools": [
 		{
-			"rolls": 1.0,
+			"rolls": 1,
 			"entries": [
 				{
 					"type": "minecraft:item",
 					"name": "minecraft:cauldron",
-					"functions": [
+					"modifier": [
 						{
-							"function": "minecraft:explosion_decay"
+							"type": "minecraft:explosion_decay"
 						}
 					]
 				}

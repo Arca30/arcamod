@@ -1,7 +1,5 @@
 package dev.arca.arcamod.block;
 
-import com.mojang.serialization.MapCodec;
-
 import dev.arca.arcamod.ArcaBalance;
 import dev.arca.arcamod.config.ArcaFeature;
 import dev.arca.arcamod.mixin.PlayerAccessor;
@@ -12,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -45,8 +44,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  */
 public class EnchantingCrystalBlock extends Block {
 
-	public static final MapCodec<EnchantingCrystalBlock> CODEC = simpleCodec(EnchantingCrystalBlock::new);
-
 	/** Vrai quand le cristal a bu une mort et peut servir. */
 	public static final BooleanProperty CHARGED = BooleanProperty.create("charged");
 
@@ -55,11 +52,6 @@ public class EnchantingCrystalBlock extends Block {
 	public EnchantingCrystalBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.stateDefinition.any().setValue(CHARGED, false));
-	}
-
-	@Override
-	protected MapCodec<EnchantingCrystalBlock> codec() {
-		return CODEC;
 	}
 
 	@Override
@@ -103,7 +95,67 @@ public class EnchantingCrystalBlock extends Block {
 
 		level.setBlock(pos, state.setValue(CHARGED, true), 3);
 		level.playSound(null, pos, SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.BLOCKS, 0.8F, 1.4F);
+		growSculk(level, pos);
 		return true;
+	}
+
+	/**
+	 * La mort bue par le cristal ronge le sol : 1 a 3 blocs de sculk
+	 * apparaissent dessous (voir ArcaBalance.CRYSTAL_SCULK_*), en reutilisant
+	 * la propagation du desenchanteur.
+	 */
+	private static void growSculk(LevelAccessor level, BlockPos pos) {
+		if (!(level instanceof ServerLevel serverLevel)) {
+			return;
+		}
+
+		RandomSource random = serverLevel.getRandom();
+
+		if (random.nextFloat() >= ArcaBalance.CRYSTAL_SCULK_CHANCE) {
+			return;
+		}
+
+		int blocks = rollSculkBlocks(random);
+		int placed = 0;
+
+		for (int i = 0; i < blocks; i++) {
+			BlockPos target = SculkGrowth.findTarget(serverLevel, pos, ArcaBalance.CRYSTAL_SCULK_RADIUS);
+
+			// Plus rien de convertible a portee : inutile d'insister.
+			if (target == null) {
+				break;
+			}
+
+			SculkGrowth.place(serverLevel, target);
+			placed++;
+		}
+
+		if (placed > 0) {
+			serverLevel.sendParticles(ParticleTypes.SCULK_SOUL,
+					pos.getX() + 0.5, pos.getY() + 0.4, pos.getZ() + 0.5, 2, 0.15, 0.0, 0.15, 0.0);
+			serverLevel.playSound(null, pos, SoundEvents.SCULK_CATALYST_BLOOM, SoundSource.BLOCKS,
+					0.8F, 0.8F + random.nextFloat() * 0.4F);
+		}
+	}
+
+	/** Tirage pondere : 1 bloc sort plus souvent que 2, qui sort plus souvent que 3. */
+	private static int rollSculkBlocks(RandomSource random) {
+		int weight1 = Math.max(0, ArcaBalance.CRYSTAL_SCULK_WEIGHT_1_BLOCK);
+		int weight2 = Math.max(0, ArcaBalance.CRYSTAL_SCULK_WEIGHT_2_BLOCKS);
+		int weight3 = Math.max(0, ArcaBalance.CRYSTAL_SCULK_WEIGHT_3_BLOCKS);
+		int total = weight1 + weight2 + weight3;
+
+		if (total <= 0) {
+			return 0;
+		}
+
+		int roll = random.nextInt(total);
+
+		if (roll < weight1) {
+			return 1;
+		}
+
+		return roll < weight1 + weight2 ? 2 : 3;
 	}
 
 	@Override
@@ -169,10 +221,19 @@ public class EnchantingCrystalBlock extends Block {
 		}
 	}
 
-	/** Quelques particules discretes tant qu'il est charge. */
+	/**
+	 * Tant qu'il est charge, le cristal laisse echapper des ames du Nether, et
+	 * les particules d'enchantement s'y ajoutent.
+	 */
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-		if (!state.getValue(CHARGED) || random.nextInt(4) != 0) {
+		if (!state.getValue(CHARGED)) {
+			return;
+		}
+
+		spawnSoulParticles(level, pos, random);
+
+		if (random.nextInt(4) != 0) {
 			return;
 		}
 
@@ -181,5 +242,24 @@ public class EnchantingCrystalBlock extends Block {
 				pos.getY() + 0.3 + random.nextDouble() * 0.3,
 				pos.getZ() + 0.3 + random.nextDouble() * 0.4,
 				0.0, 0.02, 0.0);
+	}
+
+	private static void spawnSoulParticles(Level level, BlockPos pos, RandomSource random) {
+		int count = ArcaBalance.CRYSTAL_SOUL_PARTICLE_COUNT;
+		int rarity = Math.max(1, ArcaBalance.CRYSTAL_SOUL_PARTICLE_RARITY);
+
+		if (count <= 0 || random.nextInt(rarity) != 0) {
+			return;
+		}
+
+		for (int i = 0; i < count; i++) {
+			level.addParticle(ParticleTypes.SOUL,
+					pos.getX() + 0.35 + random.nextDouble() * 0.3,
+					pos.getY() + 0.25 + random.nextDouble() * 0.3,
+					pos.getZ() + 0.35 + random.nextDouble() * 0.3,
+					(random.nextDouble() - 0.5) * 0.01,
+					ArcaBalance.CRYSTAL_SOUL_PARTICLE_SPEED,
+					(random.nextDouble() - 0.5) * 0.01);
+		}
 	}
 }

@@ -1,7 +1,5 @@
 package dev.arca.arcamod.block;
 
-import com.mojang.serialization.MapCodec;
-
 import dev.arca.arcamod.ArcaBalance;
 
 import net.minecraft.core.BlockPos;
@@ -45,8 +43,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * s'eloigne un instant.
  */
 public class ChickenEggsBlock extends Block {
-
-	public static final MapCodec<ChickenEggsBlock> CODEC = simpleCodec(ChickenEggsBlock::new);
 
 	public static final IntegerProperty EGGS =
 			IntegerProperty.create("eggs", ArcaBalance.EGGS_MIN, ArcaBalance.EGGS_MAX);
@@ -110,11 +106,6 @@ public class ChickenEggsBlock extends Block {
 		this.registerDefaultState(this.stateDefinition.any()
 				.setValue(EGGS, ArcaBalance.EGGS_MIN)
 				.setValue(COLOR, EggColor.WHITE));
-	}
-
-	@Override
-	protected MapCodec<ChickenEggsBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

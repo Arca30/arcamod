@@ -23,7 +23,13 @@
 		"HudAltimeterMixin",
 		"HudToolBeltMixin",
 		"MouseHandlerToolBeltMixin",
-		"SlotAccessor"
+		"SlotAccessor",
+		"ItemFrameRendererSnapMixin",
+		"BlockStateOffsetSignMixin",
+		"SectionCompilerHiddenSignMixin",
+		"AbstractSignRendererSnapMixin",
+		"ClientLevelNoCrackMixin",
+		"LavaFogFireResistanceMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

@@ -6,7 +6,9 @@ import dev.arca.arcamod.ArcaMod;
 import dev.arca.arcamod.block.entity.IgnitedBurntLogBlockEntity;
 import dev.arca.arcamod.block.entity.DisenchanterBlockEntity;
 import dev.arca.arcamod.block.entity.EndermanHeadBlockEntity;
+import dev.arca.arcamod.block.entity.FishingRodStandBlockEntity;
 import dev.arca.arcamod.block.entity.PotionCauldronBlockEntity;
+import dev.arca.arcamod.block.entity.RopePlateBlockEntity;
 import dev.arca.arcamod.block.entity.XpBottlerBlockEntity;
 
 import net.minecraft.core.Registry;
@@ -45,6 +47,21 @@ public final class ModBlockEntities {
 			BuiltInRegistries.BLOCK_ENTITY_TYPE,
 			ArcaMod.id("ignited_burnt_log"),
 			new BlockEntityType<>(IgnitedBurntLogBlockEntity::new, Set.of(ModBlocks.IGNITED_BURNT_LOG)));
+
+	/**
+	 * Plaquette : uniquement pour le rendu du second brin, qui relie deux
+	 * points quelconques et ne peut donc pas etre un modele de bloc.
+	 */
+	public static final BlockEntityType<RopePlateBlockEntity> ROPE_PLATE = Registry.register(
+			BuiltInRegistries.BLOCK_ENTITY_TYPE,
+			ArcaMod.id("rope_plate"),
+			new BlockEntityType<>(RopePlateBlockEntity::new, Set.of(ModBlocks.ROPE_PLATE)));
+
+	/** Support de canne a peche : la canne posee et sa partie en cours. */
+	public static final BlockEntityType<FishingRodStandBlockEntity> FISHING_ROD_STAND = Registry.register(
+			BuiltInRegistries.BLOCK_ENTITY_TYPE,
+			ArcaMod.id("fishing_rod_stand"),
+			new BlockEntityType<>(FishingRodStandBlockEntity::new, Set.of(ModBlocks.FISHING_ROD_STAND)));
 
 	public static void init() {
 	}

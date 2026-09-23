@@ -2,8 +2,6 @@ package dev.arca.arcamod.worldgen;
 
 import java.util.function.Supplier;
 
-import com.mojang.serialization.Codec;
-
 import dev.arca.arcamod.ArcaBalance;
 import dev.arca.arcamod.block.GroundClutterBlock;
 import dev.arca.arcamod.config.ArcaFeature;
@@ -12,9 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 
 /**
  * Seme un petit amas d'objets au sol (cailloux, branches).
@@ -22,7 +18,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
  * Le taux d'apparition est gere ici et pas dans le JSON du placed_feature :
  * comme ca il se regle depuis ArcaBalance, avec le reste.
  */
-public class ClutterPatchFeature extends Feature<NoneFeatureConfiguration> {
+public class ClutterPatchFeature extends SimpleArcaFeature {
 
 	private final Supplier<? extends GroundClutterBlock> block;
 	private final ArcaFeature feature;
@@ -41,10 +37,8 @@ public class ClutterPatchFeature extends Feature<NoneFeatureConfiguration> {
 	 * @param maxBlocks      nombre de blocs maximum dans l'amas
 	 * @param spread         rayon horizontal de dispersion, en blocs
 	 */
-	public ClutterPatchFeature(Codec<NoneFeatureConfiguration> codec,
-			Supplier<? extends GroundClutterBlock> block, ArcaFeature feature, float chancePerChunk,
-			int minBlocks, int maxBlocks, int spread) {
-		super(codec);
+	public ClutterPatchFeature(Supplier<? extends GroundClutterBlock> block, ArcaFeature feature,
+			float chancePerChunk, int minBlocks, int maxBlocks, int spread) {
 		this.block = block;
 		this.feature = feature;
 		this.chancePerChunk = chancePerChunk;
@@ -54,11 +48,7 @@ public class ClutterPatchFeature extends Feature<NoneFeatureConfiguration> {
 	}
 
 	@Override
-	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-		WorldGenLevel level = context.level();
-		RandomSource random = context.random();
-		BlockPos origin = context.origin();
-
+	public boolean place(WorldGenLevel level, ChunkGenerator generator, RandomSource random, BlockPos origin) {
 		if (!this.feature.isEnabled() || this.chancePerChunk <= 0.0F || random.nextFloat() >= this.chancePerChunk) {
 			return false;
 		}

@@ -4,6 +4,7 @@ import dev.arca.arcamod.ArcaMod;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
@@ -33,21 +34,31 @@ public final class ModTags {
 	public static final TagKey<Block> REQUIRES_TOOL_FOR_DROPS =
 			TagKey.create(Registries.BLOCK, ArcaMod.id("requires_tool_for_drops"));
 
+	/**
+	 * Blocs devant lesquels un cadre garde un pixel de plus (ArcaBalance.
+	 * ITEM_FRAME_SNAP_EXTRA_CLEARANCE) : ceux dont le modele depasse de leur
+	 * hitbox, comme le loquet d'un coffre.
+	 */
+	public static final TagKey<Block> ITEM_FRAME_EXTRA_CLEARANCE =
+			TagKey.create(Registries.BLOCK, ArcaMod.id("item_frame_extra_clearance"));
+
 	/** Les lits qui exigent un toit au-dessus d'eux pour etre utilises. */
 	public static final TagKey<Block> BEDS_REQUIRING_SHELTER =
 			TagKey.create(Registries.BLOCK, ArcaMod.id("beds_requiring_shelter"));
 
+	/**
+	 * Blocs sans texture de craquelure au minage.
+	 *
+	 * Le jeu plaque la craquelure sur le cube entier : sur un bloc tres fin
+	 * (la corde, la plaquette) on verrait un carre fissure flotter dans le
+	 * vide. Purement visuel, le minage n'est pas touche.
+	 */
+	public static final TagKey<Block> NO_BREAK_OVERLAY =
+			TagKey.create(Registries.BLOCK, ArcaMod.id("no_break_overlay"));
+
 	/** Ce qui repare un outil en silex dans l'enclume. */
 	public static final TagKey<Item> FLINT_TOOL_MATERIALS =
 			TagKey.create(Registries.ITEM, ArcaMod.id("flint_tool_materials"));
-
-	/**
-	 * Les blocs sur lesquels on peut s'asseoir pres d'un feu de camp (main
-	 * vide, clic droit sur le dessus). Uniquement des blocs sans interaction
-	 * propre : un clic droit sur un coffre doit toujours l'ouvrir.
-	 */
-	public static final TagKey<Block> CAMPFIRE_SEATS =
-			TagKey.create(Registries.BLOCK, ArcaMod.id("campfire_seats"));
 
 	/** Blocs que traverse une fleche a corps en os (defaut : les feuilles). */
 	public static final TagKey<Block> BONE_ARROW_PASSES_THROUGH =
@@ -56,6 +67,30 @@ public final class ModTags {
 	/** Blocs que brise une fleche a corps en os (defaut : verre et vitres). */
 	public static final TagKey<Block> BONE_ARROW_BREAKS =
 			TagKey.create(Registries.BLOCK, ArcaMod.id("bone_arrow_breaks"));
+
+	/** Outils qui acceptent les garnitures d'armure (recettes data/arcamod/recipe/tool_trim/). */
+	/** Lames qui coupent des fibres dans les herbes (dague + toutes les epees). */
+	public static final TagKey<Item> CUTS_PLANT_FIBER =
+			TagKey.create(Registries.ITEM, ArcaMod.id("cuts_plant_fiber"));
+
+	/** Herbes qui donnent des fibres (coupees a la lame, ou a la table de craft avec une lame). */
+	public static final TagKey<Item> PLANT_FIBER_GRASSES =
+			TagKey.create(Registries.ITEM, ArcaMod.id("plant_fiber_grasses"));
+
+	public static final TagKey<Item> TRIMMABLE_TOOLS =
+			TagKey.create(Registries.ITEM, ArcaMod.id("trimmable_tools"));
+
+	/** Creatures qui prennent le bonus de la pointe en prismarine (defaut : aquatiques + noye). */
+	public static final TagKey<EntityType<?>> ARROW_PRISMARINE_TARGETS =
+			TagKey.create(Registries.ENTITY_TYPE, ArcaMod.id("arrow_prismarine_targets"));
+
+	/** Creatures volantes, bonus de l'empennage en membrane de phantom. */
+	public static final TagKey<EntityType<?>> ARROW_ANTI_AIR_TARGETS =
+			TagKey.create(Registries.ENTITY_TYPE, ArcaMod.id("arrow_anti_air_targets"));
+
+	/** Creatures que la pointe en chorus ne teleporte pas (boss). */
+	public static final TagKey<EntityType<?>> ARROW_CHORUS_IMMUNE =
+			TagKey.create(Registries.ENTITY_TYPE, ArcaMod.id("arrow_chorus_immune"));
 
 	/** Ce qui repare les outils en or rose (defaut : le lingot d'or rose). */
 	public static final TagKey<Item> PINK_GOLD_TOOL_MATERIALS =
@@ -87,6 +122,13 @@ public final class ModTags {
 	 */
 	public static final TagKey<Block> ASH_FROM_WOOD =
 			TagKey.create(Registries.BLOCK, ArcaMod.id("ash_from_wood"));
+
+	/**
+	 * Couvertures au sol qui brulent d'un coup : le feu prend leur place au
+	 * lieu de se poser dessus (feuilles mortes, herbe sechee...).
+	 */
+	public static final TagKey<Block> BURNS_INSTANTLY =
+			TagKey.create(Registries.BLOCK, ArcaMod.id("burns_instantly"));
 
 	private ModTags() {
 	}

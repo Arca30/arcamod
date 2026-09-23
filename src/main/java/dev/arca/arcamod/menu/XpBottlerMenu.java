@@ -42,15 +42,15 @@ public class XpBottlerMenu extends AbstractContainerMenu {
 		this.data = data;
 
 		// Ces coordonnees doivent correspondre a la texture du GUI.
-		addSlot(new Slot(container, XpBottlerBlockEntity.SLOT_INPUT, 44, 35));
-		addSlot(new Slot(container, XpBottlerBlockEntity.SLOT_OUTPUT, 116, 35) {
+		addSlot(new Slot(container, XpBottlerBlockEntity.SLOT_INPUT, 44, CompactMachineLayout.SLOT_ROW_Y));
+		addSlot(new Slot(container, XpBottlerBlockEntity.SLOT_OUTPUT, 116, CompactMachineLayout.SLOT_ROW_Y) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return false; // slot de sortie : on ne peut rien y deposer
 			}
 		});
 
-		addStandardInventorySlots(inventory, 8, 84);
+		addStandardInventorySlots(inventory, 8, CompactMachineLayout.INVENTORY_Y);
 		addDataSlots(data); // synchronise le tampon d'XP vers le client
 
 		container.startOpen(inventory.player);

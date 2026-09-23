@@ -1,7 +1,5 @@
 package dev.arca.arcamod.example;
 
-import com.mojang.serialization.MapCodec;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -90,18 +88,11 @@ public class ExampleBlock extends Block {
 	 * Le codec sert a Minecraft pour les blocs definis par datapack. Une
 	 * ligne obligatoire, toujours la meme : simpleCodec(TaClasse::new).
 	 */
-	public static final MapCodec<ExampleBlock> CODEC = simpleCodec(ExampleBlock::new);
-
 	public ExampleBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		// L'etat par defaut = celui du bloc quand on le pose sans rien
 		// preciser. A definir pour CHAQUE propriete ajoutee.
 		this.registerDefaultState(this.stateDefinition.any().setValue(ACTIVE, false));
-	}
-
-	@Override
-	protected MapCodec<ExampleBlock> codec() {
-		return CODEC;
 	}
 
 	/** Declare les proprietes au jeu. Oublier une propriete ici = crash. */

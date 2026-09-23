@@ -1,6 +1,6 @@
 package dev.arca.arcamod.registry;
 
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.data.worldgen.features.VegetationFeatures;
 import net.minecraft.data.worldgen.features.CaveFeatures;
 import dev.arca.arcamod.block.MossSlabBlock;
@@ -12,6 +12,10 @@ import java.util.Map;
 import java.util.function.Function;
 
 import dev.arca.arcamod.ArcaMod;
+import dev.arca.arcamod.block.BrickStageBlock;
+import dev.arca.arcamod.block.BrickStageSlabBlock;
+import dev.arca.arcamod.block.BrickStageStairBlock;
+import dev.arca.arcamod.block.BrickStageWallBlock;
 import dev.arca.arcamod.block.ThatchBlock;
 import dev.arca.arcamod.block.ThatchSlabBlock;
 import dev.arca.arcamod.block.ThatchStairBlock;
@@ -24,9 +28,11 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 
@@ -54,6 +60,29 @@ public final class ModDecorBlocks {
 	 */
 	public static final List<String> THATCH_STAGES = List.of(
 			"thatch_block", "weathered_thatch_block", "aged_thatch_block", "gray_thatch_block");
+
+	/**
+	 * Les etapes de la brique du mod, de la plus nette a la plus abimee.
+	 * L'ordre compte : c'est lui qui definit le vieillissement.
+	 *
+	 * La toute premiere etape est la brique VANILLA (minecraft:bricks, ses
+	 * escaliers, sa dalle et son muret) : elle vieillit en
+	 * FIRST_WORN_BRICK_STAGE (voir VanillaBricks). Soit 5 aspects :
+	 * vanilla, delavee, usee, patinee, fendillee.
+	 */
+	public static final List<String> BRICK_STAGES = List.of(
+			"faded_brick_block", "worn_brick_block", "weathered_brick_block", "cracked_brick_block");
+
+	/** L'etape ou arrive la brique VANILLA en vieillissant. */
+	public static final String FIRST_WORN_BRICK_STAGE = BRICK_STAGES.getFirst();
+
+	/**
+	 * La brique CIREE : meme aspect que la brique vanilla, mais elle ne
+	 * vieillit plus. C'est ce que devient une brique vanilla enduite de
+	 * resine (le bloc vanilla n'a pas d'etat "cire"). Un coup de hache la
+	 * rend vanilla.
+	 */
+	public static final String WAXED_BRICK = "waxed_brick_block";
 
 	/** Tous les blocs poses par cette classe, dans l'ordre d'enregistrement. */
 	private static final List<Block> ALL = new ArrayList<>();
@@ -116,6 +145,69 @@ public final class ModDecorBlocks {
 					properties -> new ThatchSlabBlock(properties, nextSlab, previousSlab),
 					thatchProperties(index));
 		}
+
+		// --- la famille de la brique ---
+		// Meme montage que le chaume, precede de la brique vanilla.
+		for (int i = 0; i < BRICK_STAGES.size(); i++) {
+			String name = BRICK_STAGES.get(i);
+			int index = i;
+
+			// La premiere etape redevient de la brique vanilla sous la hache.
+			Block block = register(name,
+					properties -> new BrickStageBlock(properties,
+							index + 1 < BRICK_STAGES.size() ? () -> BY_NAME.get(BRICK_STAGES.get(index + 1)) : null,
+							index > 0 ? () -> BY_NAME.get(BRICK_STAGES.get(index - 1)) : () -> Blocks.BRICKS),
+					brickProperties());
+
+			java.util.function.Supplier<Block> nextStairs =
+					index + 1 < BRICK_STAGES.size() ? () -> BY_NAME.get(BRICK_STAGES.get(index + 1) + "_stairs") : null;
+			java.util.function.Supplier<Block> previousStairs =
+					index > 0 ? () -> BY_NAME.get(BRICK_STAGES.get(index - 1) + "_stairs") : () -> Blocks.BRICK_STAIRS;
+			register(name + "_stairs",
+					properties -> new BrickStageStairBlock(block.defaultBlockState(), properties, nextStairs, previousStairs),
+					brickProperties());
+
+			java.util.function.Supplier<Block> nextSlab =
+					index + 1 < BRICK_STAGES.size() ? () -> BY_NAME.get(BRICK_STAGES.get(index + 1) + "_slab") : null;
+			java.util.function.Supplier<Block> previousSlab =
+					index > 0 ? () -> BY_NAME.get(BRICK_STAGES.get(index - 1) + "_slab") : () -> Blocks.BRICK_SLAB;
+			register(name + "_slab",
+					properties -> new BrickStageSlabBlock(properties, nextSlab, previousSlab),
+					brickProperties());
+
+			java.util.function.Supplier<Block> nextWall =
+					index + 1 < BRICK_STAGES.size() ? () -> BY_NAME.get(BRICK_STAGES.get(index + 1) + "_wall") : null;
+			java.util.function.Supplier<Block> previousWall =
+					index > 0 ? () -> BY_NAME.get(BRICK_STAGES.get(index - 1) + "_wall") : () -> Blocks.BRICK_WALL;
+			register(name + "_wall",
+					properties -> new BrickStageWallBlock(properties, nextWall, previousWall),
+					brickProperties());
+		}
+
+		// --- la brique ciree (aspect vanilla, ne vieillit pas) ---
+		// Pas de randomTicks() et pas de propriete "waxed" : rien ne bouge
+		// tant qu'un coup de hache ne l'a pas rendue vanilla (voir
+		// VanillaBricks.unwax).
+		register(WAXED_BRICK, Block::new, waxedBrickProperties());
+		Block waxed = BY_NAME.get(WAXED_BRICK);
+		register(WAXED_BRICK + "_stairs",
+				properties -> new StairBlock(waxed.defaultBlockState(), properties), waxedBrickProperties());
+		register(WAXED_BRICK + "_slab", SlabBlock::new, waxedBrickProperties());
+		register(WAXED_BRICK + "_wall", WallBlock::new, waxedBrickProperties());
+	}
+
+	/** La brique ciree : comme la brique vanilla, sans ticks aleatoires. */
+	private static BlockBehaviour.Properties waxedBrickProperties() {
+		return BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS);
+	}
+
+	/**
+	 * La brique du mod se comporte comme la brique vanilla (durete, son,
+	 * pioche obligatoire), avec en plus les ticks aleatoires qui la font
+	 * vieillir.
+	 */
+	private static BlockBehaviour.Properties brickProperties() {
+		return BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS).randomTicks();
 	}
 
 	/** Le chaume grise au fil des etapes, y compris sur la carte. */
@@ -139,7 +231,7 @@ public final class ModDecorBlocks {
 			java.util.function.Supplier<BlockBehaviour.Properties> properties) {
 		// La mousse (claire comme pale) garde sa propagation a la poudre d'os,
 		// dalle et escalier compris : chacune pose sa propre structure.
-		ResourceKey<ConfiguredFeature<?, ?>> mossPatch = switch (base) {
+		ResourceKey<Feature> mossPatch = switch (base) {
 			case "moss_block" -> CaveFeatures.MOSS_PATCH_BONEMEAL;
 			case "pale_moss_block" -> VegetationFeatures.PALE_MOSS_PATCH_BONEMEAL;
 			default -> null;

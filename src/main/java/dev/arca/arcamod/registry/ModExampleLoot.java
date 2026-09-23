@@ -5,21 +5,14 @@ import dev.arca.arcamod.config.ArcaFeature;
 
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 
-import net.minecraft.advancements.predicates.ItemPredicate;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
-import net.minecraft.world.level.storage.loot.predicates.MatchTool;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 /**
  * ============================================================
@@ -50,13 +43,16 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
  *    function  une retouche de l'objet obtenu : quantite, enchantement,
  *              nom personnalise...
  *
- * Chaque exemple ci-dessous a son interrupteur dans ArcaFeature (menu
- * Options > ArcaMod). Effet au prochain chargement du monde.
+ * L'exemple ci-dessous a son interrupteur dans ArcaFeature (menu
+ * Options > ArcaMod). Effet au prochain chargement du monde. Pour des
+ * exemples de butin sur un mob ou un bloc, voir ModLootTables (chauve-souris,
+ * nautile, cube de soufre, herbes coupees a la dague).
  */
 public final class ModExampleLoot {
 
-	// Interrupteurs : ArcaFeature.ZOMBIE_PEBBLE_DROPS, GRAVEL_FIBER_DROPS et
-	// VILLAGE_CHEST_PEBBLES. Chances et quantites : ArcaBalance, section 20.
+	// Interrupteur : ArcaFeature.VILLAGE_CHEST_PEBBLES. Quantites :
+	// ArcaBalance, section 20. Les butins reels du mod (mobs, blocs) sont
+	// dans ModLootTables ; ce fichier ne garde qu'un exemple commente.
 
 	// =====================================================================
 	// LES TABLES VISEES
@@ -76,8 +72,6 @@ public final class ModExampleLoot {
 		return ResourceKey.create(Registries.LOOT_TABLE, Identifier.withDefaultNamespace(path));
 	}
 
-	private static final ResourceKey<LootTable> ZOMBIE = vanillaTable("entities/zombie");
-	private static final ResourceKey<LootTable> GRAVEL = vanillaTable("blocks/gravel");
 	private static final ResourceKey<LootTable> VILLAGE_HOUSE = vanillaTable("chests/village/village_plains_house");
 
 	public static void init() {
@@ -90,48 +84,14 @@ public final class ModExampleLoot {
 			}
 
 			// -----------------------------------------------------------
-			// EXEMPLE 1 : ajouter un butin a un MOB
-			// -----------------------------------------------------------
-			if (ArcaFeature.ZOMBIE_PEBBLE_DROPS.isEnabled() && key.equals(ZOMBIE)) {
-				builder.withPool(LootPool.lootPool()
-						.setRolls(ConstantValue.exactly(1.0F))
-						// une chance sur quatre...
-						.when(LootItemRandomChanceCondition.randomChance(ArcaBalance.ZOMBIE_PEBBLE_CHANCE))
-						// ...et seulement si c'est un joueur qui a tue : sans
-						// ca, les zombies qui brulent au soleil deviennent une
-						// ferme a ressources.
-						.when(LootItemKilledByPlayerCondition.killedByPlayer())
-						.add(LootItem.lootTableItem(ModItems.PEBBLE)
-								// Butin augmente la quantite : 0 a 1 de plus
-								// par niveau.
-								.apply(EnchantedCountIncreaseFunction.lootingMultiplier(registries,
-										UniformGenerator.between(0.0F, 1.0F)))));
-			}
-
-			// -----------------------------------------------------------
-			// EXEMPLE 2 : ajouter un butin a un BLOC vanilla
-			// -----------------------------------------------------------
-			if (ArcaFeature.GRAVEL_FIBER_DROPS.isEnabled() && key.equals(GRAVEL)) {
-				builder.withPool(LootPool.lootPool()
-						.setRolls(ConstantValue.exactly(1.0F))
-						.when(LootItemRandomChanceCondition.randomChance(ArcaBalance.GRAVEL_FIBER_CHANCE))
-						// Filtre sur l'outil employe. Variante utile :
-						// ItemPredicate.Builder.item().of(lookup, ItemTags.SHOVELS)
-						// pour accepter toute une famille d'outils.
-						.when(MatchTool.toolMatches(ItemPredicate.Builder.item()
-								.of(registries.lookupOrThrow(Registries.ITEM), Items.IRON_SHOVEL)))
-						.add(LootItem.lootTableItem(ModItems.PLANT_FIBER)));
-			}
-
-			// -----------------------------------------------------------
-			// EXEMPLE 3 : garnir un COFFRE genere
+			// EXEMPLE : garnir un COFFRE genere
 			// -----------------------------------------------------------
 			if (ArcaFeature.VILLAGE_CHEST_PEBBLES.isEnabled() && key.equals(VILLAGE_HOUSE)) {
 				builder.withPool(LootPool.lootPool()
-						.setRolls(ConstantValue.exactly(1.0F))
+						.setRolls(ContextIntProviders.exactly(1))
 						.add(LootItem.lootTableItem(ModItems.PEBBLE)
 								.apply(SetItemCountFunction.setCount(
-										UniformGenerator.between(ArcaBalance.VILLAGE_CHEST_PEBBLES_MIN, ArcaBalance.VILLAGE_CHEST_PEBBLES_MAX)))));
+										ContextIntProviders.between(ArcaBalance.VILLAGE_CHEST_PEBBLES_MIN, ArcaBalance.VILLAGE_CHEST_PEBBLES_MAX)))));
 			}
 		});
 
@@ -140,7 +100,7 @@ public final class ModExampleLoot {
 		//
 		// Remplacer une table entiere (rare, mais parfois plus simple) :
 		//   LootTableEvents.REPLACE.register((key, original, source, registries) ->
-		//       key.equals(ZOMBIE) ? LootTable.lootTable().withPool(...).build() : null);
+		//       key.equals(VILLAGE_HOUSE) ? LootTable.lootTable().withPool(...).build() : null);
 		//
 		// Conditions les plus utilisees :
 		//   LootItemRandomChanceCondition.randomChance(0.1F)
@@ -151,7 +111,7 @@ public final class ModExampleLoot {
 		//   ExplosionCondition.survivesExplosion()
 		//
 		// Fonctions les plus utilisees :
-		//   SetItemCountFunction.setCount(UniformGenerator.between(1, 3))
+		//   SetItemCountFunction.setCount(ContextIntProviders.between(1, 3))
 		//   LootingEnchantFunction.lootingMultiplier(...)
 		//   ApplyBonusCount.addOreBonusCount(Enchantments.FORTUNE)   (Fortune)
 		//   SmeltItemFunction.smelted()                              (cuit au feu)

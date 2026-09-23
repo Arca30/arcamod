@@ -1,7 +1,5 @@
 package dev.arca.arcamod.block;
 
-import com.mojang.serialization.MapCodec;
-
 import dev.arca.arcamod.ArcaBalance;
 import dev.arca.arcamod.registry.ModBlocks;
 import dev.arca.arcamod.registry.ModItems;
@@ -20,6 +18,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.GrowingPlantHeadBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -47,8 +46,6 @@ public class XpBushBlock extends GrowingPlantHeadBlock implements XpVines {
 	 */
 	public static final IntegerProperty HEIGHT_LIMIT = IntegerProperty.create("height_limit", MIN_HEIGHT, MAX_HEIGHT);
 
-	public static final MapCodec<XpBushBlock> CODEC = simpleCodec(XpBushBlock::new);
-
 	public XpBushBlock(BlockBehaviour.Properties properties) {
 		// Direction.UP = sens de croissance. false = pas de tick de fluide.
 		super(properties, Direction.UP, SHAPE, false, ArcaBalance.XP_BUSH_GROW_CHANCE);
@@ -56,11 +53,6 @@ public class XpBushBlock extends GrowingPlantHeadBlock implements XpVines {
 				.setValue(AGE, 0)
 				.setValue(BERRIES, false)
 				.setValue(HEIGHT_LIMIT, MIN_HEIGHT));
-	}
-
-	@Override
-	public MapCodec<XpBushBlock> codec() {
-		return CODEC;
 	}
 
 	@Override
@@ -184,19 +176,19 @@ public class XpBushBlock extends GrowingPlantHeadBlock implements XpVines {
 	// ---------------------------------------------------------------------
 
 	@Override
-	public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+	public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, BonemealSource source) {
 		boolean canSpawnBerry = ArcaBalance.XP_BUSH_BONEMEAL_SPAWNS_BERRIES && !state.getValue(BERRIES);
 		boolean canGrow = ArcaBalance.XP_BUSH_BONEMEAL_GROWS_PLANT && hasRoomToGrow(level, pos, state.getValue(HEIGHT_LIMIT));
 		return canSpawnBerry || canGrow;
 	}
 
 	@Override
-	public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+	public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state, BonemealSource source) {
 		return true;
 	}
 
 	@Override
-	public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+	public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state, BonemealSource source) {
 		// Priorite a la baie : si le segment est vide et que c'est autorise, on pose une baie.
 		if (ArcaBalance.XP_BUSH_BONEMEAL_SPAWNS_BERRIES && !state.getValue(BERRIES)) {
 			XpVines.growBerries(level, pos, state);

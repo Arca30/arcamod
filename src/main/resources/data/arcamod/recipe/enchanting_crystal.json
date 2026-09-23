@@ -2,14 +2,12 @@
 	"type": "minecraft:crafting_shaped",
 	"category": "misc",
 	"key": {
-		"A": "minecraft:ender_eye",
 		"L": "minecraft:amethyst_shard",
-		"E": "minecraft:echo_shard"
+		"E": "minecraft:sculk"
 	},
 	"pattern": [
-		" A ",
-		" L ",
-		"LEL"
+		"L",
+		"E"
 	],
 	"result": {
 		"id": "arcamod:enchanting_crystal"

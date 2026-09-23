@@ -11,13 +11,13 @@
 						{
 							"type": "minecraft:item",
 							"name": "arcamod:charged_enchanting_crystal",
-							"conditions": [
-								{
-									"condition": "minecraft:block_state_property",
-									"block": "arcamod:enchanting_crystal",
-									"properties": { "charged": "true" }
+							"condition": {
+								"type": "minecraft:match_block",
+								"blocks": "arcamod:enchanting_crystal",
+								"state": {
+									"charged": "true"
 								}
-							]
+							}
 						},
 						{
 							"type": "minecraft:item",
@@ -26,9 +26,9 @@
 					]
 				}
 			],
-			"conditions": [
-				{ "condition": "minecraft:survives_explosion" }
-			]
+			"condition": {
+				"type": "minecraft:survives_explosion"
+			}
 		}
 	],
 	"random_sequence": "arcamod:blocks/enchanting_crystal"

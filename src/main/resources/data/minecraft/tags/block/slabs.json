@@ -39,6 +39,11 @@
 		"arcamod:thatch_block_slab",
 		"arcamod:weathered_thatch_block_slab",
 		"arcamod:aged_thatch_block_slab",
-		"arcamod:gray_thatch_block_slab"
+		"arcamod:gray_thatch_block_slab",
+		"arcamod:faded_brick_block_slab",
+		"arcamod:worn_brick_block_slab",
+		"arcamod:weathered_brick_block_slab",
+		"arcamod:cracked_brick_block_slab",
+		"arcamod:waxed_brick_block_slab"
 	]
 }

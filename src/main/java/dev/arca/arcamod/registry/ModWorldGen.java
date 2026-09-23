@@ -22,6 +22,7 @@ public final class ModWorldGen {
 	/** Pointent sur data/arcamod/worldgen/placed_feature/*.json. */
 	private static final ResourceKey<PlacedFeature> PEBBLE_PATCH = placedFeature("pebble_patch");
 	private static final ResourceKey<PlacedFeature> STICK_PATCH = placedFeature("stick_patch");
+	private static final ResourceKey<PlacedFeature> CAVE_PEBBLES = placedFeature("cave_pebbles");
 	private static final ResourceKey<PlacedFeature> PINK_GOLD_CONTACT_ORE = placedFeature("pink_gold_contact_ore");
 	private static final ResourceKey<PlacedFeature> SOUL_PEPPER_BUSH = placedFeature("patch_soul_pepper_bush");
 
@@ -70,6 +71,11 @@ public final class ModWorldGen {
 		// apres le terrain et les arbres.
 		BiomeModifications.addFeature(warmLand(), GenerationStep.Decoration.VEGETAL_DECORATION, PEBBLE_PATCH);
 		BiomeModifications.addFeature(treeCovered(), GenerationStep.Decoration.VEGETAL_DECORATION, STICK_PATCH);
+
+		// Sous terre, tous les biomes de l'Overworld : pas de neige dans les
+		// grottes. Apres les grottes et les minerais.
+		BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Decoration.UNDERGROUND_DECORATION,
+				CAVE_PEBBLES);
 
 		// Meme etape que les minerais, ajoute APRES eux : l'or et le cuivre du
 		// chunk sont deja en place quand on cherche leurs points de contact.

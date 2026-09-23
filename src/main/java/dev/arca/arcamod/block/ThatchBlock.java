@@ -3,8 +3,6 @@ package dev.arca.arcamod.block;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import com.mojang.serialization.MapCodec;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -18,15 +16,13 @@ import net.minecraft.world.level.block.state.StateDefinition;
  * Le chaume : de la paille battue, dont le lien rouge a saute.
  *
  * Il vieillit comme le cuivre, d'etape en etape jusqu'au gris. Un coup de
- * hache le rajeunit, un rayon de miel le fige (voir WeatheringThatch).
+ * hache le rajeunit, une touffe de resine le fige (voir ArcaWeathering).
  *
  * Le bloc suivant est fourni par un Supplier : les quatre etapes se
  * referencent en chaine, et ModDecorBlocks n'est pas encore initialisee quand
  * la premiere est construite.
  */
 public class ThatchBlock extends RotatedPillarBlock implements WeatheringThatch {
-
-	public static final MapCodec<ThatchBlock> CODEC = simpleCodec(properties -> new ThatchBlock(properties, null, null));
 
 	private final Supplier<Block> next;
 	private final Supplier<Block> previous;
@@ -36,11 +32,6 @@ public class ThatchBlock extends RotatedPillarBlock implements WeatheringThatch 
 		this.next = next;
 		this.previous = previous;
 		this.registerDefaultState(this.defaultBlockState().setValue(WAXED, false));
-	}
-
-	@Override
-	public MapCodec<? extends RotatedPillarBlock> codec() {
-		return CODEC;
 	}
 
 	@Override
@@ -66,6 +57,6 @@ public class ThatchBlock extends RotatedPillarBlock implements WeatheringThatch 
 
 	@Override
 	protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		WeatheringThatch.fade(state, level, pos, random);
+		ArcaWeathering.fade(state, level, pos, random);
 	}
 }

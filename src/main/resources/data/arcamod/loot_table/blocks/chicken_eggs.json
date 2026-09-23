@@ -2,8 +2,189 @@
 	"type": "minecraft:block",
 	"pools": [
 		{
-			"rolls": 1.0,
-			"entries": [ { 	"type": "minecraft:item", 	"name": "minecraft:egg", 	"conditions": [ 		{ 			"condition": "minecraft:block_state_property", 			"block": "arcamod:chicken_eggs", 			"properties": { 				"color": "white" 			} 		} 	], 	"functions": [ 		{ 			"function": "minecraft:set_count", 			"count": 1.0, 			"conditions": [ 				{ 					"condition": "minecraft:block_state_property", 					"block": "arcamod:chicken_eggs", 					"properties": { 						"eggs": "1" 					} 				} 			] 		}, 		{ 			"function": "minecraft:set_count", 			"count": 2.0, 			"conditions": [ 				{ 					"condition": "minecraft:block_state_property", 					"block": "arcamod:chicken_eggs", 					"properties": { 						"eggs": "2" 					} 				} 			] 		}, 		{ 			"function": "minecraft:set_count", 			"count": 3.0, 			"conditions": [ 				{ 					"condition": "minecraft:block_state_property", 					"block": "arcamod:chicken_eggs", 					"properties": { 						"eggs": "3" 					} 				} 			] 		}, 		{ 			"function": "minecraft:set_count", 			"count": 4.0, 			"conditions": [ 				{ 					"condition": "minecraft:block_state_property", 					"block": "arcamod:chicken_eggs", 					"properties": { 						"eggs": "4" 					} 				} 			] 		}, 		{ 			"function": "minecraft:explosion_decay" 		} 	] }, { 	"type": "minecraft:item", 	"name": "minecraft:blue_egg", 	"conditions": [ 		{ 			"condition": "minecraft:block_state_property", 			"block": "arcamod:chicken_eggs", 			"properties": { 				"color": "blue" 			} 		} 	], 	"functions": [ 		{ 			"function": "minecraft:set_count", 			"count": 1.0, 			"conditions": [ 				{ 					"condition": "minecraft:block_state_property", 					"block": "arcamod:chicken_eggs", 					"properties": { 						"eggs": "1" 					} 				} 			] 		}, 		{ 			"function": "minecraft:set_count", 			"count": 2.0, 			"conditions": [ 				{ 					"condition": "minecraft:block_state_property", 					"block": "arcamod:chicken_eggs", 					"properties": { 						"eggs": "2" 					} 				} 			] 		}, 		{ 			"function": "minecraft:set_count", 			"count": 3.0, 			"conditions": [ 				{ 					"condition": "minecraft:block_state_property", 					"block": "arcamod:chicken_eggs", 					"properties": { 						"eggs": "3" 					} 				} 			] 		}, 		{ 			"function": "minecraft:set_count", 			"count": 4.0, 			"conditions": [ 				{ 					"condition": "minecraft:block_state_property", 					"block": "arcamod:chicken_eggs", 					"properties": { 						"eggs": "4" 					} 				} 			] 		}, 		{ 			"function": "minecraft:explosion_decay" 		} 	] }, { 	"type": "minecraft:item", 	"name": "minecraft:brown_egg", 	"conditions": [ 		{ 			"condition": "minecraft:block_state_property", 			"block": "arcamod:chicken_eggs", 			"properties": { 				"color": "brown" 			} 		} 	], 	"functions": [ 		{ 			"function": "minecraft:set_count", 			"count": 1.0, 			"conditions": [ 				{ 					"condition": "minecraft:block_state_property", 					"block": "arcamod:chicken_eggs", 					"properties": { 						"eggs": "1" 					} 				} 			] 		}, 		{ 			"function": "minecraft:set_count", 			"count": 2.0, 			"conditions": [ 				{ 					"condition": "minecraft:block_state_property", 					"block": "arcamod:chicken_eggs", 					"properties": { 						"eggs": "2" 					} 				} 			] 		}, 		{ 			"function": "minecraft:set_count", 			"count": 3.0, 			"conditions": [ 				{ 					"condition": "minecraft:block_state_property", 					"block": "arcamod:chicken_eggs", 					"properties": { 						"eggs": "3" 					} 				} 			] 		}, 		{ 			"function": "minecraft:set_count", 			"count": 4.0, 			"conditions": [ 				{ 					"condition": "minecraft:block_state_property", 					"block": "arcamod:chicken_eggs", 					"properties": { 						"eggs": "4" 					} 				} 			] 		}, 		{ 			"function": "minecraft:explosion_decay" 		} 	] }]
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:egg",
+					"condition": {
+						"type": "minecraft:match_block",
+						"blocks": "arcamod:chicken_eggs",
+						"state": {
+							"color": "white"
+						}
+					},
+					"modifier": [
+						{
+							"type": "minecraft:set_count",
+							"count": 1,
+							"condition": {
+								"type": "minecraft:match_block",
+								"blocks": "arcamod:chicken_eggs",
+								"state": {
+									"eggs": "1"
+								}
+							}
+						},
+						{
+							"type": "minecraft:set_count",
+							"count": 2,
+							"condition": {
+								"type": "minecraft:match_block",
+								"blocks": "arcamod:chicken_eggs",
+								"state": {
+									"eggs": "2"
+								}
+							}
+						},
+						{
+							"type": "minecraft:set_count",
+							"count": 3,
+							"condition": {
+								"type": "minecraft:match_block",
+								"blocks": "arcamod:chicken_eggs",
+								"state": {
+									"eggs": "3"
+								}
+							}
+						},
+						{
+							"type": "minecraft:set_count",
+							"count": 4,
+							"condition": {
+								"type": "minecraft:match_block",
+								"blocks": "arcamod:chicken_eggs",
+								"state": {
+									"eggs": "4"
+								}
+							}
+						},
+						{
+							"type": "minecraft:explosion_decay"
+						}
+					]
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:blue_egg",
+					"condition": {
+						"type": "minecraft:match_block",
+						"blocks": "arcamod:chicken_eggs",
+						"state": {
+							"color": "blue"
+						}
+					},
+					"modifier": [
+						{
+							"type": "minecraft:set_count",
+							"count": 1,
+							"condition": {
+								"type": "minecraft:match_block",
+								"blocks": "arcamod:chicken_eggs",
+								"state": {
+									"eggs": "1"
+								}
+							}
+						},
+						{
+							"type": "minecraft:set_count",
+							"count": 2,
+							"condition": {
+								"type": "minecraft:match_block",
+								"blocks": "arcamod:chicken_eggs",
+								"state": {
+									"eggs": "2"
+								}
+							}
+						},
+						{
+							"type": "minecraft:set_count",
+							"count": 3,
+							"condition": {
+								"type": "minecraft:match_block",
+								"blocks": "arcamod:chicken_eggs",
+								"state": {
+									"eggs": "3"
+								}
+							}
+						},
+						{
+							"type": "minecraft:set_count",
+							"count": 4,
+							"condition": {
+								"type": "minecraft:match_block",
+								"blocks": "arcamod:chicken_eggs",
+								"state": {
+									"eggs": "4"
+								}
+							}
+						},
+						{
+							"type": "minecraft:explosion_decay"
+						}
+					]
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:brown_egg",
+					"condition": {
+						"type": "minecraft:match_block",
+						"blocks": "arcamod:chicken_eggs",
+						"state": {
+							"color": "brown"
+						}
+					},
+					"modifier": [
+						{
+							"type": "minecraft:set_count",
+							"count": 1,
+							"condition": {
+								"type": "minecraft:match_block",
+								"blocks": "arcamod:chicken_eggs",
+								"state": {
+									"eggs": "1"
+								}
+							}
+						},
+						{
+							"type": "minecraft:set_count",
+							"count": 2,
+							"condition": {
+								"type": "minecraft:match_block",
+								"blocks": "arcamod:chicken_eggs",
+								"state": {
+									"eggs": "2"
+								}
+							}
+						},
+						{
+							"type": "minecraft:set_count",
+							"count": 3,
+							"condition": {
+								"type": "minecraft:match_block",
+								"blocks": "arcamod:chicken_eggs",
+								"state": {
+									"eggs": "3"
+								}
+							}
+						},
+						{
+							"type": "minecraft:set_count",
+							"count": 4,
+							"condition": {
+								"type": "minecraft:match_block",
+								"blocks": "arcamod:chicken_eggs",
+								"state": {
+									"eggs": "4"
+								}
+							}
+						},
+						{
+							"type": "minecraft:explosion_decay"
+						}
+					]
+				}
+			]
 		}
 	],
 	"random_sequence": "arcamod:blocks/chicken_eggs"

@@ -1,7 +1,5 @@
 package dev.arca.arcamod.block;
 
-import com.mojang.serialization.MapCodec;
-
 import dev.arca.arcamod.ArcaBalance;
 import dev.arca.arcamod.registry.ModBlocks;
 import dev.arca.arcamod.registry.ModItems;
@@ -21,6 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.GrowingPlantBodyBlock;
 import net.minecraft.world.level.block.GrowingPlantHeadBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
@@ -35,8 +34,6 @@ import net.minecraft.world.phys.BlockHitResult;
  */
 public class XpBushPlantBlock extends GrowingPlantBodyBlock implements XpVines {
 
-
-	public static final MapCodec<XpBushPlantBlock> CODEC = simpleCodec(XpBushPlantBlock::new);
 
 	/**
 	 * Le corps ne grandit jamais (seule la tete monte) : ici on ne fait que
@@ -53,11 +50,6 @@ public class XpBushPlantBlock extends GrowingPlantBodyBlock implements XpVines {
 	public XpBushPlantBlock(BlockBehaviour.Properties properties) {
 		super(properties, Direction.UP, SHAPE, false);
 		registerDefaultState(stateDefinition.any().setValue(BERRIES, false));
-	}
-
-	@Override
-	public MapCodec<XpBushPlantBlock> codec() {
-		return CODEC;
 	}
 
 	@Override
@@ -99,7 +91,7 @@ public class XpBushPlantBlock extends GrowingPlantBodyBlock implements XpVines {
 	//     visant la base.
 
 	@Override
-	public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+	public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, BonemealSource source) {
 		if (ArcaBalance.XP_BUSH_BONEMEAL_SPAWNS_BERRIES && !state.getValue(BERRIES)) {
 			return true;
 		}
@@ -108,16 +100,16 @@ public class XpBushPlantBlock extends GrowingPlantBodyBlock implements XpVines {
 		if (headPos == null) {
 			return false;
 		}
-		return getHeadBlock().isValidBonemealTarget(level, headPos, level.getBlockState(headPos));
+		return getHeadBlock().isValidBonemealTarget(level, headPos, level.getBlockState(headPos), source);
 	}
 
 	@Override
-	public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+	public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state, BonemealSource source) {
 		return true;
 	}
 
 	@Override
-	public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+	public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state, BonemealSource source) {
 		if (ArcaBalance.XP_BUSH_BONEMEAL_SPAWNS_BERRIES && !state.getValue(BERRIES)) {
 			XpVines.growBerries(level, pos, state);
 			return;
@@ -125,7 +117,7 @@ public class XpBushPlantBlock extends GrowingPlantBodyBlock implements XpVines {
 
 		BlockPos headPos = findHeadPos(level, pos);
 		if (headPos != null) {
-			getHeadBlock().performBonemeal(level, random, headPos, level.getBlockState(headPos));
+			getHeadBlock().performBonemeal(level, random, headPos, level.getBlockState(headPos), source);
 		}
 	}
 

@@ -1,14 +1,20 @@
 package dev.arca.arcamod.registry;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
+import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTabOutput;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Block;
+
+import org.jspecify.annotations.Nullable;
 
 /**
  * Range les items du mod dans les onglets creatifs vanilla.
@@ -31,30 +37,91 @@ public final class ModCreativeTabs {
 	private static final ResourceKey<CreativeModeTab> INGREDIENTS = vanillaTab("ingredients");
 	private static final ResourceKey<CreativeModeTab> BUILDING_BLOCKS = vanillaTab("building_blocks");
 	private static final ResourceKey<CreativeModeTab> COLORED_BLOCKS = vanillaTab("colored_blocks");
+	private static final ResourceKey<CreativeModeTab> REDSTONE_BLOCKS = vanillaTab("redstone_blocks");
 
 	private static ResourceKey<CreativeModeTab> vanillaTab(String name) {
 		return ResourceKey.create(Registries.CREATIVE_MODE_TAB, Identifier.withDefaultNamespace(name));
 	}
 
-	/** Les matieres colorees vivent dans l'onglet "blocs colores", pas "construction". */
-	private static boolean isColoured(String base) {
-		return base.endsWith("terracotta") || base.endsWith("concrete_powder");
+	/** Les familles de blocs declinees en seize couleurs qui recoivent escaliers et dalles. */
+	private static final List<String> COLOURED_FAMILIES = List.of("terracotta", "concrete_powder");
+
+	/**
+	 * Les blocs pleins d'une famille dans l'ordre ou l'onglet les affiche
+	 * VRAIMENT, la version sans couleur comprise (la terre cuite "nue" est du
+	 * voyage, a sa place dans la serie).
+	 *
+	 * Vanilla ne range pas les blocs colores dans l'ordre des teintes
+	 * (blanc, orange, magenta...) mais dans un ordre visuel (blanc, gris
+	 * clair, gris, noir, brun, rouge...). On le relit donc dans la sortie de
+	 * l'onglet au lieu de le deviner : escaliers et dalles suivent exactement
+	 * la meme succession que les blocs pleins.
+	 */
+	private static List<String> familyOrderOf(FabricCreativeModeTabOutput output, String family) {
+		List<String> names = new ArrayList<>();
+
+		for (ItemStack stack : output.getDisplayStacks()) {
+			String name = familyMember(stack, family, "");
+
+			if (name != null && !names.contains(name)) {
+				names.add(name);
+			}
+		}
+
+		// Famille absente de l'onglet : on retombe sur l'ordre des teintes.
+		return names.isEmpty()
+				? ModDecorBlocks.DYE_COLORS.stream().map(colour -> colour + "_" + family).toList()
+				: names;
 	}
 
-	private static Block vanilla(String name) {
-		return BuiltInRegistries.BLOCK.getValue(Identifier.withDefaultNamespace(name));
+	/**
+	 * Le nom du bloc plein correspondant si cet objet appartient bien a la
+	 * famille demandee (<famille><suffixe> ou <teinte>_<famille><suffixe>),
+	 * sinon null. La comparaison porte sur le nom complet : la terre cuite
+	 * vernissee ("*_glazed_terracotta") n'est pas de la partie.
+	 */
+	private static @Nullable String familyMember(ItemStack stack, String family, String suffix) {
+		String path = BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath();
+
+		if (path.equals(family + suffix)) {
+			return family;
+		}
+
+		for (String colour : ModDecorBlocks.DYE_COLORS) {
+			if (path.equals(colour + "_" + family + suffix)) {
+				return colour + "_" + family;
+			}
+		}
+
+		return null;
+	}
+
+	/** Les escaliers (ou les dalles) d'une famille, dans l'ordre de ses blocs pleins. */
+	private static List<ItemStack> familyVariants(List<String> names, String suffix) {
+		return names.stream()
+				.map(name -> new ItemStack(ModDecorBlocks.byName(name + suffix)))
+				.toList();
 	}
 
 	public static void init() {
 		// ---- Blocs colores : terre cuite et beton ---------------------------
 		CreativeModeTabEvents.modifyOutputEvent(COLORED_BLOCKS)
 				.register(output -> {
-					for (String base : ModDecorBlocks.VANILLA_BASES) {
-						if (isColoured(base)) {
-							output.insertAfter(vanilla(base),
-									ModDecorBlocks.byName(base + "_stairs"),
-									ModDecorBlocks.byName(base + "_slab"));
-						}
+					// Comme les blocs vanilla : tous les blocs pleins d'une
+					// famille se suivent (terre cuite nue comprise), puis tous
+					// les escaliers, puis toutes les dalles. Chaque serie
+					// s'accroche donc APRES LE DERNIER element de la serie
+					// precedente, ou qu'il soit dans l'onglet (d'ou le predicat
+					// plutot qu'un bloc repere choisi a l'avance).
+					for (String family : COLOURED_FAMILIES) {
+						List<String> names = familyOrderOf(output, family);
+
+						output.insertAfter(stack -> familyMember(stack, family, "") != null,
+								familyVariants(names, "_stairs"),
+								CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+						output.insertAfter(stack -> familyMember(stack, family, "_stairs") != null,
+								familyVariants(names, "_slab"),
+								CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 					}
 				});
 
@@ -84,6 +151,24 @@ public final class ModCreativeTabs {
 						output.accept(ModDecorBlocks.byName(stage + "_stairs"));
 						output.accept(ModDecorBlocks.byName(stage + "_slab"));
 					}
+
+					// La brique qui vieillit, juste apres la brique vanilla :
+					// une seule insertion, sinon chaque etape passerait devant
+					// la precedente.
+					List<ItemStack> bricks = new ArrayList<>();
+
+					List<String> families = new ArrayList<>(ModDecorBlocks.BRICK_STAGES);
+					families.add(ModDecorBlocks.WAXED_BRICK);
+
+					for (String family : families) {
+						bricks.add(new ItemStack(ModDecorBlocks.byName(family)));
+						bricks.add(new ItemStack(ModDecorBlocks.byName(family + "_stairs")));
+						bricks.add(new ItemStack(ModDecorBlocks.byName(family + "_slab")));
+						bricks.add(new ItemStack(ModDecorBlocks.byName(family + "_wall")));
+					}
+
+					output.insertAfter(Items.BRICK_WALL, bricks,
+							CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 				});
 
 		// ---- Blocs naturels ---------------------------------------------------
@@ -96,11 +181,15 @@ public final class ModCreativeTabs {
 					output.insertAfter(Items.RAW_GOLD_BLOCK, ModItems.RAW_PINK_GOLD_BLOCK);
 					output.insertAfter(Items.GLOW_BERRIES, ModItems.XP_BERRY);
 					output.insertAfter(Items.SULFUR, ModItems.BRUSHED_SULFUR);
-					output.insertAfter(Items.CHERRY_LOG, ModItems.BURNT_LOG, ModItems.IGNITED_BURNT_LOG, ModItems.BURNT_WOOD,
-							ModItems.ASH);
+					output.insertAfter(Items.CHERRY_LOG, ModItems.BURNT_LOG, ModItems.IGNITED_BURNT_LOG,
+							ModItems.BURNT_WOOD, ModItems.PACKED_ASH);
 				});
 
 		// ---- Blocs fonctionnels ------------------------------------------------
+		// Le baril de TNT juste apres la TNT.
+		CreativeModeTabEvents.modifyOutputEvent(REDSTONE_BLOCKS)
+				.register(output -> output.insertAfter(Items.TNT, ModItems.TNT_BARREL));
+
 		CreativeModeTabEvents.modifyOutputEvent(FUNCTIONAL_BLOCKS)
 				.register(output -> {
 					output.insertAfter(Items.ENCHANTING_TABLE,
@@ -110,6 +199,8 @@ public final class ModCreativeTabs {
 					// porte-armure.
 					output.insertAfter(Items.ARMOR_STAND, ModItems.SCARECROW);
 					output.insertAfter(Items.CREEPER_HEAD, ModItems.ENDERMAN_HEAD);
+					// La corde descend la ou l'echelle monte : juste apres elle.
+					output.insertAfter(Items.LADDER, ModItems.ROPE, ModItems.ROPE_PLATE);
 				});
 
 		// ---- Outils et utilitaires ---------------------------------------------
@@ -121,6 +212,13 @@ public final class ModCreativeTabs {
 					output.insertAfter(Items.RECOVERY_COMPASS, ModItems.ALTIMETER);
 					output.insertAfter(Items.BUNDLE, ModItems.TOOL_BELT);
 					output.insertAfter(Items.FLINT_AND_STEEL, ModItems.HOT_COAL_IN_A_BOTTLE);
+					// Le support de canne a peche, juste apres la canne.
+					output.insertAfter(Items.FISHING_ROD, ModItems.FISHING_ROD_STAND);
+					output.insertAfter(Items.FIRE_CHARGE, ModItems.SMOKE_BOMB);
+					// Avec les autres seaux a mob.
+					output.insertAfter(Items.AXOLOTL_BUCKET, ModItems.ALLAY_BUCKET);
+					// La cendre s'epand a la main comme la poudre d'os.
+					output.insertAfter(Items.BONE_MEAL, ModItems.ASH);
 					// L'onglet range les outils par matiere : la panoplie en or
 					// rose reste groupee, juste apres celle en or.
 					output.insertAfter(Items.GOLDEN_HOE,
@@ -156,6 +254,7 @@ public final class ModCreativeTabs {
 					output.insertBefore(Items.STRING, ModItems.PLANT_FIBER, ModItems.PLANT_CORD);
 					output.insertAfter(Items.PHANTOM_MEMBRANE, ModItems.BAT_WING);
 					output.insertAfter(Items.GUNPOWDER, ModItems.SULFUR_POWDER);
+					output.insertAfter(ModItems.SULFUR_POWDER, ModItems.ASH);
 					output.insertAfter(Items.SNOWBALL, ModItems.PEBBLE);
 					output.insertAfter(Items.RAW_GOLD, ModItems.RAW_PINK_GOLD);
 					output.insertAfter(Items.GOLD_INGOT, ModItems.PINK_GOLD_INGOT);

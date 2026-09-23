@@ -3,7 +3,10 @@ package dev.arca.arcamod.client;
 import dev.arca.arcamod.client.light.DynamicLights;
 import dev.arca.arcamod.client.render.AltimeterModelProperty;
 import dev.arca.arcamod.client.render.CopperOxidationModelProperty;
+import dev.arca.arcamod.client.render.AshCauldronTint;
 import dev.arca.arcamod.client.render.DisenchanterRenderer;
+import dev.arca.arcamod.client.render.RopePlateRenderer;
+import dev.arca.arcamod.client.render.FishingRodStandRenderer;
 import dev.arca.arcamod.client.render.IgnitedBurntLogRenderer;
 import dev.arca.arcamod.client.render.EndermanHeadModel;
 import dev.arca.arcamod.client.render.EndermanHeadRenderer;
@@ -17,6 +20,7 @@ import dev.arca.arcamod.client.screen.DisenchanterScreen;
 import dev.arca.arcamod.client.screen.FletchingScreen;
 import dev.arca.arcamod.ArcaMod;
 import dev.arca.arcamod.client.render.ArrowPartsModelProperty;
+import dev.arca.arcamod.client.render.ToolTrimModelProperty;
 import dev.arca.arcamod.item.ArrowParts;
 import dev.arca.arcamod.client.screen.BundleScreen;
 import dev.arca.arcamod.client.screen.ClientQuiverTooltip;
@@ -79,6 +83,9 @@ public class ArcaModClient implements ClientModInitializer {
 		SelectItemModelProperties.ID_MAPPER.put(ArcaMod.id("copper_oxidation"), CopperOxidationModelProperty.TYPE);
 		// Propriete "arcamod:altimeter" : texture selon l'altitude memorisee.
 		SelectItemModelProperties.ID_MAPPER.put(ArcaMod.id("altimeter"), AltimeterModelProperty.TYPE);
+		// Propriete "arcamod:tool_trim" : garniture posee sur un outil ou un arc
+		// (definitions generees par tools/gen_tool_trims.py).
+		SelectItemModelProperties.ID_MAPPER.put(ArcaMod.id("tool_trim"), ToolTrimModelProperty.TYPE);
 
 		// Infobulles : garniture lumineuse, fleche choisie du carquois.
 		ItemTooltipCallback.EVENT.register((stack, context, flag, lines) -> {
@@ -127,10 +134,16 @@ public class ArcaModClient implements ClientModInitializer {
 
 		// Le liquide du chaudron prend la couleur de la potion versee.
 		BlockColorRegistry.register(java.util.List.of(new PotionCauldronTint()), ModBlocks.POTION_CAULDRON);
+		// La lessive est grise, quel que soit le niveau du chaudron.
+		BlockColorRegistry.register(java.util.List.of(new AshCauldronTint()), ModBlocks.ASH_CAULDRON);
 
 		// La pierre lancee s'affiche comme son item, exactement comme une
 		// boule de neige ou un oeuf.
 		EntityRenderers.register(ModEntities.THROWN_PEBBLE, ThrownItemRenderer::new);
+		// Bombe fumigene : l'objet qui vole, puis un nuage invisible qui souffle
+		// ses particules depuis le serveur.
+		EntityRenderers.register(ModEntities.THROWN_SMOKE_BOMB, ThrownItemRenderer::new);
+		EntityRenderers.register(ModEntities.SMOKE_CLOUD, NoopRenderer::new);
 		EntityRenderers.register(ModEntities.THROWN_DAGGER, ThrownDaggerRenderer::new);
 		// Le projectile du lance-pierre s'affiche comme sa munition.
 		EntityRenderers.register(ModEntities.SLINGSHOT_SHOT, ThrownItemRenderer::new);
@@ -139,14 +152,14 @@ public class ArcaModClient implements ClientModInitializer {
 		// ("type": "arcamod:enderman_head" dans assets/arcamod/items/).
 		ModelLayerRegistry.registerModelLayer(EndermanHeadModel.LAYER, EndermanHeadModel::createLayer);
 		BlockEntityRenderers.register(ModBlockEntities.ENDERMAN_HEAD, EndermanHeadRenderer::new);
+		// Le second brin d'un amarrage double : voir RopePlateRenderer.
+		BlockEntityRenderers.register(ModBlockEntities.ROPE_PLATE, RopePlateRenderer::new);
 		SpecialModelRenderers.ID_MAPPER.put(ArcaMod.id("enderman_head"), EndermanHeadSpecialRenderer.Unbaked.MAP_CODEC);
 		// Item de l'epouvantail : son modele 3D ("type": "arcamod:scarecrow").
 		SpecialModelRenderers.ID_MAPPER.put(ArcaMod.id("scarecrow"), ScarecrowSpecialRenderer.Unbaked.MAP_CODEC);
 
 		// Resine : chaque appui sur saut d'un joueur englue est envoye au serveur.
 		ResinJumpClient.register();
-		// Le siege du feu de camp est invisible : seul le joueur assis se voit.
-		EntityRenderers.register(ModEntities.CAMPFIRE_SEAT, NoopRenderer::new);
 		EntityRenderers.register(ModEntities.SCARECROW, ScarecrowRenderer::new);
 		EntityRenderers.register(ModEntities.SCARECROW_DAMAGE_NUMBER, ScarecrowDamageNumberRenderer::new);
 
@@ -156,6 +169,8 @@ public class ArcaModClient implements ClientModInitializer {
 		BlockEntityRenderers.register(ModBlockEntities.DISENCHANTER, DisenchanterRenderer::new);
 		// Aliments qui cuisent sur une buche incandescente.
 		BlockEntityRenderers.register(ModBlockEntities.IGNITED_BURNT_LOG, IgnitedBurntLogRenderer::new);
+		// La canne posee sur son support (et sa pose : rangee, lancee, ca mord).
+		BlockEntityRenderers.register(ModBlockEntities.FISHING_ROD_STAND, FishingRodStandRenderer::new);
 
 		// Lumiere dynamique : torches tenues, fleches enflammees, objets
 		// lumineux au sol... (client/light, ArcaBalance section 34).

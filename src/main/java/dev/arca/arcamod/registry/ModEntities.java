@@ -1,12 +1,13 @@
 package dev.arca.arcamod.registry;
 
 import dev.arca.arcamod.ArcaMod;
-import dev.arca.arcamod.entity.CampfireSeat;
 import dev.arca.arcamod.entity.ThrownDagger;
 import dev.arca.arcamod.entity.Scarecrow;
 import dev.arca.arcamod.entity.ScarecrowDamageNumber;
 import dev.arca.arcamod.entity.SlingshotShot;
+import dev.arca.arcamod.entity.SmokeCloud;
 import dev.arca.arcamod.entity.ThrownPebble;
+import dev.arca.arcamod.entity.ThrownSmokeBomb;
 
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 
@@ -50,18 +51,6 @@ public final class ModEntities {
 					.clientTrackingRange(4)
 					.updateInterval(20));
 
-	/**
-	 * Siege invisible pres d'un feu de camp. Minuscule et jamais envoye en
-	 * position (updateInterval eleve) : il ne bouge pas.
-	 */
-	public static final EntityType<CampfireSeat> CAMPFIRE_SEAT = register("campfire_seat",
-			EntityType.Builder.<CampfireSeat>of(CampfireSeat::new, MobCategory.MISC)
-					.noLootTable()
-					.noSummon()
-					.sized(0.001F, 0.001F)
-					.clientTrackingRange(10)
-					.updateInterval(Integer.MAX_VALUE));
-
 	/** L'epouvantail d'entrainement : memes dimensions que le porte-armure. */
 	public static final EntityType<Scarecrow> SCARECROW = register("scarecrow",
 			EntityType.Builder.<Scarecrow>of(Scarecrow::new, MobCategory.MISC)
@@ -80,6 +69,23 @@ public final class ModEntities {
 					.sized(0.0F, 0.0F)
 					.clientTrackingRange(10)
 					.updateInterval(1));
+
+	/** La bombe fumigene lancee : memes reglages que la boule de neige. */
+	public static final EntityType<ThrownSmokeBomb> THROWN_SMOKE_BOMB = register("thrown_smoke_bomb",
+			EntityType.Builder.<ThrownSmokeBomb>of(ThrownSmokeBomb::new, MobCategory.MISC)
+					.noLootTable()
+					.sized(0.25F, 0.25F)
+					.clientTrackingRange(4)
+					.updateInterval(10));
+
+	/** Le nuage de fumee pose par la bombe : invisible, il ne fait que souffler des particules. */
+	public static final EntityType<SmokeCloud> SMOKE_CLOUD = register("smoke_cloud",
+			EntityType.Builder.<SmokeCloud>of(SmokeCloud::new, MobCategory.MISC)
+					.noLootTable()
+					.noSummon()
+					.sized(0.5F, 0.5F)
+					.clientTrackingRange(10)
+					.updateInterval(20));
 
 	private static <T extends net.minecraft.world.entity.Entity> EntityType<T> register(String name,
 			EntityType.Builder<T> builder) {

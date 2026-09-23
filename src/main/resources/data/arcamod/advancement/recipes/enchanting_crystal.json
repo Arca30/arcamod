@@ -8,7 +8,7 @@
 		},
 		"has_the_recipe": {
 			"trigger": "minecraft:recipe_unlocked",
-			"conditions": { "recipe": "arcamod:enchanting_crystal"
+			"conditions": { "recipes": "arcamod:enchanting_crystal"
 			}
 		}
 	},

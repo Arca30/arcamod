@@ -1,7 +1,6 @@
 {
 	"parent": "minecraft:block/cross",
 	"textures": {
-		"cross": "minecraft:block/large_amethyst_bud"
+		"cross": "arcamod:block/enchanting_crystal"
 	}
 }
-

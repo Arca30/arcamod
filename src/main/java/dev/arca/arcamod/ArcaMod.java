@@ -20,6 +20,7 @@ import dev.arca.arcamod.registry.ModLootTables;
 import dev.arca.arcamod.registry.ModMenus;
 import dev.arca.arcamod.registry.ModNetworking;
 import dev.arca.arcamod.registry.ModRecipes;
+import dev.arca.arcamod.registry.ModVanillaItemTweaks;
 import dev.arca.arcamod.registry.ModWorldGen;
 
 import net.fabricmc.api.ModInitializer;
@@ -54,6 +55,8 @@ public class ArcaMod implements ModInitializer {
 		BurntLogs.init();
 		ModDecorBlocks.init();
 		ModItems.init();
+		// Retouches des objets vanilla (trident, casque de tortue).
+		ModVanillaItemTweaks.init();
 		ModEntities.init();
 		ModBlockEntities.init();
 		ModMenus.init();

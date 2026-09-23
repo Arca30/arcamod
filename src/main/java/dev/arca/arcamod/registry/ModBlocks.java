@@ -1,10 +1,13 @@
 package dev.arca.arcamod.registry;
 
+import dev.arca.arcamod.block.TntBarrelBlock;
+
 import java.util.function.Function;
 
 import dev.arca.arcamod.ArcaBalance;
 import dev.arca.arcamod.ArcaMod;
 import dev.arca.arcamod.block.AshBlock;
+import dev.arca.arcamod.block.AshCauldronBlock;
 import dev.arca.arcamod.block.BurntLogBlock;
 import dev.arca.arcamod.block.ChickenEggsBlock;
 import dev.arca.arcamod.block.DisenchanterBlock;
@@ -12,9 +15,12 @@ import dev.arca.arcamod.block.EnchantingCrystalBlock;
 import dev.arca.arcamod.block.EndermanHeadBlock;
 import dev.arca.arcamod.block.EndermanWallHeadBlock;
 import dev.arca.arcamod.block.FallenSticksBlock;
+import dev.arca.arcamod.block.FishingRodStandBlock;
 import dev.arca.arcamod.block.IgnitedBurntLogBlock;
 import dev.arca.arcamod.block.PebblesBlock;
 import dev.arca.arcamod.block.PotionCauldronBlock;
+import dev.arca.arcamod.block.RopeBlock;
+import dev.arca.arcamod.block.RopePlateBlock;
 import dev.arca.arcamod.block.SoulPepperBushBlock;
 import dev.arca.arcamod.block.XpBottlerBlock;
 import dev.arca.arcamod.block.XpBushBlock;
@@ -49,7 +55,7 @@ public final class ModBlocks {
 					.lightLevel(XpVines.emission(ArcaBalance.XP_BUSH_LIGHT_WITH_BERRIES))
 					.instabreak()
 					.sound(SoundType.CAVE_VINES)
-					.pushReaction(PushReaction.DESTROY));
+					.pushReaction(PushReaction.POPPED));
 
 	/**
 	 * Le corps : les segments du dessous. Il ne grandit pas, mais il a besoin
@@ -64,7 +70,7 @@ public final class ModBlocks {
 					.lightLevel(XpVines.emission(ArcaBalance.XP_BUSH_LIGHT_WITH_BERRIES))
 					.instabreak()
 					.sound(SoundType.CAVE_VINES)
-					.pushReaction(PushReaction.DESTROY));
+					.pushReaction(PushReaction.POPPED));
 
 	/**
 	 * L'embouteilleur d'XP. noOcclusion() est obligatoire : le bloc ne remplit
@@ -98,7 +104,7 @@ public final class ModBlocks {
 					.noCollision()
 					.noOcclusion()
 					.sound(SoundType.STONE)
-					.pushReaction(PushReaction.DESTROY));
+					.pushReaction(PushReaction.POPPED));
 
 	/** Les branches mortes au sol. Memes reglages, sons de bois. */
 	public static final FallenSticksBlock FALLEN_STICKS = register("fallen_sticks", FallenSticksBlock::new,
@@ -110,7 +116,7 @@ public final class ModBlocks {
 					.noOcclusion()
 					.ignitedByLava()
 					.sound(SoundType.WOOD)
-					.pushReaction(PushReaction.DESTROY));
+					.pushReaction(PushReaction.POPPED));
 
 	/**
 	 * Les oeufs de poule poses au sol. Fragiles, mais pas casses par les pas
@@ -122,7 +128,7 @@ public final class ModBlocks {
 					.strength(0.2F)
 					.noOcclusion()
 					.sound(SoundType.METAL)
-					.pushReaction(PushReaction.DESTROY));
+					.pushReaction(PushReaction.POPPED));
 
 	/**
 	 * Le cristal d'enchantement : taille de lanterne, pose sur les
@@ -141,7 +147,7 @@ public final class ModBlocks {
 					.sound(SoundType.AMETHYST)
 					// il s'allume doucement une fois charge
 					.lightLevel(state -> state.getValue(EnchantingCrystalBlock.CHARGED) ? ArcaBalance.CRYSTAL_CHARGED_LIGHT : 0)
-					.pushReaction(PushReaction.DESTROY));
+					.pushReaction(PushReaction.POPPED));
 
 	/** Le desenchanteur : un pupitre de pierre et d'obsidienne. */
 	public static final DisenchanterBlock DISENCHANTER = register("disenchanter", DisenchanterBlock::new,
@@ -169,7 +175,7 @@ public final class ModBlocks {
 					.instrument(NoteBlockInstrument.CUSTOM_HEAD)
 					.strength(1.0F)
 					.noOcclusion()
-					.pushReaction(PushReaction.DESTROY));
+					.pushReaction(PushReaction.POPPED));
 
 	/** Sa variante murale : meme nom et meme butin que la tete au sol. */
 	public static final EndermanWallHeadBlock ENDERMAN_WALL_HEAD = register("enderman_wall_head",
@@ -180,7 +186,7 @@ public final class ModBlocks {
 					.instrument(NoteBlockInstrument.CUSTOM_HEAD)
 					.strength(1.0F)
 					.noOcclusion()
-					.pushReaction(PushReaction.DESTROY));
+					.pushReaction(PushReaction.POPPED));
 
 	// ---- Soufre ----------------------------------------------------------------
 
@@ -207,7 +213,7 @@ public final class ModBlocks {
 					.randomTicks()
 					.noCollision()
 					.sound(SoundType.SWEET_BERRY_BUSH)
-					.pushReaction(PushReaction.DESTROY));
+					.pushReaction(PushReaction.POPPED));
 
 	// ---- Or rose ---------------------------------------------------------------
 
@@ -264,6 +270,21 @@ public final class ModBlocks {
 					.randomTicks()
 					.sound(SoundType.WOOD));
 
+	/** Cendre compactee : 9 cendres. Un vrai bloc plein, lui. */
+	public static final Block PACKED_ASH = register("packed_ash", Block::new,
+			BlockBehaviour.Properties.of()
+					.mapColor(MapColor.COLOR_GRAY)
+					.strength(ArcaBalance.PACKED_ASH_HARDNESS)
+					.sound(SoundType.SAND));
+
+	/** Chaudron de lessive : de l'eau grisee par une pincee de cendre (voir AshItem). */
+	public static final AshCauldronBlock ASH_CAULDRON = register("ash_cauldron", AshCauldronBlock::new,
+			BlockBehaviour.Properties.of()
+					.mapColor(MapColor.STONE)
+					.requiresCorrectToolForDrops()
+					.strength(2.0F)
+					.noOcclusion());
+
 	/**
 	 * Cendre : couches empilables, comme la neige fine. Deposee par le feu
 	 * (BurntLogs) et empilable a la main.
@@ -278,8 +299,18 @@ public final class ModBlocks {
 					// objet au lieu de se poser. L'empilement et le remplacement
 					// passent par AshBlock.canBeReplaced.
 					.forceSolidOff()
-					.isViewBlocking((state, level, pos) -> state.getValue(AshBlock.LAYERS) >= AshBlock.MAX_LAYERS)
-					.pushReaction(PushReaction.DESTROY));
+					// .noOcclusion() : on traverse la cendre, donc la camera peut se
+					// retrouver dedans. Sans ca, les blocs voisins cachent les faces
+					// tournees vers elle et on voit a travers le sol.
+					.noOcclusion()
+					// Tete dans la cendre : le jeu affiche alors sa texture a l'ecran
+					// (sinon on voit a travers, la face interieure n'etant pas dessinee).
+					// Il ne connait que le bloc a hauteur des yeux, pas la profondeur
+					// reelle : d'ou un simple seuil d'epaisseur.
+					// 26.3 : le test recoit en plus la boite de la vue du joueur.
+					.isViewBlocking((state, level, pos, eyeBox) ->
+							state.getValue(AshBlock.LAYERS) >= ArcaBalance.ASH_VIEW_BLOCKING_LAYERS)
+					.pushReaction(PushReaction.POPPED));
 
 	/**
 	 * Buche brulee incandescente : ce que laisse le feu. S'eteint en buche
@@ -301,6 +332,69 @@ public final class ModBlocks {
 					.mapColor(MapColor.COLOR_BLACK)
 					.instrument(NoteBlockInstrument.BASS)
 					.strength(ArcaBalance.BURNT_LOG_HARDNESS)
+					.sound(SoundType.WOOD));
+
+	/**
+	 * La corde : elle pend sous un bloc ou le long d'un mur et s'allonge par
+	 * le bas. Reglages : ArcaBalance section 37.
+	 *
+	 * noCollision() : on la traverse, on y descend comme a l'echelle (tag
+	 * minecraft:climbable). noOcclusion() : son modele ne remplit pas le cube.
+	 * instabreak() : durete ET resistance nulles, donc la moindre explosion
+	 * l'emporte (le temps de minage, lui, est fixe a part, voir
+	 * RopeBlock.getDestroyProgress).
+	 * PushReaction.POPPED : un piston la fait tomber en objet au lieu de la
+	 * pousser, ce qui laisserait une corde accrochee a rien.
+	 * noTerrainParticles() : pas de gerbe de cubes quand un maillon se casse
+	 * (on casse une corde souvent, et le maillon du bas disparait ailleurs que
+	 * la ou on tape).
+	 */
+	public static final RopeBlock ROPE = register("rope", RopeBlock::new,
+			BlockBehaviour.Properties.of()
+					.mapColor(MapColor.WOOL)
+					.noCollision()
+					.instabreak()
+					.noOcclusion()
+					.ignitedByLava()
+					.noTerrainParticles()
+					.sound(SoundType.WOOL)
+					.pushReaction(PushReaction.POPPED));
+
+	/**
+	 * La plaquette : le point d'amarrage en metal qu'on visse sous un bloc.
+	 * Une corde qui y pend ne tire plus sur le bloc lui-meme, et deux
+	 * plaquettes cote a cote repartissent la charge (ArcaBalance section 37).
+	 */
+	public static final RopePlateBlock ROPE_PLATE = register("rope_plate", RopePlateBlock::new,
+			BlockBehaviour.Properties.of()
+					.mapColor(MapColor.METAL)
+					.strength(ArcaBalance.ROPE_PLATE_HARDNESS)
+					.noCollision()
+					.noOcclusion()
+					.sound(SoundType.CHAIN)
+					.pushReaction(PushReaction.POPPED));
+
+	/**
+	 * Le support de canne a peche : une canne posee dessus peche toute seule
+	 * (ArcaBalance section 44). En bois, donc a la hache, et noOcclusion()
+	 * parce qu'il ne remplit pas son cube.
+	 */
+	public static final FishingRodStandBlock FISHING_ROD_STAND = register("fishing_rod_stand",
+			FishingRodStandBlock::new,
+			BlockBehaviour.Properties.of()
+					.mapColor(MapColor.WOOD)
+					.strength(1.5F)
+					.noOcclusion()
+					.ignitedByLava()
+					.instrument(NoteBlockInstrument.BASS)
+					.sound(SoundType.WOOD));
+
+	/** Baril de TNT : explosion x2, ne laisse aucun objet (voir TntBarrelBlock). */
+	public static final TntBarrelBlock TNT_BARREL = register("tnt_barrel", TntBarrelBlock::new,
+			BlockBehaviour.Properties.of()
+					.mapColor(MapColor.WOOD)
+					.strength(2.5F)
+					.instrument(NoteBlockInstrument.BASS)
 					.sound(SoundType.WOOD));
 
 	private static <T extends Block> T register(String name, Function<BlockBehaviour.Properties, T> factory,

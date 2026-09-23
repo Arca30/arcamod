@@ -66,7 +66,7 @@ public class DisenchanterMenu extends AbstractContainerMenu {
 		this.access = access;
 		this.player = inventory.player;
 
-		this.addSlot(new Slot(this.input, SLOT_ITEM, 27, 47) {
+		this.addSlot(new Slot(this.input, SLOT_ITEM, 27, CompactMachineLayout.SLOT_ROW_Y) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return !EnchantmentHelper.getEnchantmentsForCrafting(stack).isEmpty();
@@ -80,14 +80,14 @@ public class DisenchanterMenu extends AbstractContainerMenu {
 			}
 		});
 
-		this.addSlot(new Slot(this.input, SLOT_BOOKS, 76, 47) {
+		this.addSlot(new Slot(this.input, SLOT_BOOKS, 76, CompactMachineLayout.SLOT_ROW_Y) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return stack.is(Items.BOOK);
 			}
 		});
 
-		this.addSlot(new Slot(this.result, SLOT_RESULT, 134, 47) {
+		this.addSlot(new Slot(this.result, SLOT_RESULT, 134, CompactMachineLayout.SLOT_ROW_Y) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
 				return false;
@@ -104,7 +104,7 @@ public class DisenchanterMenu extends AbstractContainerMenu {
 			}
 		});
 
-		this.addStandardInventorySlots(inventory, 8, 84);
+		this.addStandardInventorySlots(inventory, 8, CompactMachineLayout.INVENTORY_Y);
 		this.addDataSlot(this.cost);
 	}
 

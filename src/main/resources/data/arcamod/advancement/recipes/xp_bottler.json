@@ -14,7 +14,7 @@
 		"has_the_recipe": {
 			"trigger": "minecraft:recipe_unlocked",
 			"conditions": {
-				"recipe": "arcamod:xp_bottler"
+				"recipes": "arcamod:xp_bottler"
 			}
 		}
 	},

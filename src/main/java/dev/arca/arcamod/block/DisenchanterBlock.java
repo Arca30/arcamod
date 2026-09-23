@@ -1,7 +1,5 @@
 package dev.arca.arcamod.block;
 
-import com.mojang.serialization.MapCodec;
-
 import dev.arca.arcamod.block.entity.DisenchanterBlockEntity;
 import dev.arca.arcamod.config.ArcaFeature;
 import dev.arca.arcamod.menu.DisenchanterMenu;
@@ -39,8 +37,6 @@ import org.jspecify.annotations.Nullable;
  */
 public class DisenchanterBlock extends Block implements EntityBlock {
 
-	public static final MapCodec<DisenchanterBlock> CODEC = simpleCodec(DisenchanterBlock::new);
-
 	private static final Component TITLE = Component.translatable("container.arcamod.disenchanter");
 
 	public DisenchanterBlock(BlockBehaviour.Properties properties) {
@@ -48,11 +44,6 @@ public class DisenchanterBlock extends Block implements EntityBlock {
 	}
 
 	private static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 12.0, 16.0);
-
-	@Override
-	protected MapCodec<DisenchanterBlock> codec() {
-		return CODEC;
-	}
 
 	@Override
 	protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {

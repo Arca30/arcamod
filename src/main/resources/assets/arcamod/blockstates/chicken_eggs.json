@@ -9,9 +9,6 @@
 		"color=white,eggs=3": {
 			"model": "arcamod:block/chicken_eggs_white_3"
 		},
-		"color=white,eggs=4": {
-			"model": "arcamod:block/chicken_eggs_white_4"
-		},
 		"color=blue,eggs=1": {
 			"model": "arcamod:block/chicken_eggs_blue_1"
 		},
@@ -21,9 +18,6 @@
 		"color=blue,eggs=3": {
 			"model": "arcamod:block/chicken_eggs_blue_3"
 		},
-		"color=blue,eggs=4": {
-			"model": "arcamod:block/chicken_eggs_blue_4"
-		},
 		"color=brown,eggs=1": {
 			"model": "arcamod:block/chicken_eggs_brown_1"
 		},
@@ -32,9 +26,6 @@
 		},
 		"color=brown,eggs=3": {
 			"model": "arcamod:block/chicken_eggs_brown_3"
-		},
-		"color=brown,eggs=4": {
-			"model": "arcamod:block/chicken_eggs_brown_4"
 		}
 	}
 }
