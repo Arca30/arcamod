@@ -15,8 +15,6 @@ import dev.arca.arcamod.registry.ModDecorBlocks;
 import dev.arca.arcamod.registry.ModEffects;
 import dev.arca.arcamod.registry.ModEntities;
 import dev.arca.arcamod.registry.ModEvents;
-import dev.arca.arcamod.registry.ModExampleLoot;
-import dev.arca.arcamod.registry.ModExamples;
 import dev.arca.arcamod.registry.ModFeatures;
 import dev.arca.arcamod.registry.ModItems;
 import dev.arca.arcamod.registry.ModLootTables;
@@ -68,9 +66,6 @@ public class ArcaMod implements ModInitializer {
 		ModCreativeTabs.init();
 		ModLootTables.init();
 
-		// Exemples a copier pour tes propres ajouts (voir EXEMPLES.md).
-		ModExamples.init();
-		ModExampleLoot.init();
 		ModEvents.init();
 		// Liste des torchflowers des chunks charges (pare-feu et hors-gel).
 		TorchflowerWard.init();

@@ -831,14 +831,12 @@ public final class ModEvents {
 	}
 
 	/**
-	 * La hache sur une botte de foin en fait sauter le lien : on obtient du
-	 * chaume, qui grisera tout seul avec le temps. Sur du chaume deja
-	 * patine, la hache le decape d'une etape, comme sur le cuivre.
-	 */
-	/**
 	 * Le bloc de chaume correspondant a une botte de foin : le bloc plein,
 	 * mais aussi sa dalle et son escalier (poses par ModDecorBlocks). Rend
 	 * null si ce n'est pas du foin.
+	 *
+	 * La hache sur une botte de foin en fait sauter le lien : on obtient du
+	 * chaume, qui grisera tout seul avec le temps (voir registerScraping).
 	 */
 	private static Block thatchFromHay(BlockState state) {
 		String thatch = ModDecorBlocks.THATCH_STAGES.getFirst();

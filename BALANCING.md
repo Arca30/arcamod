@@ -14,6 +14,21 @@ du jeu (les mondes existants resteraient intacts). Dans le menu, l'infobulle
 indique en jaune les changements qui demandent de recharger le monde (butin)
 ou de relancer le jeu (outils en bois).
 
+Chaque interrupteur declare aussi son **rangement** (`ArcaFeature.Group`, qui
+porte sa rubrique) : c'est lui qui range le menu en jeu. L'accueil n'affiche
+que les cinq rubriques, avec le nombre de reglages actifs ; la barre de
+recherche de l'en-tete, elle, fouille tout le mod d'un coup (nom, infobulle et
+identifiant interne, en francais comme en anglais).
+
+**Multijoueur.** Chaque installation a son fichier, mais ce n'est pas le joueur
+qui decide des regles : a la connexion, le serveur envoie ses propres valeurs
+(`ArcaConfigSyncPayload`) et le client les applique tant qu'il reste connecte.
+Ces interrupteurs apparaissent grises dans son menu. Font exception ceux
+declares `ArcaFeature.Side.CLIENT`, qui ne changent que ce que le joueur voit
+chez lui : `ARROW_PART_TEXTURES`, `DYNAMIC_LIGHTS` et
+`FIRE_RESISTANCE_LAVA_VISION`. En solo et en LAN le paquet est ignore : le
+serveur integre lit deja le meme fichier.
+
 Ce document liste ce qui vit ailleurs : fichiers de donnees (JSON) et scripts
 de generation.
 
@@ -557,11 +572,29 @@ l'imposer, ajouter une ligne dans `KEY_INGREDIENTS`, en tete du script. Les
 recettes de type `arcamod:*` et le brassage sont ignores : ils ne passent pas
 par le livre de recettes.
 
-### Branche de progression
+### L'onglet ArcaMod
 
-Cinq advancements visibles, dans `data/arcamod/advancement/progression/` :
-caillou -> dague en silex -> fibres vegetales -> outil en silex -> premier fer.
-Titres et descriptions : cles `advancements.arcamod.<nom>.*` dans `lang/`.
+Le mod a son propre onglet dans l'ecran des progres : sa racine est
+`data/arcamod/advancement/root.json` (critere `minecraft:tick`, donc toujours
+visible). Tout le reste s'y accroche :
+
+```
+root
+|- progression/  caillou -> baton -> dague en silex -> fibres -> outil en silex -> premier fer
+|                  |- pink_gold -> pink_gold_gear
+|                  |- equipment/quiver -> equipment/patchwork_elytra
+|                  |- equipment/tool_belt
+|                  \- blocks/disenchanter -> blocks/enchanting_crystal, blocks/xp_bottler
+|- blocks/       thatch, rope -> tnt_barrel
+\- world/        xp_berry -> soul_pepper, allay_bucket, enderman_head, sulfur
+```
+
+`boss_slayer` reste rattache a `minecraft:end/kill_dragon` : il appartient a la
+progression vanilla, et c'est lui qui debloque le slot d'elytres.
+
+Titres et descriptions : cles `advancements.arcamod.<nom>.*` dans `lang/`. Le
+script qui a pose l'arbre est garde dans l'historique ; ajouter un progres se
+fait maintenant a la main (un JSON, deux cles par langue).
 
 ### Messages d'aide
 

@@ -2,9 +2,11 @@ package dev.arca.arcamod.client.mixin;
 
 import dev.arca.arcamod.config.ArcaFeature;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 import net.minecraft.client.gui.screens.inventory.AnvilScreen;
 import net.minecraft.client.player.LocalPlayer;
@@ -22,12 +24,12 @@ import net.minecraft.client.player.LocalPlayer;
 @Mixin(AnvilScreen.class)
 public class AnvilScreenMixin {
 
-	@Redirect(
+	@WrapOperation(
 			method = "extractLabels",
 			at = @At(
 					value = "INVOKE",
 					target = "Lnet/minecraft/client/player/LocalPlayer;hasInfiniteMaterials()Z"))
-	private boolean arcamod$hideTooExpensiveLabel(LocalPlayer player) {
-		return ArcaFeature.ANVIL_NO_COST_LIMIT.isEnabled() || player.hasInfiniteMaterials();
+	private boolean arcamod$hideTooExpensiveLabel(LocalPlayer player, Operation<Boolean> original) {
+		return ArcaFeature.ANVIL_NO_COST_LIMIT.isEnabled() || original.call(player);
 	}
 }

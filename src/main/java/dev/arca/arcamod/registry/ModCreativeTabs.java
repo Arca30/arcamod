@@ -172,10 +172,13 @@ public final class ModCreativeTabs {
 				});
 
 		// ---- Blocs naturels ---------------------------------------------------
-		// (ni les petites pierres ni les branches : ce sont des objets a
-		// ramasser, ranges avec les munitions et les ingredients.)
+		// (la petite pierre n'est pas ici : c'est une munition, rangee avec les
+		// projectiles et les ingredients. Elle pose le bloc en s'accroupissant.)
 		CreativeModeTabEvents.modifyOutputEvent(NATURAL_BLOCKS)
 				.register(output -> {
+					// Les branches au sol : le meme genre de decor que le
+					// buisson mort, juste apres lui.
+					output.insertAfter(Items.DEAD_BUSH, ModItems.FALLEN_STICKS);
 					output.insertAfter(Items.DEEPSLATE_GOLD_ORE,
 							ModItems.PINK_GOLD_ORE, ModItems.DEEPSLATE_PINK_GOLD_ORE);
 					output.insertAfter(Items.RAW_GOLD_BLOCK, ModItems.RAW_PINK_GOLD_BLOCK);

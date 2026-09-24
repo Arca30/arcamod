@@ -3,10 +3,12 @@ package dev.arca.arcamod.mixin;
 import dev.arca.arcamod.ArcaMod;
 import dev.arca.arcamod.config.ArcaFeature;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -58,17 +60,18 @@ public class ItemStackMixin {
 	 * Remplace le shrink(1) de vanilla, c'est-a-dire le moment exact ou
 	 * l'outil est detruit.
 	 */
-	@Redirect(method = "applyDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;shrink(I)V"))
-	private void arcamod$keepBrokenTool(ItemStack stack, int count) {
+	@WrapOperation(method = "applyDamage",
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;shrink(I)V"))
+	private void arcamod$keepBrokenTool(ItemStack stack, int count, Operation<Void> original) {
 		if (!ArcaFeature.BROKEN_TOOLS_KEPT.isEnabled()) {
-			stack.shrink(count); // vanilla : l'outil disparait
+			original.call(stack, count); // vanilla : l'outil disparait
 			return;
 		}
 
 		if (stack.getCount() > 1) {
 			// La durabilite est portee par la pile : sans remise a neuf, les
 			// exemplaires restants se briseraient tous au coup suivant.
-			stack.shrink(count);
+			original.call(stack, count);
 			stack.setDamageValue(0);
 			return;
 		}

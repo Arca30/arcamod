@@ -3,13 +3,14 @@
 	"id": "arcamod",
 	"version": "${version}",
 	"name": "ArcaMod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Un mod de survie qui etoffe le vanilla sans le trahir : une progression de debut de partie a mains nues (cailloux, branches, silex), de l'equipement (carquois, ceinture a outils, lance-pierre, fleches en pieces detachees, or rose), des blocs et des machines (desenchanteur, embouteilleur d'XP, chaudron a potion, corde, chaume, briques qui vieillissent) et des monstres qui montent en puissance avec l'age du monde. Chaque ajout a son interrupteur dans Options > ArcaMod.",
 	"authors": [
-		"Me!"
+		"Arca"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/Arca30/arcamod",
+		"sources": "https://github.com/Arca30/arcamod",
+		"issues": "https://github.com/Arca30/arcamod/issues"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/arcamod/icon.png",

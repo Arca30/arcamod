@@ -2,9 +2,11 @@ package dev.arca.arcamod.mixin;
 
 import dev.arca.arcamod.config.ArcaFeature;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AnvilMenu;
@@ -33,15 +35,15 @@ public class AnvilMenuMixin {
 
 	private static final int INPUT_SLOT = 0;
 
-	@Redirect(
+	@WrapOperation(
 			method = "createResult",
 			at = @At(
 					value = "INVOKE",
 					target = "Lnet/minecraft/world/entity/player/Player;hasInfiniteMaterials()Z",
 					ordinal = 1))
-	private boolean arcamod$removeCostLimit(Player player) {
+	private boolean arcamod$removeCostLimit(Player player, Operation<Boolean> original) {
 		if (!ArcaFeature.ANVIL_NO_COST_LIMIT.isEnabled()) {
-			return player.hasInfiniteMaterials();
+			return original.call(player);
 		}
 
 		AnvilMenu self = (AnvilMenu) (Object) this;
@@ -50,7 +52,7 @@ public class AnvilMenuMixin {
 		// enchanterait 16 epees d'un coup pour le prix d'une (le vanilla s'en
 		// protegeait justement via le plafond a 40 qu'on vient d'enlever).
 		if (self.getSlot(INPUT_SLOT).getItem().getCount() > 1) {
-			return player.hasInfiniteMaterials();
+			return original.call(player);
 		}
 
 		return true;

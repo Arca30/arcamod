@@ -1,5 +1,6 @@
 package dev.arca.arcamod.client;
 
+import dev.arca.arcamod.client.config.ArcaConfigSync;
 import dev.arca.arcamod.client.light.DynamicLights;
 import dev.arca.arcamod.client.render.AltimeterModelProperty;
 import dev.arca.arcamod.client.render.CopperOxidationModelProperty;
@@ -60,6 +61,9 @@ public class ArcaModClient implements ClientModInitializer {
 		// Associe le type de menu (commun) a son ecran (client). Sans cette
 		// ligne, ouvrir le bloc affiche un ecran vide et un warning dans le log.
 		MenuScreens.register(ModMenus.XP_BOTTLER, XpBottlerScreen::new);
+
+		// Interrupteurs imposes par le serveur : recus a la connexion.
+		ArcaConfigSync.init();
 
 		// Slot d'elytres du plastron : etat recu du serveur, bouton de l'inventaire.
 		ElytraSlotClient.init();
